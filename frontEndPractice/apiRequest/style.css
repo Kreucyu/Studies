@@ -1,13 +1,47 @@
-.btn-primary {
+.color {
     color: white;
     background-color: #623aae;
     border-color: #623aae;
 }
 
-.btn-primary:hover {
+.color:hover,
+.color:focus,
+.color:active {
     color: white;
+    background-color: #7457aa;
+    border-color: #7457aa;
+}
+
+.btn {
     background-color: #623aae;
-    border-color: #623aae;
+    color: white;
+}
+
+.op {
+    background-color: white;
+    color: #623aae;
+}
+
+.op:hover {
+    background-color: white;
+    color: #bc98ff;
+}
+
+span {
+    gap: 10px;
+}
+
+input {
+    width: 100%;
+}
+
+.card-header, .card-body {
+    background-color: white;
+    border-radius: 90px;
+}
+
+#id {
+    width: 20%;
 }
 
 @media (max-width: 550px) {
@@ -18,5 +52,13 @@
     .table th,
     .table td {
         padding: 5px;
+    }
+}
+
+@media (max-width: 400px) {
+    .btn {
+        width: 32%;
+        font-size: 13px;
+
     }
 }

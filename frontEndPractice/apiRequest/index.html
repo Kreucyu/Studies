@@ -30,43 +30,64 @@
             <span>
                 <h2 class="mt-5 mb-5"><i class="fa-solid fa-user-tie">&nbsp;&nbsp;</i>Gerenciador de funcionários</h2>
             </span>
-
         </div>
 
-        <div class="row col-12">
-            <h4 class="mb-2">O que deseja fazer?</h4>
-            <span class="d-flex mb-2" style="gap: 10px;">
+        <div class="card shadow-sm mb-3 bg-body-tertiary rounded">
+            <div class="card-header">
+                <h5 class="m-0 p-0">Insira os dados do funcionário</h5>
+            </div>
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <span class="d-flex mb-2">
+                        <input class="form-control" type="text" placeholder="Nome do funcionário"" id=" nome">
+                        <input class="form-control" type="number" placeholder="ID" id="id">
+                    </span>
+                    <span class="d-flex mb-2">
+                        <input class="form-control" type="number" placeholder="Salário" id="salario">
+                        <input class="form-control" type="number" placeholder="Idade" id="idade">
+                    </span>
 
-        </div>
-        <div class="row mt-2 col-12">
-            <div>
-                <span class="d-flex gap-2 mb-5">
-                    <button class="btn" style="background-color: #623aae; color: white;" id="adicionar"
-                        onclick="acoes(1)">Consultar funcionários</button>
-                    <button class="btn" style="background-color: #623aae; color: white;" id="consultar"
-                        onclick="acoes(2)">Alterar funcionário</button>
-                    <button class="btn" style="background-color: #623aae; color: white;" id="consultar"
-                        onclick="acoes(2)">Adicionar funcionário</button>
-                </span>
+                    <div class="dropdown">
+                        <button class="btn color dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            O que deseja fazer?
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><button class="btn op" id="adicionar" onclick="acoes(1)">Consultar funcionários</button>
+                            </li>
+                            <li><button class="btn op" id="consultar" onclick="acoes(2)">Alterar funcionário</button>
+                            </li>
+                            <li><button class="btn op" id="consultar" onclick="acoes(2)">Adicionar funcionário</button>
+                            </li>
+                        </ul>
+                    </div>
+                </blockquote>
             </div>
         </div>
-        <div class="row mt-2 col-12" style="width: 100%;">
-            <div class="col">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th class="text-center">Descrição</th>
-                            <th class="text-center">Data</th>
-                            <th class="text-center">Prioridade</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-center">Deletar</th>
-                        </tr>
-                    </thead>
-                    <tbody id="listaTarefas" class="text-center">
-                    </tbody>
-                </table>
+
+        <div class="card shadow-sm mb-3 bg-body-tertiary rounded">
+            <div class="card-header">
+                <h5 class="m-0 p-0">Funcionários</h5>
+            </div>
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                            <table class="table">
+                                <thead class="text-center">
+                                  <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">NOME</th>
+                                    <th scope="col">SALÁRIO</th>
+                                    <th scope="col">IDADE</th>
+                                  </tr>
+                                </thead>
+                                <tbody class="text-center" id="funcionariosLista">
+                                </tbody>
+                              </table>
+                </blockquote>
             </div>
         </div>
+
+
     </div>
 
 
@@ -89,24 +110,22 @@
 
 </html>
 
-<!--                 <input class="form-control" type="text" placeholder="Descreva sua tarefa" style="width: 100%;"
-                    id="descricao">
 
-            </span>
-        </div>
-        <div class="row mt-2 col-12">
-            <span class="d-flex mb-2" style="gap: 10px;">
-                <input class="form-control" type="date" id="data" style="width: 40%;">
-                <select class="form-control" id="prioridade" style="width: 30%;">
-                    <option value="">Prioridade</option>
-                    <option value="Baixa">Baixa</option>
-                    <option value="Média">Média</option>
-                    <option value="Alta">Alta</option>
-                    <option value="Urgente">Urgente</option>
-                </select>
-                <select class="form-control" id="status" style="width: 30%;">
-                    <option value="">Status</option>
-                    <option value="Concluída">Concluída</option>
-                    <option value="Em andamento">Em andamento</option>
-                </select>
-            </span> -->
+<!--   <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark Zuckerberg Silva</td>
+                                    <td>15.000</td>
+                                    <td>37</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">3</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                  </tr> -->
