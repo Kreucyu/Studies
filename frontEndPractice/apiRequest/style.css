@@ -4,12 +4,21 @@
     border-color: #623aae;
 }
 
-.color:hover,
-.color:focus,
-.color:active {
-    color: white;
-    background-color: #7457aa;
-    border-color: #7457aa;
+.color:hover, .color:focus, op:focus {
+    color:#623aae;
+    background-color: white;
+    border-color: #623aae;
+}
+
+
+.op {
+    background-color: white !important;
+    color: #623aae !important;
+}
+
+.op:hover {
+    background-color: white !important;
+    color: #1a004b !important;
 }
 
 .btn {
@@ -17,18 +26,28 @@
     color: white;
 }
 
-.op {
+#confirmar:hover {
+    color:#623aae;
     background-color: white;
-    color: #623aae;
+    border-color: #623aae;
 }
 
-.op:hover {
-    background-color: white;
-    color: #bc98ff;
+#confirmar {
+    color: white;
+    background-color: #623aae;
+    border-color: #623aae;
+}
+
+.dropdown {
+    width: 100%;
 }
 
 span {
     gap: 10px;
+}
+
+#nogap {
+    gap: 0px;
 }
 
 input {
@@ -37,7 +56,7 @@ input {
 
 .card-header, .card-body {
     background-color: white;
-    border-radius: 90px;
+    border-radius: 40px;
 }
 
 #id {
@@ -52,13 +71,5 @@ input {
     .table th,
     .table td {
         padding: 5px;
-    }
-}
-
-@media (max-width: 400px) {
-    .btn {
-        width: 32%;
-        font-size: 13px;
-
     }
 }

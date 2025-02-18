@@ -39,28 +39,37 @@
             <div class="card-body">
                 <blockquote class="blockquote mb-0">
                     <span class="d-flex mb-2">
-                        <input class="form-control" type="text" placeholder="Nome do funcionário"" id=" nome">
-                        <input class="form-control" type="number" placeholder="ID" id="id">
+                        <input class="form-control" type="text" placeholder="Nome do funcionário" id="nome" disabled="disabled">
+                        <input class="form-control" type="number" placeholder="ID" id="id" disabled="disabled">
                     </span>
                     <span class="d-flex mb-2">
-                        <input class="form-control" type="number" placeholder="Salário" id="salario">
-                        <input class="form-control" type="number" placeholder="Idade" id="idade">
+                        <input class="form-control" type="number" placeholder="Salário" id="salario" disabled="disabled">
+                        <input class="form-control" type="number" placeholder="Idade" id="idade" disabled="disabled">
                     </span>
-
-                    <div class="dropdown">
-                        <button class="btn color dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            O que deseja fazer?
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><button class="btn op" id="adicionar" onclick="acoes(1)">Consultar funcionários</button>
-                            </li>
-                            <li><button class="btn op" id="consultar" onclick="acoes(2)">Alterar funcionário</button>
-                            </li>
-                            <li><button class="btn op" id="consultar" onclick="acoes(2)">Adicionar funcionário</button>
-                            </li>
-                        </ul>
-                    </div>
+                    <span class="d-flex mb-2" id="nogap">
+                        <div class="dropdown">
+                            <button class="btn color dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false" id="drop">
+                                O que deseja fazer?
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><button class="btn op" onclick="limitar('Adicionar funcionário', false)">Adicionar funcionário</button>
+                                </li>
+                                <li><button class="btn op" onclick="limitar('Alterar funcionário', false)">Alterar funcionário</button>
+                                </li>
+                                <li><button class="btn op" onclick="limitar('Consultar funcionário', false)">Consultar funcionário</button>
+                                </li>
+                                <li><button class="btn op" onclick="limitar('Deletar funcionário', false)">Deletar funcionário</button>
+                                </li>
+                                
+                                
+                            </ul>
+                        </div>
+                        <button class="btn" id="confirmar"
+                            onclick="limitar('O que deseja fazer?', true)">Confirmar</button>
+                    </span>
+                    
+                    
                 </blockquote>
             </div>
         </div>
@@ -86,8 +95,6 @@
                 </blockquote>
             </div>
         </div>
-
-
     </div>
 
 
