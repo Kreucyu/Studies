@@ -1,0 +1,47 @@
+package model.entities;
+
+public class Endereco {
+	private String rua;
+	private String numero;
+	private String complemento;
+	private String CEP;
+	private String cidade;
+	private String estado;
+
+	public Endereco(String rua, String numero, String complemento, String cEP, String cidade, String estado) {
+		super();
+		this.rua = rua;
+		this.numero = numero;
+		this.complemento = complemento;
+		CEP = cEP;
+		this.cidade = cidade;
+		this.estado = estado;
+	}
+
+	public String getRua() {
+		return rua;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public String getCEP() {
+		return CEP;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	
+
+}

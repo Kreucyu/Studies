@@ -1,0 +1,10 @@
+package model.entities;
+
+public class Atleta {
+	private String nome;
+	private String cpf;
+	private float altura;
+	private float peso;
+	private Endereco endereco;
+
+}

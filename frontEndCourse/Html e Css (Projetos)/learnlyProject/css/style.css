@@ -1,0 +1,536 @@
+@font-face {
+    font-family: panforte;
+    src: url(../fonts/Panforte\ Pro\ Regular.woff);
+}
+
+body {
+    background:white;
+    overflow-x: hidden;
+}
+header {
+    background: white;
+}
+
+#logo {
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+}
+
+#logo:hover {
+    text-decoration: none;
+}
+
+.learn, .ly  {    
+    font-family: "panforte";
+    font-size: 40px;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    color: black;
+}
+
+.ly {
+    color: #140bff;
+}
+
+#btncolor {
+    border-color: #140bff;
+    background-color: #140bff;
+    color: white;
+}
+
+.dpm {
+    border: none;
+}
+
+.nav-item {
+    display: block;
+    padding: 0px;
+}
+
+.itens {
+    text-decoration: none;
+    color: black;
+}
+
+.itens:hover {
+    text-decoration: none;
+    color: #140bff;
+    background: white;
+}
+
+
+.menu {
+    text-decoration: none;
+    color: black; 
+}
+
+.menu:hover{
+    color: #140bff;
+    background: white;
+}
+
+
+#verMais {
+    color: #140bff;
+    background: white;
+}
+
+#cursos {
+    text-decoration: none;
+    color: black; 
+    background: white;
+}
+
+#entre {
+    color: #140bff;
+}
+
+#entre:hover {
+    color: #140bff;
+    text-decoration: none;
+}
+
+#hamburguer:focus {
+    outline: none;
+}
+
+#log {
+    color: #140bff;
+    padding-top: 2px;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.vejaM {
+    background:#140bff;
+    color: white;
+    align-self: start;
+}
+
+.vejaM:hover {
+    background: #2884ff;
+    color: white;
+}
+
+
+@media (max-width: 575.98px) {
+    #desktop {
+        display: none;
+    }
+    
+    #mobile {
+        display: flex;
+    }
+    .hidder {
+        display: none;
+    }
+    .courses {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .cards-container {
+        width: 100%;
+        max-width: 575.98px;
+    }
+    .align-title {
+        text-align: center;
+        font-size: 30px;
+    }
+
+    .cards {
+        display: flex;
+        justify-content: center;
+    }
+
+    .hidden3, .hidden4, .hidden5 {
+        display: none !important;
+    }
+
+}
+
+@media (min-width: 576px) {
+    #desktop {
+        display: none;
+    }
+    
+    #mobile {
+        display: flex;
+    }
+
+    .hidder {
+        display: none;
+    }
+    .courses {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .cards-container {
+        width: 100%;
+        max-width: 767.98px;
+    }
+
+    .align-title {
+        text-align: center;
+    }
+
+    .hidden3, .hidden4, .hidden5 {
+        display: none !important;
+    }
+
+    .cards {
+        display: flex;
+        justify-content: center;
+    }
+
+    
+}
+
+
+@media (min-width: 768px) {
+
+    #desktop {
+        display: none;
+    }
+    
+    #mobile {
+        display: flex;
+    }
+
+    .hidder {
+        display: none;
+    }
+    .courses {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .navbar-container {
+        display: flex;
+        justify-content: space-between;
+        min-width: 768px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+    .hidder {
+        display: block;
+    }
+
+    .itens {
+        margin-top: 15px;
+    }
+
+    .slider-container {
+        width: 100%;
+        max-width: 991px;
+    }
+
+    .cards-container {
+        width: 100%;
+        max-width: 991.98px;
+    }
+
+    .cards {
+        display: flex !important;
+        justify-content: center !important  ;
+    }
+    
+    .align-title {
+        text-align: center;
+    }
+
+    .hidden4, .hidden5 {
+        display: none !important;
+    }
+}
+
+
+@media (min-width: 992px) {
+    .navbar-container {
+        display: flex;
+        justify-content: space-between;
+        min-width: 992px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    
+.courses {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.slider-container {
+    width: 100%;
+    max-width: 1199px;
+}
+
+.cards-container {
+    width: 100%;
+    max-width: 1199.98px;
+}
+
+.align-title {
+    text-align: center;
+}
+
+#desktop {
+    display: none;
+}
+
+#mobile {
+    display: flex;
+}
+}
+
+@media (min-width: 1200px) {
+    .menu:hover {
+        color: #140bff;
+    }
+    
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        opacity: 1;
+        visibility: visible; 
+        transition: opacity 0.3s ease-in-out;
+    }
+    
+    .dropdown-menu {
+        display: block;
+        opacity: 0;
+        visibility: hidden;
+        margin-top: 5px;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+
+    .hidder {
+        display: block;
+    }
+    
+    .info {
+        padding: 0px;
+        margin: 0px;
+    }
+    
+    .nav-item.dropdown .dropdown-menu {
+        right: 0;
+        left: auto;
+    }
+    
+    .btnconf {
+        background-color: #140bff;
+        color: white;
+    }
+    
+    .btnconf:hover {
+        background-color: #2884ff;
+        color: white;
+    }
+    
+    #box {
+        width: 250px;
+        padding-right: 7px;
+    }
+    
+    #mcursos {
+        width: 200px;
+        margin: 3px;
+        padding: 3px;
+    }
+    
+    #textmc {
+        padding: 0px;
+        margin: 0px;
+        padding-left: 5px;
+    }
+    
+    #entre {
+        color: #140bff;
+        font-size: 15px;
+    }
+    
+    
+    #entre:hover {
+        text-decoration: none;
+        color: #006dff
+    }
+    
+    #pass {
+        font-size: 13px;
+        color: #140bff;
+        padding-left: 120px;
+    }
+    
+    #pass:hover {
+        text-decoration: none;
+        color: #006dff;
+    }
+    
+    #textsg, #cad {
+        padding-top: 5px;
+        font-size: 15px;
+        text-align: center;
+    }
+    
+    #entrar {
+        text-align: center;
+        width: 243px;
+    }
+    
+    #cad {
+        color: #140bff;
+    }
+    
+    #cad:hover {
+        text-decoration: none;
+        color: #006dff;
+    }
+    
+    #bubox {
+        width: 300px;
+    }
+    
+    #contact {
+        width: 200px;
+        padding: 0px;
+        margin: 0px;
+    }
+    i {
+        font-size: 23px;
+    }
+    
+
+    .navbar-container {
+        display: flex;
+        justify-content: space-between;
+        min-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    .itens {
+        margin-top: 15px;
+    }
+
+    .slider-container {
+        width: 100%;
+        max-width: 1699px;
+    }
+    
+
+    .cards-container {
+        width: 100%;
+        max-width: 1699.98px;
+    }
+
+    .cards {
+        display: flex !important;
+        justify-content: center !important  ;
+    }
+    
+    .align-title {
+        text-align: start;
+    }
+    
+     .hidden5 {
+        display: none !important;
+    }
+    
+    .col-xl-2-4 {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+    
+    #desktop {
+        display: flex;
+    }
+    
+    #mobile {
+        display: none;
+    }
+
+    .courses {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    }
+    
+    
+
+
+
+
+
+
+
+
+
+@media (min-width: 1700px) {
+    .navbar-container {
+        display: flex;
+        justify-content: space-between;
+        min-width: 1700px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+.courses {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 15px;
+}
+
+.slider-container {
+    width: 100%;
+}
+
+.cards-container {
+   width: 100%;
+}
+
+.col-xl-2-4 {
+    flex: 0 0 19%;
+    max-width: 19%;
+}
+
+.hidden5 {
+    display: block !important;
+}
+
+.cards {
+    display: flex !important;
+    justify-content: center !important  ;
+}
+}
+
+.removePoint {
+    list-style-type: none;
+}
+
+@media (max-width: 767.98px) {
+    .mobileFooter {
+        padding: 30px;
+    }
+}
+
+#bg {
+    background: linear-gradient(to bottom, white, #e9e9e9);
+}
+
+

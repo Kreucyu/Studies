@@ -1,0 +1,42 @@
+package model.entities;
+
+public class Passageiro {
+	private String nome;
+	private Integer idade;
+	private Viagem viagem;
+
+	public Passageiro(String nome, Integer idade, Viagem viagem) {
+		this.nome = nome;
+		this.idade = idade;
+		this.viagem = viagem;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Integer getIdade() {
+		return idade;
+	}
+
+	public void setIdade(Integer idade) {
+		this.idade = idade;
+	}
+
+	public Viagem getViagem() {
+		return viagem;
+	}
+
+	public void setViagem(Viagem viagem) {
+		this.viagem = viagem;
+	}
+
+	public float getTarifa() {
+		return 0;
+	}
+
+}

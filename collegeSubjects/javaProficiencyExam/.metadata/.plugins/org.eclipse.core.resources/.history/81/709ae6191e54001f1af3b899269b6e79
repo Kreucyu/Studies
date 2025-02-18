@@ -1,0 +1,35 @@
+package model.entities;
+
+public class Atleta {
+	private String nome;
+	private String cpf;
+	private float altura;
+	private float peso;
+	private Endereco endereco;
+	
+	public Atleta(String nome, String cpf, float altura, float peso, Endereco endereco) {
+		super();
+		this.nome = nome;
+		this.cpf = cpf;
+		this.altura = altura;
+		this.peso = peso;
+		this.endereco = endereco;
+	}
+	public String getNome() {
+		return nome;
+	}
+	public String getCpf() {
+		return cpf;
+	}
+	public float getAltura() {
+		return altura;
+	}
+	public float getPeso() {
+		return peso;
+	}
+	public Endereco getEndereco() {
+		return endereco;
+	}
+	
+
+}

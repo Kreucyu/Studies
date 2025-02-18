@@ -1,0 +1,256 @@
+@font-face {
+    font-family: 'Codec';
+    src: url(../fonts/Codec-Cold-Light-trial.woff);
+}
+@font-face {
+    font-family: 'Codec Pro';
+    src: url(../fonts/CodecPro-Light.woff);
+}
+@font-face {
+    font-family: 'Shrikhand';
+    src: url(../fonts/Shrikhand-Regular.woff);
+}
+
+
+body {
+    background-color: black;
+    font-family: 'Codec';
+    font-weight: 500;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+.titulo {
+float: left;
+padding: 15px 60px 15px 110px;
+background: #0B0B0B;
+}
+
+#logo {
+    display: block;
+    text-decoration: none;
+    color: #5e17eb;
+    font-family: 'Shrikhand';
+    font-size: 23.1px;
+    margin: 0px;
+    font-weight: 200;
+}
+
+#logo:hover {
+    color: white;
+}
+
+ul#icones {
+    list-style: none;
+    background: #0B0B0B;
+    display: flex;
+}
+
+ul#icones li {
+    padding: 0px 15px;
+    display: flex;
+
+}
+
+ul#icones a{
+    display: block;
+    padding: 0px 2em;
+    line-height: 4em;
+    text-decoration: none;
+    color: #5e17eb;
+    font-family: 'Codec';
+    font-weight: 100;
+}
+
+ul#icones a:hover {
+    color: white;
+    background-color:#5e17eb;
+}
+
+
+ul#lateral {
+    list-style: none;
+    background: black;
+}
+
+ul#lateral li {
+    padding-left: 15px;
+
+}
+
+ul#lateral a{
+    line-height: 2.5em;
+    text-decoration: none;
+    color: white;
+    font-family: 'Codec';
+    font-weight: 100;
+}
+
+ul#lateral a:hover {
+    color: #5e17eb;
+    padding: 0px;
+}
+
+h2#plataformas {
+    background: black;
+    color: #5e17eb;
+    padding: 10px 15px;
+}
+
+h2#notificar {
+    background-color: black;
+    color: #5e17eb;
+    padding: 10px 15px;
+}
+
+p#info {
+    color: white;
+    font-family: 'Codec';
+    padding: 10px 15px;
+    font-weight: 100;
+}
+
+div label {
+    color: white;
+    font-family: 'Codec';
+    padding-left: 15px;
+    padding-top: 10px;
+    font-weight: 100;
+}
+
+div input {
+    background-color: #0B0B0B;
+    color: white;
+    display: block;
+    margin: 5px 0px 5px 15px;
+    padding: 3px 30px 3px 5px;
+    border: none;
+}
+
+div input:hover {
+    background-color: #0B0B0B;
+    color: white;
+    border: none;
+}
+
+legend {
+    color: #5e17eb;
+    font-family: 'Codec';
+    padding-left: 15px;
+    padding-top: 5px;
+    font-weight: 100;
+
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px  #0B0B0B inset;
+    -webkit-text-fill-color: white;
+}
+
+.submit {
+    background-color: #0B0B0B;
+    color: white;
+    font-weight: 100;
+    font-size: 16px;
+    padding: 4px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.barraLateral {
+    clear: both;
+    background: black;
+    float: left;
+    width: 250px;
+    margin-top: 5em;
+    margin-left: 6em;
+    color: white;
+    }
+
+.conteudo1 {
+    float: left;
+    width: 720px;
+    margin: 5em 4em 0em 3em;
+    color: white;
+}
+
+.conteudo2 {
+    float: left;
+    width: 230px;
+    margin-top: 5em;
+    margin-right: 6em;
+    color: white;
+    padding-right: em;
+}
+
+#trailers {
+    color: #5e17eb;
+    padding: 10px 15px; 
+}
+
+.titulos {
+    color: #5e17eb;
+    padding: 10px 15px 5px 0px;
+}
+
+.sub {
+    color: #5e17eb;
+    padding-bottom: 15px;
+}
+
+.subN {
+    color: #5e17eb;
+    padding-bottom: 15px;
+    font-family: 'Codec Pro';
+}
+
+.textos {
+   padding-bottom: 10px;
+   text-align: justify;
+}
+
+.textosN {
+    padding-bottom: 10px;
+    font-family: 'Codec Pro';
+ }
+
+.imagens {
+    width: 720px;
+}
+
+.rodape {
+    background: #0B0B0B;
+    text-align: center;
+    padding: 5px;
+    clear: both;
+    color: white;
+    bottom: 0;
+    font-family: 'Codec Pro';
+}
+
+.email {
+    display: inline;
+    padding-right: 31em;
+}
+
+.direitos {
+    display: inline;
+    text-align: center;
+}
+
+.telefone {
+    display: inline;
+    padding-left: 31em;
+}
+
+.trailerT {
+    line-height: 2em;
+    text-decoration: none;
+    color: white;
+    font-family: 'Codec';
+    font-weight: 100;
+    font-size: 17px;
+}
+

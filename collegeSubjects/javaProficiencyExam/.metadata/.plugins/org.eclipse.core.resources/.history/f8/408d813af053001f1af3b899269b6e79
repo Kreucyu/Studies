@@ -1,0 +1,34 @@
+package model.entities;
+
+import java.util.List;
+
+public class Empresa {
+	private String empresaNome;
+	private List<Viagem> viagens;
+
+	public Empresa(String empresaNome) {
+		this.empresaNome = empresaNome;
+	}
+
+	public String getEmpresaNome() {
+		return empresaNome;
+	}
+
+	public void setEmpresaNome(String empresaNome) {
+		this.empresaNome = empresaNome;
+	}
+	
+	public List<Viagem> getViagens() {
+		return viagens;
+	}
+	
+	public void addViagem(Viagem viagem) {
+		viagens.add(viagem);
+	}
+
+	public List<Passageiro> getPassageirosMaisIdosos() {
+		return null;
+
+	}
+
+}

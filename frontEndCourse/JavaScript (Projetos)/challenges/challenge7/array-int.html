@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript</title>
+
+    <script>
+        var objetos = Array('Cadeira', 'Impressora', 'Garfo')
+        var caracteres = null
+
+        function addContent() {
+            caracteres = document.getElementById('caixa').value
+            if (caracteres === '' || caracteres === null) {
+                alert('Informe um valor válido')
+                caracteres = ''
+            } else {
+                if (objetos.indexOf(caracteres) != -1) {
+                    alert('Objeto já foi adicionado anteriormente')
+                    document.getElementById('caixa').value = ''
+                } else {
+                    objetos.push(caracteres)
+                    console.log(objetos)
+                    document.getElementById('caixa').value = ''
+                    alert('Objeto inserido com sucesso!')
+                }
+            }
+        }
+
+        function sortArray() {
+            objetos.sort();
+            console.log(objetos)
+            alert('Lista ordenada com sucesso!')
+        }
+
+        function showArray() {
+            var janelaLista = window.open("", "_blank")
+            if (janelaLista) {
+                var exibicao = "<html><head><title>Lista</title></head><body>"
+                exibicao += "<h2>Lista:</h2>"
+
+                for (var i = 0; i < objetos.length; i++) {
+                    exibicao += objetos[i] + "<br>"
+                }
+
+                exibicao += "</body></html>"
+                janelaLista.document.open();
+                janelaLista.document.write(exibicao)
+                janelaLista.document.close()
+            } else {
+                alert("O navegador proibiu o pop-up, por favor habilite os pop-ups.")
+            }
+
+        }
+
+        function tabuada() {
+            
+            var taduada = window.open("", "_blank")
+            if (taduada) {
+                var exibicao = "<html><head><title>Tabuada</title></head><body>"
+                exibicao += "<h2>Tabuada:</h2>"
+                exibicao += '<hr>'
+                var x = 1
+                while(x <= 10) {
+                    var y = 1
+                    while(y <= 10) {
+                        exibicao += (x + ' x ' + y + ' = ' + (x * y) + '<br>')
+                        y++
+                    }
+                    exibicao += '<hr>'
+                    x++
+                }
+
+                exibicao += "</body></html>"
+                taduada.document.open();
+                taduada.document.write(exibicao)
+                taduada.document.close()
+            } else {
+                alert("O navegador proibiu o pop-up, por favor habilite os pop-ups.")
+            }
+
+
+
+
+
+        }
+    </script>
+
+</head>
+
+<body>
+    <span style="padding-left: 40px;">
+        <input type="text" placeholder="Insira seu valor" style="margin-top: 30px;" id="caixa">
+        <button style="margin-top: 30px;" onclick="addContent()">Adicionar</button>
+        <button style="margin-top: 30px; " onclick="sortArray()">Ordernar</button>
+        <button style="margin-top: 30px; " onclick="showArray()">Exibir Lista</button>
+        <button style="margin-top: 30px; " onclick="tabuada()">Mostrar tabuada</button>
+    </span>
+</body>
+
+</html>

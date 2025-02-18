@@ -1,0 +1,93 @@
+.backgroundPage {
+  background-color: #f2e6c7;
+}
+
+.imgCapa {
+  width: 900px;
+  height: auto;
+  margin: auto;
+  border: 5px groove #ceb576;
+  box-sizing: border-box;
+}
+
+.imgHome {
+  display: block;
+  box-sizing: border-box;
+  max-width: 100%;
+  height: auto;
+}
+
+.links {
+  background-color: #cbb681;
+  width: 900px;
+  height: auto;
+  margin: auto;
+  border: 5px groove #ceb576;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS';
+  font-weight: 400;
+  
+}
+
+.pages {
+  background-color: #f2e6c7;
+  width: 900px;
+  height: auto;
+  margin: auto;
+  border: 5px groove #ceb576;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS';
+  font-weight: 400
+}
+
+.titulos {
+  font-size: 27px;
+  font-weight: 520;
+}
+
+.titulos2 {
+  font-size: 20px;
+  font-weight: 520;
+}
+
+.alinhamento {
+  text-align: left;
+  margin: 20px;
+  font-size: 18px;
+}
+
+
+.alinhamentoImg{
+    height: auto;
+    margin: 50px;
+    border: 5px groove #ceb576;
+    box-sizing: border-box;
+}
+.imagensPg { 
+    display: block;
+    box-sizing: border-box;
+    height: auto;
+    max-width: 100%;
+}
+
+.imagemDono {
+  height: auto;
+  margin-top: 70px;
+  margin-left: 150px;
+  margin-right: 150px;
+  margin-bottom: 30px;
+  border: 5px groove #ceb576;
+  box-sizing: border-box;
+}
+
+.imagemCamp {
+  height: auto;
+  margin-top: 30px;
+  margin-left: 180px;
+  margin-right: 220px;
+  margin-bottom: 30px;
+  border: 5px groove #ceb576;
+  box-sizing: border-box;
+}

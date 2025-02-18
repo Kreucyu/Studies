@@ -1,0 +1,61 @@
+package application;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Scanner;
+
+import model.entities.Intermunicipal;
+import model.entities.Municipal;
+import model.entities.Passageiro;
+import model.entities.Viagem;
+
+public class Program {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		Locale.setDefault(Locale.US);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+		System.out.print("Deseja incluir uma nova viagem (s/n)? ");
+		String choice = sc.next();
+		sc.nextLine();
+		if (choice.toLowerCase().charAt(0) != 's') {
+			exit(sc);
+		} else {
+			System.out.print("\nQual a placa do ônibus? ");
+			String placaOnibus = sc.next();
+			System.out.print("\nQual o nome do motorista? ");
+			String nomeMotorista = sc.next();
+			System.out.println("\nQual a data da viagem (dd/MM/yyyy)");
+			String data = sc.next();
+			Date dataViagem = sdf.parse(data);
+			System.out.println("A viagem é municipal ou intermunicipal (m/i)? ");
+			String tipoViagem = sc.next();
+			sc.nextLine();
+			if (tipoViagem.toLowerCase().charAt(0) == 'm') {
+				Viagem viagem = new Municipal(placaOnibus, nomeMotorista, dataViagem);
+			} else if (tipoViagem.toLowerCase().charAt(0) == 'i') {
+				Viagem viagem = new Intermunicipal(placaOnibus, nomeMotorista, dataViagem);
+				
+			}
+			
+			
+			
+			System.out.println("Deseja adicionar um passageiro (s/n)? ");
+		} 
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+
+	}
+
+	public static void exit(Scanner sc) {
+		System.out.println("\nSaindo...");
+		sc.close();
+		System.exit(0);
+	}
+
+}

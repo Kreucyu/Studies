@@ -1,0 +1,44 @@
+package model.entities;
+
+import java.util.Date;
+
+import model.exceptions.ExcecoesViagem;
+
+public class Municipal extends Viagem {
+
+	public Municipal(String placaOnibus, String nomeMotorista, Date dataViagem, int limiteViagem) {
+		super(placaOnibus, nomeMotorista, dataViagem, limiteViagem);
+	}
+
+	@Override
+	public void addPassageiro(Passageiro passageiro, int limiteViagem) {
+		if (limiteViagem == 0) {
+			System.out.println("\nViagem inválida!");
+		} else {
+			if (passageiros.size() < limiteViagem)
+				passageiros.add(passageiro);
+			else {
+				throw new ExcecoesViagem("\nÔnibus cheio!");
+			}
+		}
+	}
+
+	@Override
+	public float getValorTotal(float tarifa) {
+		float total = 0;
+		recebidos.add(tarifa);
+		for (float tarifas : recebidos) {
+			total += tarifas;
+		}
+		return total;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("(municipal) R$ " + String.format("%.2f", getValorTotal(0)));
+		return sb.toString();
+
+	}
+
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio</title>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+    <script type="text/babel">
+
+        class Sofa {
+            constructor(qtdeLugares, cor, reclinavel, extensivel) {
+                this.qtdeLugares = qtdeLugares
+                this.cor = cor
+                this.reclinavel = reclinavel
+                this.extensivel = extensivel
+            }
+
+            reclinavelSimOuNao() {
+                if (this.reclinavel === true) {
+                    console.log('é reclinavel')
+                } else {
+                    console.log('não é reclinável')
+                }
+            }
+
+            extensivelSimOuNao() {
+                if (this.extensivel === true) {
+                    console.log('é extensivel')
+                } else {
+                    console.log('não é extensivel')
+                }
+            }
+
+        }
+
+        let sofas = []
+
+        sofas.push(new Sofa(2, 'bege', false, true))
+        sofas.push(new Sofa(3, 'marrom', false, false))
+        sofas.push(new Sofa(1, 'couro-branco', true, true))
+        sofas.push(new Sofa(4, 'couro-marrom', true, false))
+
+        console.log(sofas)
+
+        for (let i = 0; i < sofas.length; i++) {
+            console.log(`Sofá ${i}: `)
+            sofas[i].reclinavelSimOuNao();
+            sofas[i].extensivelSimOuNao();
+        }
+
+    </script>
+
+
+</head>
+
+<body>
+
+</body>
+
+</html>

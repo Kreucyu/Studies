@@ -1,0 +1,45 @@
+package model.entities;
+
+import java.util.Date;
+
+import model.exceptions.ExcecoesViagem;
+
+public class Intermunicipal extends Viagem {
+
+	public Intermunicipal(String placaOnibus, String nomeMotorista, Date dataViagem, int limiteViagem) {
+		super(placaOnibus, nomeMotorista, dataViagem, limiteViagem);
+	}
+
+	@Override
+	public void addPassageiro(Passageiro passageiro, int limiteViagem) {
+		if (limiteViagem == 0) {
+			System.out.println("\nViagem inválida!");
+		} else {
+			if (passageiros.size() < limiteViagem)
+				passageiros.add(passageiro);
+			else {
+				throw new ExcecoesViagem("\nÔnibus cheio!");
+			}
+		}
+	}
+
+	@Override
+	public float getValorTotal(float tarifa) {
+		double taxa = 3.15;
+		float total = 0;
+		recebidos.add(tarifa);
+		for (float tarifas : recebidos) {
+			total += tarifas;
+		}
+		total = (float) (passageiros.size() * taxa);
+		return total;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("(intermunicipal) R$ " + String.format("%.2f", getValorTotal(0)));
+		return sb.toString();
+
+	}
+}

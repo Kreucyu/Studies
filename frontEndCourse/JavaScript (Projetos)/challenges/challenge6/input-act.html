@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript</title>
+
+    <script>
+        var caracteres = 0
+        var escrita = null
+        
+        function contadorDeCaracteres() {
+            escrita += document.getElementById('challange').value
+            if (escrita != null) {
+                caracteres++
+                console.log(caracteres)
+            } 
+        }
+
+        function modificarBg(corEspecial) {
+            document.getElementById('fundo').style.background = corEspecial
+        }
+
+        function redefinirBg() {
+            var cor = null
+            if (caracteres < 3) {
+                cor = '#ff0000'
+            } else if (caracteres >= 3) {
+                cor = '#49ff00'
+            }
+            document.getElementById('fundo').style.background = cor
+        }
+
+        function zeraContador() {
+            document.getElementById('challange').value = ''
+            caracteres = 0
+        }
+
+
+
+    </script>
+</head>
+<body>
+    <div style="width: 300px; height: 150px; text-align: center; background-color: black;" id="fundo">
+        <input style="margin-top: 65px;" type="text" name="challange" placeholder="Insira seus caracteres" id="challange" onfocus="modificarBg('#fff900')" onclick="zeraContador()" onmouseout="redefinirBg()" onkeyup="contadorDeCaracteres()">
+    </div>
+</body>
+</html>

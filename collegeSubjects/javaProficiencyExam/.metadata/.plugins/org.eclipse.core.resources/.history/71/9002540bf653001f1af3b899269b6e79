@@ -1,0 +1,56 @@
+package model.entities;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public abstract class Viagem {
+	private String placaOnibus;
+	private String nomeMotorista;
+	private Date dataViagem;
+	private int limiteViagem;
+	protected List<Passageiro> passageiros;
+	protected List<Double> recebidos;
+
+	public Viagem(String placaOnibus, String nomeMotorista, Date dataViagem, int limiteViagem) {
+		this.placaOnibus = placaOnibus;
+		this.nomeMotorista = nomeMotorista;
+		this.dataViagem = dataViagem;
+		this.limiteViagem = limiteViagem;
+		this.passageiros = new ArrayList<>();
+		this.recebidos = new ArrayList<>();
+	}
+
+	public String getPlacaOnibus() {
+		return placaOnibus;
+	}
+
+	public void setPlacaOnibus(String placaOnibus) {
+		this.placaOnibus = placaOnibus;
+	}
+
+	public String getNomeMotorista() {
+		return nomeMotorista;
+	}
+
+	public void setNomeMotorista(String nomeMotorista) {
+		this.nomeMotorista = nomeMotorista;
+	}
+
+	public Date getDataViagem() {
+		return dataViagem;
+	}
+
+	public void setDataViagem(Date dataViagem) {
+		this.dataViagem = dataViagem;
+	}
+	
+	public List<Passageiro> getPassageiros() {
+		return passageiros;
+	}
+	
+	public abstract void addPassageiro(Passageiro passageiro, int limiteViagem);
+		
+	
+	public abstract float getValorTotal(Double valor, Double tarifa);
+}

@@ -1,0 +1,186 @@
+@font-face {
+    font-family: 'Playpen';
+    src: url(../fonts/PlaypenSans-Regular.woff);
+}
+
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+#container {
+    min-width: 720px;
+}
+
+#imgCapa {
+    width: 100%;
+    height: 350px;
+    background: url(..//imagens/fundo.png) no-repeat left;
+    background-size: 1300px;
+    float: left;
+    position: absolute;
+}
+
+#menu {
+    background: url(..//imagens/menu.png) no-repeat center;
+    top: 0;
+    right: 0;
+    float: right;
+    width: 400px;
+    height: 350px;
+    background-size: 433px;
+    position: absolute;
+}
+
+ul#barraMenu {
+    list-style: none;
+    text-align: justify;
+    padding: 40px 0px 0px 120px;
+}
+
+ul#barraMenu li {
+    display: flex;
+    font-size: 20px;
+    line-height: 2.7em;
+    color: #5c7388;
+}
+
+ul#barraMenu a {
+    display: flex;
+    text-decoration: none;
+    color: #5c7388;
+}
+
+ul#barraMenu a:hover {
+    text-decoration: none;
+    color: white;
+}
+
+#home {
+    padding-left: 15px;
+}
+
+#serv {
+    padding-left: 40px;
+}
+
+#ctt {
+    padding-left: 70px;
+}
+
+#sbn {
+    padding-left: 100px;
+}
+
+#fb {
+    padding-left: 130px;
+}
+
+body {
+    background-color: #f4f4f4;
+    font-family: 'Playpen';
+}
+
+#cabecalho {
+    float: left;
+}
+
+#conteudos {
+    height: 100%;
+    display: flex;
+}
+
+
+#conteudo-fundo {
+    background-color: #d3dfe7;
+    width: 66%;
+    float: left;
+    margin-left: 3%;
+    margin-top: 360px;
+    color: white;
+}
+
+#servicos {
+    background-color: #c1cede;
+    width: 28%;
+    margin-top: 360px;
+    float: right;
+    margin-right: 3%;
+    color: white;
+}
+
+#rodape {
+    padding-top: 10px;
+    float: left;
+    bottom: 0;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    display: flex;
+    width: 94%;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+
+#email {
+    display: inline;
+    padding-left: 1em;
+}
+
+#direitos {
+    display: inline;
+    text-align: center;
+    padding-left: 23.3em;
+}
+
+#telefone {
+    display: inline;
+    padding-left: 24.2em;
+    padding-right: 0em;
+
+}
+
+h1 {
+    color: #556B7F;
+    font-family: 'Playpen';
+    font-weight: 100;
+    text-align: center;
+    font-size: 30px;
+    padding: 0.2em;
+}
+
+p {
+    padding-left: 2em;
+    padding-right: 2em;
+    line-height: 1.5em;
+    padding-bottom: 0.7em;
+    color: #556B7F;
+}
+
+.imgp {
+    padding-top: 1em;
+    text-align: center;
+}
+
+.img {
+    width: 90%;
+}
+
+h2 {
+    padding-left: 0.7em;
+    font-size: 21px;
+    color: #556B7F;
+    padding-top: 0.5em;
+    padding-bottom: 0.2em;
+}
+
+.botoes {
+    text-decoration: none;
+    color:#3A6EA5;
+}
+
+.botoes:hover {
+    color: white;
+}
+
+
+

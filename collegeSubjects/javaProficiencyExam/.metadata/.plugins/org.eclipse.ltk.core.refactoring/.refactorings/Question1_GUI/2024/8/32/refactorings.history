@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;GUI&apos; to &apos;gui&apos;&#x0D;&#x0A;- Original project: &apos;Question1_GUI&apos;&#x0D;&#x0A;- Original element: &apos;Question1_GUI/src/GUI&apos;&#x0D;&#x0A;- Renamed element: &apos;Question1_GUI/src/gui&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename package &apos;GUI&apos;" flags="589830" hierarchical="false" id="org.eclipse.jdt.ui.rename.package" input="/src&lt;GUI" name="gui" qualified="false" references="true" stamp="1722984933619" textual="false" version="1.0"/>
+</session>

@@ -1,0 +1,65 @@
+package model.entities;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Atleta implements Serializable {
+	private String nome;
+	private String cpf;
+	private float altura;
+	private float peso;
+	private Endereco endereco;
+
+	public Atleta(String nome, String cpf, float altura, float peso, Endereco endereco) {
+		super();
+		this.nome = nome;
+		this.cpf = cpf;
+		this.altura = altura;
+		this.peso = peso;
+		this.endereco = endereco;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public float getAltura() {
+		return altura;
+	}
+
+	public float getPeso() {
+		return peso;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(altura, cpf, endereco, nome, peso);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Atleta other = (Atleta) obj;
+		return Float.floatToIntBits(altura) == Float.floatToIntBits(other.altura) && Objects.equals(cpf, other.cpf)
+				&& Objects.equals(endereco, other.endereco) && Objects.equals(nome, other.nome)
+				&& Float.floatToIntBits(peso) == Float.floatToIntBits(other.peso);
+	}
+	
+	
+	
+	
+
+}

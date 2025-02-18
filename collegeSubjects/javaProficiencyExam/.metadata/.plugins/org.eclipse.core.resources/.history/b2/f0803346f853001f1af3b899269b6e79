@@ -1,0 +1,20 @@
+package model.entities;
+
+public class Idoso extends Passageiro {
+	private String rg;
+
+	public Idoso(String nome, int idade, float tarifa, String rg) {
+		super(nome, idade, tarifa);
+		this.rg = rg;
+	}
+
+	public String getRg() {
+		return rg;
+	}
+
+	@Override
+	public float getTarifa(float tarifa) {
+		return 0;
+	}
+
+}

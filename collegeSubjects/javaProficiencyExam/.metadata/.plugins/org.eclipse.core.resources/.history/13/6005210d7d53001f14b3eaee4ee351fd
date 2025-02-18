@@ -1,0 +1,43 @@
+package model.entities;
+
+import java.sql.Date;
+
+public abstract class Viagem {
+	private String placaOnibus;
+	private String nomeMotorista;
+	private Date dataViagem;
+
+	public Viagem(String placaOnibus, String nomeMotorista, Date dataViagem) {
+		this.placaOnibus = placaOnibus;
+		this.nomeMotorista = nomeMotorista;
+		this.dataViagem = dataViagem;
+	}
+
+	public String getPlacaOnibus() {
+		return placaOnibus;
+	}
+
+	public void setPlacaOnibus(String placaOnibus) {
+		this.placaOnibus = placaOnibus;
+	}
+
+	public String getNomeMotorista() {
+		return nomeMotorista;
+	}
+
+	public void setNomeMotorista(String nomeMotorista) {
+		this.nomeMotorista = nomeMotorista;
+	}
+
+	public Date getDataViagem() {
+		return dataViagem;
+	}
+
+	public void setDataViagem(Date dataViagem) {
+		this.dataViagem = dataViagem;
+	}
+	
+	public abstract void addPassageiro(Passageiro passageiro);
+	
+	public abstract float getValorTotal();
+}

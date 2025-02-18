@@ -1,0 +1,17 @@
+package model.entities;
+
+public class Idoso extends Passageiro {
+	private String escola;
+
+	public Idoso(String nome, Integer idade, String escola) {
+		super(nome, idade);
+		this.escola = escola;
+	}
+
+	public float getTarifa() {
+		return 0;
+	}
+	
+	
+
+}

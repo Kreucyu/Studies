@@ -1,0 +1,29 @@
+package model.entities;
+
+import java.util.List;
+import java.util.Date;
+
+public class Municipal extends Viagem {
+
+	public Municipal(String placaOnibus, String nomeMotorista, Date dataViagem) {
+		super(placaOnibus, nomeMotorista, dataViagem);
+	}
+
+	@Override
+	public void addPassageiro(Passageiro passageiro, List<Passageiro> passageiros) {
+		passageiros.add(passageiro);
+		
+	}
+
+	@Override
+	public float getValorTotal() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	
+	
+	
+	
+
+}

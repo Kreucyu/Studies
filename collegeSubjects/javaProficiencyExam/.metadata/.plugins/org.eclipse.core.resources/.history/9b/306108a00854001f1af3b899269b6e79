@@ -1,0 +1,214 @@
+package application;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
+
+import model.entities.Empresa;
+import model.entities.Estudante;
+import model.entities.Idoso;
+import model.entities.Intermunicipal;
+import model.entities.Municipal;
+import model.entities.Passageiro;
+import model.entities.Viagem;
+import model.exceptions.ExcecoesViagem;
+
+public class Program {
+
+	public static void main(String[] args) {
+		new Program();
+	}
+
+	public Program() {
+		Scanner sc = new Scanner(System.in);
+		Locale.setDefault(Locale.US);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Empresa emp = new Empresa();
+		iniciarPrograma(sc, sdf, emp);
+	}
+	
+	public static void iniciarPrograma(Scanner sc, SimpleDateFormat sdf, Empresa emp) {
+		int limiteViagem = 0;
+		boolean validar = false;
+
+		System.out.print("Deseja incluir uma nova viagem (s/n)? ");
+		String choice = sc.next();
+		sc.nextLine();
+		if (choice.toLowerCase().charAt(0) != 's') {
+			exit(sc);
+		} else {
+			novaViagem(sc, sdf, limiteViagem, validar, emp);
+		}
+	}
+
+	public static void novaViagem(Scanner sc, SimpleDateFormat sdf, int limiteViagem, boolean validar, Empresa emp) {
+		try {
+			System.out.print("\nQual a placa do ônibus? ");
+			String placaOnibus = sc.next();
+			System.out.print("\nQual o nome do motorista? ");
+			String nomeMotorista = sc.nextLine();
+			sc.nextLine();
+			System.out.print("\nQual a data da viagem (dd/MM/yyyy)? ");
+			String data = sc.next();
+			Date dataViagem = sdf.parse(data);
+			Viagem viagem = null;
+			float tarifa = Passageiro.tarifaInteira;
+			while (!validar) {
+			System.out.print("\nA viagem é municipal ou intermunicipal (m/i)? ");
+			String tipoViagem = sc.next();
+			sc.nextLine();
+			if (tipoViagem.toLowerCase().charAt(0) == 'm') {
+				limiteViagem = 65;
+				viagem = new Municipal(placaOnibus, nomeMotorista, dataViagem, limiteViagem);
+				validar = true;
+			} else if (tipoViagem.toLowerCase().charAt(0) == 'i') {
+				limiteViagem = 45;
+				viagem = new Intermunicipal(placaOnibus, nomeMotorista, dataViagem, limiteViagem);
+				validar = true;
+			} else {
+				throw new ExcecoesViagem("\nOpção inválida!");
+			}
+			}
+
+			validar = false;
+			while (!validar) {
+				System.out.print("\nDeseja adicionar um passageiro (s/n)? ");
+				String novoPassageiro = sc.next();
+				sc.nextLine();
+				if (novoPassageiro.toLowerCase().charAt(0) != 's') {
+					validar = true;
+				} else {
+					Passageiro passageiro = null;
+					System.out.print("\nQual o tipo do seu passageiro (comum (c), idoso(i) ou estudante(e))? ");
+					String tipoPassageiro = sc.next();
+					sc.nextLine();
+					System.out.print("\nInsira o nome do passageiro: ");
+					String nome = sc.nextLine();
+					System.out.print("\nInsira a idade do passageiro: ");
+					int idade = sc.nextInt();
+					if (tipoPassageiro.toLowerCase().charAt(0) == 'c') {
+						if (idade >= 60) {
+							System.out.println("\nSeu passageiro é um idoso, a passagem não será cobrada!");
+							System.out.print("\nInsira o RG do idoso: ");
+							String rg = sc.nextLine();
+							sc.nextLine();
+							tarifa -= tarifa;
+							passageiro = new Idoso(nome, idade, tarifa, rg);
+							viagem.addPassageiro(passageiro, limiteViagem);
+							passageiro.getTarifa(tarifa);
+							viagem.getValorTotal(tarifa);
+							tarifa = Passageiro.tarifaInteira;
+						} else {
+							tarifa = Passageiro.tarifaInteira;
+							passageiro = new Passageiro(nome, idade, tarifa);
+							viagem.addPassageiro(passageiro, limiteViagem);
+							passageiro.getTarifa(tarifa);
+							viagem.getValorTotal(tarifa);
+						}
+						validar = false;
+					} else if (tipoPassageiro.toLowerCase().charAt(0) == 'i') {
+						if (idade < 60) {
+							System.out.println("\nIdade inválida para um idoso!");
+						} else {
+							System.out.print("\nInsira o RG do idoso: ");
+							String rg = sc.nextLine();
+							sc.nextLine();
+							tarifa -= tarifa;
+							passageiro = new Idoso(nome, idade, tarifa, rg);
+							viagem.addPassageiro(passageiro, limiteViagem);
+							passageiro.getTarifa(tarifa);
+							viagem.getValorTotal(tarifa);
+							tarifa = Passageiro.tarifaInteira;
+						}
+						validar = false;
+					} else if (tipoPassageiro.toLowerCase().charAt(0) == 'e') {
+						System.out.print("\nQual a escola do estudante? ");
+						String nomeEscola = sc.nextLine();
+						sc.nextLine();
+						tarifa /= 2;
+						passageiro = new Estudante(nome, idade, tarifa, nomeEscola);
+						viagem.addPassageiro(passageiro, limiteViagem);
+						passageiro.getTarifa(tarifa);
+						viagem.getValorTotal(tarifa);
+						tarifa = Passageiro.tarifaInteira;
+						validar = false;
+					} else {
+						throw new ExcecoesViagem("\nOpção inválida!");
+					}
+
+				}
+			}
+			emp.addViagem(viagem);
+			validar = false;
+			while (!validar) {
+				try {
+					System.out.println("\nO que você deseja fazer?");
+					System.out.println("1 - Incluir nova viagem");
+					System.out.println("2 - Listar ganhos totais");
+					System.out.println("3 - Listar passageiros mais idosos");
+					System.out.println("4 - Sair do programa\n");
+					int escolhaMenu = sc.nextInt();
+					if (escolhaMenu == 1 || escolhaMenu == 2 || escolhaMenu == 3 || escolhaMenu == 4) {
+						validar = true;
+						switch (escolhaMenu) {
+						case 1:
+							validar = false;
+							novaViagem(sc, sdf, escolhaMenu, validar, emp);
+							break;
+						case 2:
+							List<Viagem> totalPorViagem = emp.getViagens();
+							System.out.println("Total obtido por viagem: ");
+							for (Viagem t : totalPorViagem) {
+								int i = 1;
+								System.out.println("Viagem " + i + ": " + t);
+								i++;
+							}
+							System.out.print("\nDeseja retornar (s/n)? ");
+							String retornar = sc.next();
+							sc.nextLine();
+							if(retornar.toLowerCase().charAt(0) == 's') {
+								validar = false;
+							} else {
+								exit(sc);
+							}
+							break;
+						case 3:
+							List<Passageiro> idosos = emp.getPassageirosMaisIdosos();
+							System.out.println("\nPassageiros mais idosos: ");
+							for (Passageiro p : idosos) {
+								System.out.println(p);
+							}
+							System.out.print("\nDeseja retornar (s/n)? ");
+							String retornar1 = sc.next();
+							sc.nextLine();
+							if(retornar1.toLowerCase().charAt(0) == 's') {
+								validar = false;
+							} else {
+								exit(sc);
+							}
+							break;
+						case 4:
+							exit(sc);
+							break;
+							
+						}
+					}
+				} catch (ExcecoesViagem e) {
+					throw new ExcecoesViagem("\nOpção inválida!");
+				}
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void exit(Scanner sc) {
+		System.out.println("\nSaindo...");
+		sc.close();
+		System.exit(0);
+	}
+
+}

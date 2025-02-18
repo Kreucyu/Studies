@@ -1,0 +1,164 @@
+    #body{
+        background-color: #f9f9f9;
+    }
+
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+
+    .titulo {
+        background-color: #233993;
+        width: auto;
+        text-align: center;
+        margin: 0px;
+        padding: 30px;
+        border: #233993;
+    }
+
+    .info {
+        display: inline;
+        color:#f9f9f9;
+        font-size: 60px;
+        text-decoration: none;
+        font-family:'Times New Roman', Times, serif;
+        font-weight: 500;
+    }
+
+    .now{
+        display: inline;
+        text-decoration: none;
+        color: #798cdc;
+        font-family:'Times New Roman', Times, serif;
+        font-size: 60px;
+        font-weight: 500;
+    }
+
+    .options {
+        background-color: #233993;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .optionsB{
+        padding: 20px;
+        text-decoration: none;
+        color: #FFFF;
+        margin: 0px;
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: 900px;
+        font-size: 20px;
+    }
+
+    .distance{
+        margin: 0px 130px;
+    }
+
+    .homeNot{
+        margin: 5px 330px 5px 15px;
+    }
+
+    .imgAjust{
+        width: 765px;
+        margin: 10px 0px 5px 0px;
+    }
+
+    .titulosNot {
+        padding: 30px 0px 2px 0px;
+        font-family:'Times New Roman', Times, serif;
+        font-size: 27px;
+    }
+
+    .subTit {
+        font-family:'Times New Roman', Times, serif;
+        font-weight: 600;
+    }
+
+    .inits {
+        font-size: 17px;
+    }
+
+    .content {
+        position: absolute;
+        top: 222px;
+        right: 155px;
+        z-index: 2;
+    }
+
+    .recents {
+        font-size: 14px;
+        font-weight: 100;
+        padding: 5px 10px 10px 10px;
+    }
+
+    .seeMore{
+        color: #233993;
+        text-decoration: none;
+    }
+
+    .tit {
+        background-color: #b7b8bd;
+        padding: 3px 5px;
+    }
+
+    .categories {
+        position: absolute;
+        top: 500px;
+        right: 155px;
+        z-index: 3;
+    }
+
+    .titCat {
+        background-color: #b7b8bd;
+        width:246px;
+        padding: 3px 5px;
+    }
+
+    .catLink {
+        text-decoration: none;
+        color: #233993;
+        font-size: 16px;
+        font-weight: 900;
+        padding: 5px 10px 10px 10px;
+    }
+
+    .rodape{
+        
+        background-color: #233993;
+        text-align: center;
+        margin: 0px;
+        padding: 5px;
+    }
+
+    .email {
+        display: inline;
+        color:#f9f9f9;
+        font-size: 15px;
+        text-decoration: none;
+        font-family:'Times New Roman', Times, serif;
+        font-weight: 500;
+        padding-right: 420px;
+    }
+    .direitos {
+        display: inline;
+        color:#f9f9f9;
+        font-size: 15px;
+        text-decoration: none;
+        font-family:'Times New Roman', Times, serif;
+        font-weight: 500;
+    }
+    .number {
+        display: inline;
+        color:#f9f9f9;
+        font-size: 15px;
+        text-decoration: none;
+        font-family:'Times New Roman', Times, serif;
+        font-weight: 500;
+        padding-left: 420px;
+    }
+
+    .refTrb {
+        width: 775px;
+        margin: 10px 0px 5px 0px;
+    }

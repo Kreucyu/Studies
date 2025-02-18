@@ -1,0 +1,21 @@
+package model.entities;
+
+import java.sql.Date;
+
+public class Intermunicipal extends Viagem {
+
+	public Intermunicipal(String placaOnibus, String nomeMotorista, Date dataViagem, Empresa empresa) {
+		super(placaOnibus, nomeMotorista, dataViagem, empresa);
+	}
+
+	@Override
+	public void addPassageiro(Passageiro passageiro) {
+		
+	}
+
+	@Override
+	public float getValorTotal() {
+		return 0;
+	}
+
+}
