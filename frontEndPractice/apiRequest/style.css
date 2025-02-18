@@ -1,0 +1,22 @@
+.btn-primary {
+    color: white;
+    background-color: #623aae;
+    border-color: #623aae;
+}
+
+.btn-primary:hover {
+    color: white;
+    background-color: #623aae;
+    border-color: #623aae;
+}
+
+@media (max-width: 550px) {
+    .table {
+        font-size: 14px
+    }
+
+    .table th,
+    .table td {
+        padding: 5px;
+    }
+}
