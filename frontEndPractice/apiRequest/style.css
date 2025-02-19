@@ -10,6 +10,10 @@
     border-color: #623aae;
 }
 
+.text {
+    color:#623aae;
+}
+
 
 .op {
     background-color: white !important;
@@ -56,7 +60,7 @@ input {
 
 .card-header, .card-body {
     background-color: white;
-    border-radius: 40px;
+    border-radius: 5px;
 }
 
 #id {
