@@ -1,9 +1,37 @@
+async function getIdDisponivelId() {
+    try {
+        const response = await fetch('https://reqres.in/api/users?page=2')
+        const dados = await response.json()
+        const apiUsers = dados.data || [];
+        const apiID = apiUsers.length ? Math.max(...apiUsers.map(user => user.id)) : 0
+
+        const localUsers = []
+
+        for (let i = 0; i < localStorage.length; i++) {
+            let chave = localStorage.key(i)
+
+            if (chave.startsWith('user_') && !chave.startsWith('del_user')) {
+                let user = JSON.parse(localStorage.getItem(chave))
+                localUsers.push(user)
+            }
+        }
+        const localId = localUsers.length ? Math.max(...localUsers.map(user => user.id)) : 0
+        const proximoId = Math.max(apiID, localId) + 1
+        console.log(proximoId)
+        return proximoId
+    } catch {
+        exibirModal(2, 'erro')
+        return 1
+    }
+}
+
 class User {
-    constructor(id, nome, sobrenome, email) {
-        id = this.id
-        nome = this.nome
-        sobrenome = this.sobrenome
-        email = this.email
+    constructor(id, nome, sobrenome, email, tipo) {
+        this.id = id
+        this.nome = nome
+        this.sobrenome = sobrenome
+        this.email = email
+        this.tipo = tipo
     }
 
     validarDados() {
@@ -24,24 +52,13 @@ class Registro {
             localStorage.setItem('id', 0)
         }
     }
-    //armazena o valor do próximo id disponível
-    proximoIdDisponivel() {
-        let proximoId = localStorage.getItem('id')
-        return parseInt(proximoId) + 1
-    }
-    //salva os dados da tarefa no LocalStorage
-    salvarDados(tarefa) {
-        let id = this.proximoIdDisponivel()
-        localStorage.setItem(id, JSON.stringify(tarefa))
-        localStorage.setItem('id', id)
-    }
     //retorna todas as tarefas cadastradas
     receberTarefas() {
         let tarefas = []
         let id = localStorage.getItem('id')
-        for(let i = 1; i <= id; i++) {
+        for (let i = 1; i <= id; i++) {
             let tarefa = JSON.parse(localStorage.getItem(i))
-            if(tarefa === null) {
+            if (tarefa === null) {
                 continue
             }
             tarefa.id = i
@@ -56,25 +73,22 @@ class Registro {
         filtroTarefas
         if (tarefa.descricao != '') {
             filtroTarefas = filtroTarefas.filter(t => t.descricao == tarefa.descricao)
-        }if (tarefa.data != '') {
+        } if (tarefa.data != '') {
             filtroTarefas = filtroTarefas.filter(t => t.data == tarefa.data)
-        }if (tarefa.prioridade != '') {
+        } if (tarefa.prioridade != '') {
             filtroTarefas = filtroTarefas.filter(t => t.prioridade == tarefa.prioridade)
-        }if (tarefa.status != '') {
+        } if (tarefa.status != '') {
             filtroTarefas = filtroTarefas.filter(t => t.status == tarefa.status)
         }
         return filtroTarefas
     }
 
-    remover (id) {
+    remover(id) {
         localStorage.removeItem(id)
     }
 
 }
 
-
-
-//função que decide quais campos poderão ser preenchidos
 let funcao = 0
 
 function limitar(value, confirm) {
@@ -115,84 +129,77 @@ function limitar(value, confirm) {
                 break;
         }
         funcao = 0
-        document.getElementById('nome').value = ''
-        document.getElementById('id').value = ''
-        document.getElementById('email').value = ''
     }
 }
 
 async function adicionarUsuario() {
-
+    let id = await getIdDisponivelId()
+    console.log(document.getElementById('nome').value)
+    console.log(document.getElementById('email').value)
     let receberNome = document.getElementById('nome').value
     let quebrarNome = receberNome.split(" ")
     let nome = quebrarNome[0]
     let sobrenome = quebrarNome.slice(1).join(" ")
     let emailUsuario = document.getElementById('email').value
-    let user = new User(id, nome, sobrenome, emailUsuario)
+    let tipo = 1
+    let user = new User(id, nome, sobrenome, emailUsuario, tipo)
 
     //post fake para simular a adição na api fake
     try {
+        if(user.validarDados()) {
         const response = await fetch('https://reqres.in/api/users', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({
-                id: proximoId(),
+                id: id,
                 first_name: nome,
                 last_name: sobrenome,
                 email: emailUsuario
             })
         })
-        const users = await response.json();
-    } catch {
-        exibirModal(1, 'erro')
-    }
-    localStorage.setItem('user_${id}', user)
-}
+        console.log(response)
 
-async function getIdDisponivelId() {
-    try {
-        const response = await fetch('https://reqres.in/api/users?page=2') 
-        const dados = await response.json()
-        const apiUsers = dados.data || [];
-        const apiID = apiUsers.length ? Math.max(...apiUsers.map(user => user.id)) : 0
-
-        const localUsers = []
-
-        for(let i = 0; i < localStorage.length; i++) {
-            let chave = localStorage.key(i)
-
-            if (chave.startsWith('user_') && !chave.startsWith('del_user')) {
-                let user = JSON.parse(localStorage.getItem(chave))
-                localUsers.push(user)
-            }
+        if (!response.ok) {
+            throw new Error('erro de merda')
         }
-        const localId = localUsers.length ? Math.max(...localUsers.map(user => user.id)) : 0
-        const proximoId = Math.max(apiID, localId) + 1
-        console.log(proximoId)
-        return proximoId
+
+        const users = await response.json();
+
+        localStorage.setItem(`user_${user.id}`, JSON.stringify(user))
+        localStorage.setItem('id', id)
+        exibirModal(1, "sucesso")
+        limparCaixas()
+    } else {
+        exibirModal(2, "erro")
+        limparCaixas()
+    }
+
     } catch {
-        console.log('Erro ao chamar os usuários')
-        return 1
+        console.error(error)
     }
 }
-    
+function limparCaixas() {
+    document.getElementById('nome').value = ''
+    document.getElementById('id').value = ''
+    document.getElementById('email').value = ''
+}
+
+
 
 function exibirModal(valor, tipo) {
-    if (tipo == 'erro') {
-        document.getElementById('titulo-modal').innerHTML = 'Erro!'
-        document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Insira um nome de usuário!' : 'Preencha todos os campos!'
-        document.getElementById('estilo-modal').classList.add('text')
-        document.getElementById('botao-config').innerHTML = 'Voltar'
-        document.getElementById('botao-config').classList.add('btn')
-        return $('#exibirModal').modal('show')
-    }
-    document.getElementById('titulo-modal').innerHTML = 'Sucesso!'
-    document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Sua tarefa foi adicionada com sucesso!' : 'Sua tarefa foi excluída com sucesso!'
     document.getElementById('estilo-modal').classList.add('text')
     document.getElementById('botao-config').innerHTML = 'Voltar'
     document.getElementById('botao-config').classList.add('btn')
+    if (tipo == 'erro') {
+        document.getElementById('titulo-modal').innerHTML = 'Erro!'
+        document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'erro!' : 'Preencha todos os campos!'
+        return $('#exibirModal').modal('show')
+    }
+    document.getElementById('titulo-modal').innerHTML = 'Sucesso!'
+    document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Usuário cadastrado com sucesso!' : 'Sua tarefa foi excluída com sucesso!'
+    
     return $('#exibirModal').modal('show')
 
 }
