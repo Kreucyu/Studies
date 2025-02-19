@@ -1,4 +1,4 @@
-async function getIdDisponivelId() {
+async function getIdDisponivel() {
     try {
         const response = await fetch('https://reqres.in/api/users?page=2')
         const dados = await response.json()
@@ -17,7 +17,7 @@ async function getIdDisponivelId() {
         }
         const localId = localUsers.length ? Math.max(...localUsers.map(user => user.id)) : 0
         const proximoId = Math.max(apiID, localId) + 1
-        console.log(proximoId)
+        console.log("proximo id" + proximoId)
         return proximoId
     } catch {
         exibirModal(2, 'erro')
@@ -111,7 +111,7 @@ function limitar(value, confirm) {
                 funcoes(2)
                 break;
             case 3:
-                getIdDisponivelId()
+                getIdDisponivel()
                 break;
             case 4:
                 deletarUsuario()
@@ -129,13 +129,13 @@ async function funcoes(result) {
     let receberNome = document.getElementById('nome').value
     let quebrarNome = receberNome.split(" ")
     let nome = quebrarNome[0]
-    let sobrenome = quebrarNome.slice(1).join(" ")
+    let sobrenome = quebrarNome.slice(1).join(" ") || "N/A"
     let emailUsuario = document.getElementById('email').value
 
     result == 1 ? adicionarUsuario() : alterarUsuario(nome, sobrenome, emailUsuario)
 
     async function adicionarUsuario() {
-        let id = await getIdDisponivelId()
+        let id = await getIdDisponivel()
         let user = new User(id, nome, sobrenome, emailUsuario)
         try {
             if (user.validarDados()) {
@@ -174,8 +174,9 @@ async function funcoes(result) {
 
     async function alterarUsuario(nome, sobrenome, emailUsuario) {
         let id = document.getElementById('id').value
+        verificarId(id)
         if (id != "" && id != null && id != undefined) {
-            atualizarDados = {}
+            atualizarDados = {"id": id}
             if (nome) atualizarDados.first_name = nome
             if (sobrenome) atualizarDados.last_name = sobrenome
             if (emailUsuario) atualizarDados.email = emailUsuario
@@ -195,9 +196,13 @@ async function funcoes(result) {
                 }
 
                 const atualizacao = await response.json();
-
-                localStorage.setItem(`user_${id}`, JSON.stringify(atualizarDados))
-                exibirModal(2, "sucesso")
+                if(Object.keys(atualizarDados).length > 0) {
+                    localStorage.setItem(`user_${id}`, JSON.stringify(atualizarDados))
+                    exibirModal(2, "sucesso")
+                
+                } else {
+                    exibirModal(3, "sucesso")
+                }
                 limparCaixas()
             } catch {
                 console.error(error)
@@ -211,7 +216,38 @@ async function funcoes(result) {
 }
 
 function deletarUsuario() {
-    console.log('usuario deletado')
+    let id = document.getElementById('id').value
+    verificarId(id)
+    console.log('deletado')
+}
+
+async function verificarId(id) {
+    function localVerify(id) {
+        const usuario = localStorage.getItem(`user_${id}`)
+        return usuario ? true : false
+    }
+    async function apiVerify(id) {
+        try {
+            const response = await fetch(`https://reqres.in/api/users/${id}`)
+            if (response.status === 404) {
+                return false
+            } else {
+                return true;
+            }
+        } catch {
+            console.error(error)
+            return false
+        }
+    }
+
+    if (localVerify(id)) {
+        console.log(`trilhou no local`)
+    }
+    if (await apiVerify(id)) {
+        console.log(`trilhou na api`)
+    }
+
+
 }
 
 function limparCaixas() {
@@ -228,11 +264,11 @@ function exibirModal(valor, tipo) {
     document.getElementById('botao-config').classList.add('btn')
     if (tipo == 'erro') {
         document.getElementById('titulo-modal').innerHTML = 'Erro!'
-        document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Preencha todos os campos!' : valor == 2 ? 'Insira um ID para alterar' : 'ignore'
+        document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Preencha todos os campos!' : valor == 2 ? 'Insira um ID para alterar' : 'ID não encontrado'
         return $('#exibirModal').modal('show')
     }
     document.getElementById('titulo-modal').innerHTML = 'Sucesso!'
-    document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Usuário cadastrado com sucesso!' : 'Alteração concluída!'
+    document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Usuário cadastrado com sucesso!' : valor == 2 ? 'Alteração concluída!' : 'Nenhuma alteração foi feita!'
 
     return $('#exibirModal').modal('show')
 
