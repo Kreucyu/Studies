@@ -1,36 +1,63 @@
 async function getIdDisponivel() {
     try {
-        const response = await fetch('https://reqres.in/api/users?page=2')
-        const dados = await response.json()
-        const apiUsers = dados.data || [];
-        const apiID = apiUsers.length ? Math.max(...apiUsers.map(user => user.id)) : 0
+        const response = await fetch('https://jsonplaceholder.typicode.com/photos')
+        const photos = await response.json()
+        const apiPhotos = photos || [];
+        const apiID = apiPhotos.length ? Math.max(...apiPhotos.map(photo => photo.id)) : 0
 
-        const localUsers = []
+        const localPhotos = []
 
         for (let i = 0; i < localStorage.length; i++) {
             let chave = localStorage.key(i)
 
-            if (chave.startsWith('user_') && !chave.startsWith('del_user')) {
-                let user = JSON.parse(localStorage.getItem(chave))
-                localUsers.push(user)
+            if (chave.startsWith('photo_') && !chave.startsWith('del_photo')) {
+                let photo = JSON.parse(localStorage.getItem(chave))
+                localPhotos.push(photo)
             }
         }
-        const localId = localUsers.length ? Math.max(...localUsers.map(user => user.id)) : 0
+        const localId = localPhotos.length ? Math.max(...localPhotos.map(photo => photo.id)) : 0
         const proximoId = Math.max(apiID, localId) + 1
         console.log("proximo id" + proximoId)
         return proximoId
     } catch {
-        exibirModal(2, 'erro')
+        exibirModal(3, 'erro')
         return 1
     }
 }
 
-class User {
-    constructor(id, nome, sobrenome, email) {
+async function getAlbumId() {
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/photos')
+        const photos = await response.json()
+        const apiPhotos = photos || [];
+        const apiAlbumId = apiPhotos.length ? Math.max(...apiPhotos.map(photo => photo.albumId)) : 0
+        const localPhotos = []
+
+        for (let i = 0; i < localStorage.length; i++) {
+            let chave = localStorage.key(i)
+
+            if (chave.startsWith('photo_') && !chave.startsWith('del_photo')) {
+                let photo = JSON.parse(localStorage.getItem(chave))
+                localPhotos.push(photo)
+            }
+        }
+        const localAlbumId = localPhotos.length ? Math.max(...localPhotos.map(photo => photo.id)) : 0
+        const proximoAlbumId = Math.max(apiAlbumId, localAlbumId) + 1
+        console.log("proximo album id" + proximoAlbumId)
+        return proximoAlbumId
+    } catch {
+        exibirModal(3, 'erro')
+        return 1
+    }
+}
+
+class Photo {
+    constructor(id, albumId, titulo, url, thumbUrl) {
         this.id = id
-        this.nome = nome
-        this.sobrenome = sobrenome
-        this.email = email
+        this.albumId = albumId
+        this.titulo = titulo
+        this.url = url
+        this.thumbUrl = thumbUrl
     }
 
     validarDados() {
@@ -60,15 +87,20 @@ function limitar(value, confirm) {
     document.getElementById('drop').innerHTML = value
     let tituloAcesso = document.getElementById('titulo')
     let urlAcesso = document.getElementById('url')
+    let idAlbumAcesso = document.getElementById('albumID')
     let thumbAcesso = document.getElementById('thumbUrl')
-    let idAcesso = document.getElementById('id')
-    let idAlbumAcesso = document.getElementById('albumId')
+    let idAcesso = document.getElementById('id')    
+    
 
 
-    if (value == 'Adicionar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = true, urlAcesso.disabled = false, tituloAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 1 }
-    if (value == 'Alterar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = false, urlAcesso.disabled = false, tituloAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 2 }
-    if (value == 'Deletar imagem' || value == 'Consultar imagens') { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, tituloAcesso.disabled = true, idAlbumAcesso.disabled = true, value == 'Deletar imagem' ? funcao = 4 : funcao = 3 }
-    if (value == 'O que deseja fazer?') { thumbAcesso.disabled = false, idAcesso.disabled = true, urlAcesso.disabled = false, tituloAcesso.disabled = false, idAlbumAcesso.disabled = false }
+    if (value == 'Adicionar imagem') 
+        { thumbAcesso.disabled = false, idAcesso.disabled = true, urlAcesso.disabled = false, tituloAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 1 }
+    if (value == 'Alterar imagem') 
+        { thumbAcesso.disabled = false, idAcesso.disabled = false, urlAcesso.disabled = false, tituloAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 2 }
+    if (value == 'Deletar imagem' || value == 'Consultar imagem') 
+        { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, tituloAcesso.disabled = true, idAlbumAcesso.disabled = true, value == 'Deletar imagem' ? funcao = 4 : funcao = 3 }
+    if (value == 'O que deseja fazer?') 
+        { thumbAcesso.disabled = true, idAcesso.disabled = true, urlAcesso.disabled = true, tituloAcesso.disabled = true, idAlbumAcesso.disabled = true }
 
     if (confirm) {
         switch (funcao) {
@@ -82,41 +114,38 @@ function limitar(value, confirm) {
                 getIdDisponivel()
                 break;
             case 4:
-                deletarUsuario()
+                getAlbumId()
                 break;
         }
         funcao = 0
     }
 }
 
-function receberEntrada() {
-
-}
-
 async function funcoes(result) {
-    let receberNome = document.getElementById('nome').value
-    let quebrarNome = receberNome.split(" ")
-    let nome = quebrarNome[0]
-    let sobrenome = quebrarNome.slice(1).join(" ") || "N/A"
-    let emailUsuario = document.getElementById('email').value
+    let titulo = document.getElementById('titulo').value
+    let url = document.getElementById('url').value
+    let thumbUrl = document.getElementById('thumbUrl').value
 
-    result == 1 ? adicionarUsuario() : alterarUsuario(nome, sobrenome, emailUsuario)
+    result == 1 ? adicionarImagem() : alterarImagem()
 
-    async function adicionarUsuario() {
+    async function adicionarImagem() {
         let id = await getIdDisponivel()
-        let user = new User(id, nome, sobrenome, emailUsuario)
+        let albumId = await getAlbumId()
+        let photo = new Photo(id, albumId, titulo, url, thumbUrl)
+        console.log(photo)
         try {
-            if (user.validarDados()) {
-                const response = await fetch('', {
+            if (photo.validarDados()) {
+                const response = await fetch('https://jsonplaceholder.typicode.com/photos', {
                     method: 'POST',
-                    headers: {
+                    headers: {  
                         'Content-type': 'application/json'
                     },
                     body: JSON.stringify({
+                        albumId: albumId,
                         id: id,
-                        first_name: nome,
-                        last_name: sobrenome,
-                        email: emailUsuario
+                        title: title,
+                        url: url,
+                        thumbnailUrl: thumbUrl
                     })
                 })
                 console.log(response)
@@ -125,9 +154,9 @@ async function funcoes(result) {
                     throw new Error('Erro na API')
                 }
 
-                const users = await response.json();
+                const photos = await response.json();
 
-                localStorage.setItem(`user_${user.id}`, JSON.stringify(user))
+                localStorage.setItem(`photo_${photo.id}`, JSON.stringify(photo))
                 localStorage.setItem('id', id)
                 exibirModal(1, "sucesso")
                 limparCaixas()

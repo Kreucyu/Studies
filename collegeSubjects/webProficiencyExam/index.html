@@ -65,7 +65,7 @@
                                 <li><button class="btn op" onclick="limitar('Alterar imagem', false)">Alterar
                                         imagem</button>
                                 </li>
-                                <li><button class="btn op" onclick="limitar('Consultar imagens', false)">Consultar
+                                <li><button class="btn op" onclick="limitar('Consultar imagem', false)">Consultar
                                         imagens</button>
                                 </li>
                                 <li><button class="btn op" onclick="limitar('Deletar imagem', false)">Deletar
@@ -90,17 +90,52 @@
             </div>
             <div class="card-body">
                 <blockquote class="blockquote mb-0">
-                    <table class="table">
-                        <thead class="text-center">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">TÍTULO</th>
-                                <th scope="col">URL</th>
-                                <th scope="col">ÁLBUM</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-center" id="imagensLista">
-                            <tr>
+                    <div class="scrollbar">
+                        <table class="table">
+                            <thead class="text-center">
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">TÍTULO</th>
+                                    <th scope="col">URL</th>
+                                    <th scope="col">ÁLBUM</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center" id="imagensLista">
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>ullam aut atque ea quaerat qui veritatis ad</td>
+                                    <td><a href="https://via.placeholder.com/600/728abf">https://via.placeholder.com/600/728abf</a></td>
+                                    <td>1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exibirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" id="estilo-modal">
+                    <h5 class="modal-title" id="titulo-modal"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="conteudo-modal"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal" id="botao-config"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<!--     <tr>
                                 <th scope="row">1</th>
                                 <td>ullam aut atque ea quaerat qui veritatis ad</td>
                                 <td><a href="#">https://via.placeholder.com/600/728abf</a></td>
@@ -135,54 +170,4 @@
                                 <td>ullam aut atque ea quaerat qui veritatis ad</td>
                                 <td><a href="#">https://via.placeholder.com/600/728abf</a></td>
                                 <td>1</td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>
-                                    <nav aria-label="Page navigation example">
-                                        <ul class="pagination">
-                                          <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Previous">
-                                              <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                          </li>
-                                          <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                          <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                          <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                          <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Next">
-                                              <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                          </li>
-                                        </ul>
-                                      </nav>
-                                </th>
-                            </tr>
-                        </tfoot>
-                        
-                    </table>
-                </blockquote>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="exibirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header" id="estilo-modal">
-                    <h5 class="modal-title" id="titulo-modal"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="conteudo-modal"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn" data-bs-dismiss="modal" id="botao-config"></button>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-
-</html>
+                            </tr> -->

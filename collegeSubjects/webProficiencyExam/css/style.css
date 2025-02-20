@@ -67,6 +67,11 @@ input {
     width: 37%;
 }
 
+.scrollbar {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
 @media (max-width: 550px) {
     .table {
         font-size: 14px
