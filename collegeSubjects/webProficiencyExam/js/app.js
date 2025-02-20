@@ -119,7 +119,7 @@ function limitar(value, confirm) {
 
                 break;
             case 4:
-                deletarUsuario()
+                exibirModal(1, 'delete')
                 break;
         }
         funcao = 0
@@ -238,6 +238,8 @@ async function deletarImagem() {
             return
         } else {
             if (validarId.localOnly) {
+                const valorAtual = JSON.parse(localStorage.getItem(`photo_${id}`))
+                localStorage.removeItem(valorAtual)
             }
         }
     }
@@ -286,17 +288,26 @@ function limparCaixas() {
 function exibirModal(valor, tipo) {
     document.getElementById('estilo-modal').classList.add('text')
     document.getElementById('botao-config').innerHTML = 'Voltar'
-    document.getElementById('botao-config').classList.add('btn')
+    document.getElementById('botao-delete').style.display = "none"
     if (tipo == 'erro') {
         document.getElementById('title-modal').innerHTML = 'Erro!'
         document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Preencha todos os campos!' : valor == 2 ? 'Insira um ID para alterar' : 'ID não encontrado'
         return $('#exibirModal').modal('show')
+    } if (tipo == 'delete') {
+        document.getElementById('title-modal').innerHTML = 'Deletar'
+        document.getElementById('conteudo-modal').innerHTML = 'Prosseguir com a exclusão?'
+        document.getElementById('botao-delete').style.display = "inline"
+        document.getElementById('botao-delete').innerHTML = 'Confirmar'
+        return $('#exibirModal').modal('show')
     }
     document.getElementById('title-modal').innerHTML = 'Sucesso!'
     document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Imagem adicionada com sucesso!' : valor == 2 ? 'Alteração concluída!' : 'Nenhuma alteração foi feita!'
-
     return $('#exibirModal').modal('show')
 
+}
+
+function test(params) {
+    console.log('deu')
 }
 
 
