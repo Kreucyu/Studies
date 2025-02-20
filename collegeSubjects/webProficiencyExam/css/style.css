@@ -70,6 +70,11 @@ input {
 .scrollbar {
     overflow-x: auto;
     max-width: 100%;
+    white-space: nowrap;
+}
+
+.table {
+    width: 100%;
 }
 
 @media (max-width: 550px) {

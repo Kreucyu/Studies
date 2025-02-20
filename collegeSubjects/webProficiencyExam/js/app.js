@@ -42,20 +42,29 @@ async function getAlbumId() {
             }
         }
         const localAlbumId = localPhotos.length ? Math.max(...localPhotos.map(photo => photo.id)) : 0
-        const proximoAlbumId = Math.max(apiAlbumId, localAlbumId) + 1
-        console.log("proximo album id" + proximoAlbumId)
-        return proximoAlbumId
+
+        if (atualizarIdAlbum()) {
+            const proximoAlbumId = Math.max(apiAlbumId, localAlbumId) + 1
+            return proximoAlbumId
+        } else {
+            const proximoAlbumId = Math.max(apiAlbumId, localAlbumId)
+            return proximoAlbumId
+        }
     } catch {
         exibirModal(3, 'erro')
         return 1
     }
 }
 
+function atualizarIdAlbum() {
+
+}
+
 class Photo {
-    constructor(id, albumId, titulo, url, thumbUrl) {
+    constructor(id, albumId, title, url, thumbUrl) {
         this.id = id
         this.albumId = albumId
-        this.titulo = titulo
+        this.title = title
         this.url = url
         this.thumbUrl = thumbUrl
     }
@@ -85,22 +94,18 @@ let funcao = 0
 
 function limitar(value, confirm) {
     document.getElementById('drop').innerHTML = value
-    let tituloAcesso = document.getElementById('titulo')
+    let titleAcesso = document.getElementById('title')
     let urlAcesso = document.getElementById('url')
     let idAlbumAcesso = document.getElementById('albumID')
     let thumbAcesso = document.getElementById('thumbUrl')
-    let idAcesso = document.getElementById('id')    
-    
+    let idAcesso = document.getElementById('id')
 
 
-    if (value == 'Adicionar imagem') 
-        { thumbAcesso.disabled = false, idAcesso.disabled = true, urlAcesso.disabled = false, tituloAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 1 }
-    if (value == 'Alterar imagem') 
-        { thumbAcesso.disabled = false, idAcesso.disabled = false, urlAcesso.disabled = false, tituloAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 2 }
-    if (value == 'Deletar imagem' || value == 'Consultar imagem') 
-        { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, tituloAcesso.disabled = true, idAlbumAcesso.disabled = true, value == 'Deletar imagem' ? funcao = 4 : funcao = 3 }
-    if (value == 'O que deseja fazer?') 
-        { thumbAcesso.disabled = true, idAcesso.disabled = true, urlAcesso.disabled = true, tituloAcesso.disabled = true, idAlbumAcesso.disabled = true }
+
+    if (value == 'Adicionar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = true, urlAcesso.disabled = false, titleAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 1 }
+    if (value == 'Alterar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = false, urlAcesso.disabled = false, titleAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 2 }
+    if (value == 'Deletar imagem' || value == 'Consultar imagem') { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = true, value == 'Deletar imagem' ? funcao = 4 : funcao = 3 }
+    if (value == 'O que deseja fazer?') { thumbAcesso.disabled = true, idAcesso.disabled = true, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = true }
 
     if (confirm) {
         switch (funcao) {
@@ -111,10 +116,10 @@ function limitar(value, confirm) {
                 funcoes(2)
                 break;
             case 3:
-                getIdDisponivel()
+
                 break;
             case 4:
-                getAlbumId()
+                deletarUsuario()
                 break;
         }
         funcao = 0
@@ -122,22 +127,22 @@ function limitar(value, confirm) {
 }
 
 async function funcoes(result) {
-    let titulo = document.getElementById('titulo').value
+    let title = document.getElementById('title').value
     let url = document.getElementById('url').value
     let thumbUrl = document.getElementById('thumbUrl').value
+    let albumId = await getAlbumId()
 
-    result == 1 ? adicionarImagem() : alterarImagem()
+    result == 1 ? await adicionarImagem() : await alterarImagem()
 
     async function adicionarImagem() {
         let id = await getIdDisponivel()
-        let albumId = await getAlbumId()
-        let photo = new Photo(id, albumId, titulo, url, thumbUrl)
+        let photo = new Photo(id, albumId, title, url, thumbUrl)
         console.log(photo)
         try {
             if (photo.validarDados()) {
                 const response = await fetch('https://jsonplaceholder.typicode.com/photos', {
                     method: 'POST',
-                    headers: {  
+                    headers: {
                         'Content-type': 'application/json'
                     },
                     body: JSON.stringify({
@@ -148,8 +153,6 @@ async function funcoes(result) {
                         thumbnailUrl: thumbUrl
                     })
                 })
-                console.log(response)
-
                 if (!response.ok) {
                     throw new Error('Erro na API')
                 }
@@ -164,68 +167,90 @@ async function funcoes(result) {
                 exibirModal(1, "erro")
                 limparCaixas()
             }
-        } catch {
+        } catch (error) {
             console.error(error)
         }
+
     }
 
-    async function alterarUsuario(nome, sobrenome, emailUsuario) {
+    async function alterarImagem() {
         let id = document.getElementById('id').value
-        verificarId(id)
         if (id != "" && id != null && id != undefined) {
-            atualizarDados = {"id": id}
-            if (nome) atualizarDados.first_name = nome
-            if (sobrenome) atualizarDados.last_name = sobrenome
-            if (emailUsuario) atualizarDados.email = emailUsuario
-
-            try {
-                const response = await fetch('', {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify(atualizarDados)
-                })
-                console.log(response)
-
-                if (!response.ok) {
-                    throw new Error('Erro na API')
-                }
-
-                const atualizacao = await response.json();
-                if(Object.keys(atualizarDados).length > 0) {
-                    localStorage.setItem(`user_${id}`, JSON.stringify(atualizarDados))
-                    exibirModal(2, "sucesso")
-                
-                } else {
-                    exibirModal(3, "sucesso")
-                }
+            let validarId = await verificarId(id)
+            if (!validarId) {
                 limparCaixas()
-            } catch {
-                console.error(error)
+                exibirModal(3, "erro")
+                return
+            } else {
+
+                let atualizarDados = {}
+                if (id) atualizarDados.id = parseInt(id)
+                if (title) atualizarDados.title = title
+                if (url) atualizarDados.url = url
+                if (thumbUrl) atualizarDados.thumbnailUrl = thumbUrl
+
+                if (validarId.localOnly || validarId.foundInAll) {
+                    const valorAtual = JSON.parse(localStorage.getItem(`photo_${id}`))
+                    if (title && title !== valorAtual.title) valorAtual.title = title
+                    if (url && url !== valorAtual.url) valorAtual.url = url
+                    if (thumbUrl && thumbUrl !== valorAtual.thumbUrl) valorAtual.thumbUrl = thumbUrl
+                    localStorage.setItem(`photo_${id}`, JSON.stringify(valorAtual))
+                    limparCaixas()
+                    exibirModal(2, "sucesso")
+                } else if (validarId.apiOnly) {
+                    try {
+                        const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-type': 'application/json'
+                            },
+                            body: JSON.stringify(atualizarDados)
+                        })
+                        console.log(response)
+
+                        if (!response.ok) {
+                            throw new Error('Erro na API')
+                        }
+                        const atualizacao = await response.json();
+                        localStorage.setItem(`photo_${id}`, JSON.stringify(atualizarDados))
+                        limparCaixas()
+                        exibirModal(2, "sucesso")
+                    } catch (error) {
+                        console.error(error)
+                    }
+                }
             }
         } else {
-            exibirModal(2, "erro")
             limparCaixas()
+            exibirModal(2, "erro")
+            return
         }
     }
-
 }
 
-function deletarUsuario() {
+async function deletarImagem() {
     let id = document.getElementById('id').value
-    verificarId(id)
-    console.log('deletado')
+    if (id != "" && id != null && id != undefined) {
+        let validarId = await verificarId(id)
+        if (!validarId) {
+            limparCaixas()
+            exibirModal(3, "erro")
+            return
+        } else {
+            if (validarId.localOnly) {
+            }
+        }
+    }
 }
 
 async function verificarId(id) {
     function localVerify(id) {
-        const usuario = localStorage.getItem(`user_${id}`)
+        const usuario = localStorage.getItem(`photo_${id}`)
         return usuario ? true : false
     }
     async function apiVerify(id) {
         try {
-            const response = await fetch(``)
+            const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`)
             if (response.status === 404) {
                 return false
             } else {
@@ -237,20 +262,25 @@ async function verificarId(id) {
         }
     }
 
-    if (localVerify(id)) {
-        console.log(`trilhou no local`)
+    const localConfirm = localVerify(id)
+    const apiConfirm = await apiVerify(id)
+
+    const resposta = {
+        localOnly: localConfirm && !apiConfirm,
+        apiOnly: !localConfirm && apiConfirm,
+        foundInAll: localConfirm && apiConfirm,
     }
-    if (await apiVerify(id)) {
-        console.log(`trilhou na api`)
-    }
+
+    return resposta
 
 
 }
 
 function limparCaixas() {
-    document.getElementById('nome').value = ''
+    document.getElementById('title').value = ''
+    document.getElementById('url').value = ''
+    document.getElementById('thumbUrl').value = ''
     document.getElementById('id').value = ''
-    document.getElementById('email').value = ''
 }
 
 function exibirModal(valor, tipo) {
@@ -258,13 +288,15 @@ function exibirModal(valor, tipo) {
     document.getElementById('botao-config').innerHTML = 'Voltar'
     document.getElementById('botao-config').classList.add('btn')
     if (tipo == 'erro') {
-        document.getElementById('titulo-modal').innerHTML = 'Erro!'
+        document.getElementById('title-modal').innerHTML = 'Erro!'
         document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Preencha todos os campos!' : valor == 2 ? 'Insira um ID para alterar' : 'ID não encontrado'
         return $('#exibirModal').modal('show')
     }
-    document.getElementById('titulo-modal').innerHTML = 'Sucesso!'
+    document.getElementById('title-modal').innerHTML = 'Sucesso!'
     document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Imagem adicionada com sucesso!' : valor == 2 ? 'Alteração concluída!' : 'Nenhuma alteração foi feita!'
 
     return $('#exibirModal').modal('show')
 
 }
+
+
