@@ -316,5 +316,6 @@ async function deletarImagem() {
         document.getElementById('title-modal').innerHTML = 'Sucesso!'
         document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Imagem adicionada com sucesso!' : valor == 2 ? 'Alteração concluída!' : 'Imagem excluída com sucesso!'
         return $('#exibirModal').modal('show')
+        //mil de aura
 
     }
