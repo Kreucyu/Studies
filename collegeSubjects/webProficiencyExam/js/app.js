@@ -29,7 +29,7 @@ async function getAlbumId() {
     return 150
 }
 
-ALTERAR AQUI
+//ALTERAR AQUI
 
 function confirmarDelete(value) {
     return new Promise((resolve, reject) => {
@@ -221,6 +221,9 @@ async function deletarImagem() {
                 if (confirmacao) {
                     localStorage.removeItem(`photo_${id}`)
                     limparCaixas()
+                    setTimeout(() => {
+                        exibirModal(3, 'sucesso')
+                      }, "1000");   
                 }
             } if (validarId.foundInAll || validarId.apiOnly) {
                 exibirModal(1, 'delete')
