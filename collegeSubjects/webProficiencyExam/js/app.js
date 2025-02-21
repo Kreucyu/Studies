@@ -25,7 +25,7 @@ async function getIdDisponivel() {
     }
 }
 
-async function getAlbumId() {
+async function getalbumId() {
     return 150
 }
 
@@ -79,15 +79,14 @@ function limitar(value, confirm) {
     document.getElementById('drop').innerHTML = value
     let titleAcesso = document.getElementById('title')
     let urlAcesso = document.getElementById('url')
-    let idAlbumAcesso = document.getElementById('albumID')
+    let idAlbumAcesso = document.getElementById('albumId')
     let thumbAcesso = document.getElementById('thumbUrl')
     let idAcesso = document.getElementById('id')
 
-
-
     if (value == 'Adicionar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = true, urlAcesso.disabled = false, titleAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 1 }
     if (value == 'Alterar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = false, urlAcesso.disabled = false, titleAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 2 }
-    if (value == 'Deletar imagem' || value == 'Consultar imagem') { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = true, value == 'Deletar imagem' ? funcao = 4 : funcao = 3 }
+    if (value == 'Consultar imagem') { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = false, funcao = 3 }
+    if (value == 'Deletar imagem') { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = true, funcao = 4 }
     if (value == 'O que deseja fazer?') { thumbAcesso.disabled = true, idAcesso.disabled = true, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = true }
 
     if (confirm) {
@@ -99,7 +98,7 @@ function limitar(value, confirm) {
                 funcoes(2)
                 break;
             case 3:
-
+                consultarImagem()
                 break;
             case 4:
                 deletarImagem()
@@ -113,7 +112,7 @@ async function funcoes(result) {
     let title = document.getElementById('title').value
     let url = document.getElementById('url').value
     let thumbUrl = document.getElementById('thumbUrl').value
-    let albumId = await getAlbumId()
+    let albumId = await getalbumId()
 
     result == 1 ? await adicionarImagem() : await alterarImagem()
 
@@ -211,6 +210,11 @@ async function funcoes(result) {
     }
 }
 
+async function consultarImagem(params) {
+
+
+}
+
 async function deletarImagem() {
     let id = document.getElementById('id').value
     if (id != "" && id != null && id != undefined) {
@@ -298,8 +302,22 @@ async function verificarId(id) {
     }
 
     return resposta
+}
 
-
+function consultarConf(escolha) {
+    let idAlbumAcesso = document.getElementById('albumId')
+    let idAcesso = document.getElementById('id')
+    if (escolha == 0 && funcao == 3) {
+        idAlbumAcesso.disabled = false
+        idAcesso.disabled = true
+    } else if (escolha == 1 && funcao == 3) {
+        idAlbumAcesso.disabled = true
+        idAcesso.disabled = false
+    }
+    if(idAlbumAcesso.value == '' && idAcesso.value == '' && funcao == 3) {
+        idAlbumAcesso.disabled = false
+        idAcesso.disabled = false
+    }
 }
 
 function limparCaixas() {
