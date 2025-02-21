@@ -1,7 +1,7 @@
 let medidorAlbumId = 1
 
 function calcularAlbumId(medidorAlbumId) {
-    if (medidorAlbumId == 2) {
+    if (medidorAlbumId == 3) {
         return true
     }
     return false
@@ -51,32 +51,19 @@ async function getalbumId() {
             }
         }
         const localAlbumId = localPhotos.length ? Math.max(...localPhotos.map(photo => photo.albumId)) : 0
-
-        const proximoId = await getIdDisponivel()
-        const calcular = calcularAlbumId(medidorAlbumId)
-        let proximoAlbumId
-
-        if (calcular) {
-            proximoAlbumId = Math.max(apiAlbumID, localAlbumId) + 1
+        let calcular = calcularAlbumId(medidorAlbumId)
+        if(calcular) {
             medidorAlbumId = 1
-            console.log(`calcular ` + medidorAlbumId)
-        } else {
-            if (proximoId == 5001) {
-                proximoAlbumId = Math.max(apiAlbumID, localAlbumId) + 1
-                medidorAlbumId = 1
-                console.log(`5001m ` + medidorAlbumId)
-            } else {
-                proximoAlbumId = Math.max(apiAlbumID, localAlbumId)
-                medidorAlbumId++
-                console.log(`adc normal ` + medidorAlbumId)
-            }
         }
+        if(medidorAlbumId == 1) {
+            proximoAlbumId = Math.max(apiAlbumID, localAlbumId) + 1
+        } else {
+            proximoAlbumId = Math.max(apiAlbumID, localAlbumId)
+        }
+        medidorAlbumId++
+        localStorage.setItem(`albumId`, proximoAlbumId)
         console.log("proximo album id " + proximoAlbumId)
         console.log(`saida ` + medidorAlbumId)
-        if(localAlbumId && proximoAlbumId == localAlbumId) {
-            localStorage.setItem(`albumId`, proximoAlbumId)
-            return proximoAlbumId + 1
-        }
         return proximoAlbumId
     } catch {
         exibirModal(3, 'erro')
@@ -289,7 +276,7 @@ async function deletarImagem() {
                         exibirModal(3, 'sucesso')
                     }, "1000");
                      medidorAlbumId--
-                     if(medidorAlbumId < 0) {
+                     if(medidorAlbumId == 0) {
                      medidorAlbumId = 1
                     }
                 }
