@@ -1,3 +1,12 @@
+let medidorAlbumId = 1
+
+function calcularAlbumId(medidorAlbumId) {
+    if (medidorAlbumId == 2) {
+        return true
+    }
+    return false
+}
+
 async function getIdDisponivel() {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/photos')
@@ -17,7 +26,7 @@ async function getIdDisponivel() {
         }
         const localId = localPhotos.length ? Math.max(...localPhotos.map(photo => photo.id)) : 0
         const proximoId = Math.max(apiID, localId) + 1
-        console.log("proximo id" + proximoId)
+        console.log("proximo id " + proximoId)
         return proximoId
     } catch {
         exibirModal(3, 'erro')
@@ -26,10 +35,54 @@ async function getIdDisponivel() {
 }
 
 async function getalbumId() {
-    return 150
-}
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/photos')
+        const photos = await response.json()
+        const apiPhotos = photos || [];
+        const apiAlbumID = apiPhotos.length ? Math.max(...apiPhotos.map(photo => photo.albumId)) : 0
+        const localPhotos = []
 
-//ALTERAR AQUI
+        for (let i = 0; i < localStorage.length; i++) {
+            let chave = localStorage.key(i)
+
+            if (chave.startsWith('photo_') && !chave.startsWith('del_photo')) {
+                let photo = JSON.parse(localStorage.getItem(chave))
+                localPhotos.push(photo)
+            }
+        }
+        const localAlbumId = localPhotos.length ? Math.max(...localPhotos.map(photo => photo.albumId)) : 0
+
+        const proximoId = await getIdDisponivel()
+        const calcular = calcularAlbumId(medidorAlbumId)
+        let proximoAlbumId
+
+        if (calcular) {
+            proximoAlbumId = Math.max(apiAlbumID, localAlbumId) + 1
+            medidorAlbumId = 1
+            console.log(`calcular ` + medidorAlbumId)
+        } else {
+            if (proximoId == 5001) {
+                proximoAlbumId = Math.max(apiAlbumID, localAlbumId) + 1
+                medidorAlbumId = 1
+                console.log(`5001m ` + medidorAlbumId)
+            } else {
+                proximoAlbumId = Math.max(apiAlbumID, localAlbumId)
+                medidorAlbumId++
+                console.log(`adc normal ` + medidorAlbumId)
+            }
+        }
+        console.log("proximo album id " + proximoAlbumId)
+        console.log(`saida ` + medidorAlbumId)
+        if(localAlbumId && proximoAlbumId == localAlbumId) {
+            localStorage.setItem(`albumId`, proximoAlbumId)
+            return proximoAlbumId + 1
+        }
+        return proximoAlbumId
+    } catch {
+        exibirModal(3, 'erro')
+        return 1
+    }
+}
 
 function confirmarDelete(value) {
     return new Promise((resolve, reject) => {
@@ -98,7 +151,7 @@ function limitar(value, confirm) {
                 funcoes(2)
                 break;
             case 3:
-                consultarImagem()
+                getalbumId()
                 break;
             case 4:
                 deletarImagem()
@@ -143,6 +196,7 @@ async function funcoes(result) {
 
                 localStorage.setItem(`photo_${photo.id}`, JSON.stringify(photo))
                 localStorage.setItem('id', id)
+
                 exibirModal(1, "sucesso")
                 limparCaixas()
             } else {
@@ -234,6 +288,10 @@ async function deletarImagem() {
                     setTimeout(() => {
                         exibirModal(3, 'sucesso')
                     }, "1000");
+                     medidorAlbumId--
+                     if(medidorAlbumId < 0) {
+                     medidorAlbumId = 1
+                    }
                 }
             } if (validarId.foundInAll || validarId.apiOnly) {
                 exibirModal(1, 'delete')
@@ -314,7 +372,7 @@ function consultarConf(escolha) {
         idAlbumAcesso.disabled = true
         idAcesso.disabled = false
     }
-    if(idAlbumAcesso.value == '' && idAcesso.value == '' && funcao == 3) {
+    if (idAlbumAcesso.value == '' && idAcesso.value == '' && funcao == 3) {
         idAlbumAcesso.disabled = false
         idAcesso.disabled = false
     }
