@@ -34,14 +34,19 @@ async function getAlbumId() {
 function confirmarDelete(value) {
     return new Promise((resolve, reject) => {
         const confirmacao = document.getElementById('botao-delete')
-        confirmacao.addEventListener('click', () => {
+        const confirmacaoHandler = () => {
+            limparBotoes()
             resolve(true)
-        })
+        }
         const voltar = document.getElementById('botao-config')
-        voltar.addEventListener('click', () => {
+        const voltarHandler = () => {
+            limparBotoes()
             resolve(false)
-        })
-        return () => {
+        }
+        confirmacao.addEventListener('click', confirmacaoHandler)
+        voltar.addEventListener('click', voltarHandler)
+
+        function limparBotoes(params) {
             confirmacao.removeEventListener('click', confirmacaoHandler)
             voltar.removeEventListener('click', voltarHandler)
         }
@@ -223,7 +228,7 @@ async function deletarImagem() {
                     limparCaixas()
                     setTimeout(() => {
                         exibirModal(3, 'sucesso')
-                      }, "1000");   
+                    }, "1000");
                 }
             } if (validarId.foundInAll || validarId.apiOnly) {
                 exibirModal(1, 'delete')
@@ -258,62 +263,62 @@ async function deletarImagem() {
 
 
 
-    async function verificarId(id) {
-        function localVerify(id) {
-            const usuario = localStorage.getItem(`photo_${id}`)
-            return usuario ? true : false
-        }
-        async function apiVerify(id) {
-            try {
-                const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`)
-                if (response.status === 404) {
-                    return false
-                } else {
-                    return true;
-                }
-            } catch {
-                console.error(error)
+async function verificarId(id) {
+    function localVerify(id) {
+        const usuario = localStorage.getItem(`photo_${id}`)
+        return usuario ? true : false
+    }
+    async function apiVerify(id) {
+        try {
+            const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`)
+            if (response.status === 404) {
                 return false
+            } else {
+                return true;
             }
+        } catch {
+            console.error(error)
+            return false
         }
-
-        const localConfirm = localVerify(id)
-        const apiConfirm = await apiVerify(id)
-
-        const resposta = {
-            localOnly: localConfirm && !apiConfirm,
-            apiOnly: !localConfirm && apiConfirm,
-            foundInAll: localConfirm && apiConfirm,
-        }
-
-        return resposta
-
-
     }
 
-    function limparCaixas() {
-        document.getElementById('title').value = ''
-        document.getElementById('url').value = ''
-        document.getElementById('thumbUrl').value = ''
-        document.getElementById('id').value = ''
+    const localConfirm = localVerify(id)
+    const apiConfirm = await apiVerify(id)
+
+    const resposta = {
+        localOnly: localConfirm && !apiConfirm,
+        apiOnly: !localConfirm && apiConfirm,
+        foundInAll: localConfirm && apiConfirm,
     }
 
-    function exibirModal(valor, tipo) {
-        document.getElementById('estilo-modal').classList.add('text')
-        document.getElementById('botao-config').innerHTML = 'Voltar'
-        document.getElementById('botao-delete').style.display = "none"
-        if (tipo == 'erro') {
-            document.getElementById('title-modal').innerHTML = 'Erro!'
-            document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Preencha todos os campos!' : valor == 2 ? 'Insira um ID para alterar' : 'ID não encontrado'
-            return $('#exibirModal').modal('show')
-        } if (tipo == 'delete') {
-            document.getElementById('title-modal').innerHTML = 'Deletar'
-            document.getElementById('conteudo-modal').innerHTML = 'Prosseguir com a exclusão?'
-            document.getElementById('botao-delete').style.display = "inline"
-            document.getElementById('botao-delete').innerHTML = 'Confirmar'
-            return $('#exibirModal').modal('show')
-        }
-        document.getElementById('title-modal').innerHTML = 'Sucesso!'
-        document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Imagem adicionada com sucesso!' : valor == 2 ? 'Alteração concluída!' : 'Imagem excluída com sucesso!'
+    return resposta
+
+
+}
+
+function limparCaixas() {
+    document.getElementById('title').value = ''
+    document.getElementById('url').value = ''
+    document.getElementById('thumbUrl').value = ''
+    document.getElementById('id').value = ''
+}
+
+function exibirModal(valor, tipo) {
+    document.getElementById('estilo-modal').classList.add('text')
+    document.getElementById('botao-config').innerHTML = 'Voltar'
+    document.getElementById('botao-delete').style.display = "none"
+    if (tipo == 'erro') {
+        document.getElementById('title-modal').innerHTML = 'Erro!'
+        document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Preencha todos os campos!' : valor == 2 ? 'Insira um ID para alterar' : 'ID não encontrado'
+        return $('#exibirModal').modal('show')
+    } if (tipo == 'delete') {
+        document.getElementById('title-modal').innerHTML = 'Deletar'
+        document.getElementById('conteudo-modal').innerHTML = 'Prosseguir com a exclusão?'
+        document.getElementById('botao-delete').style.display = "inline"
+        document.getElementById('botao-delete').innerHTML = 'Confirmar'
         return $('#exibirModal').modal('show')
     }
+    document.getElementById('title-modal').innerHTML = 'Sucesso!'
+    document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Imagem adicionada com sucesso!' : valor == 2 ? 'Alteração concluída!' : 'Imagem excluída com sucesso!'
+    return $('#exibirModal').modal('show')
+}
