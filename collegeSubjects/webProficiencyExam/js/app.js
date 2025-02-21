@@ -1,7 +1,7 @@
 let medidorAlbumId = 1
 
 function calcularAlbumId(medidorAlbumId) {
-    if (medidorAlbumId == 3) {
+    if (medidorAlbumId == 5) {
         return true
     }
     return false
