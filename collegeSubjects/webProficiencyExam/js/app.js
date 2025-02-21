@@ -215,6 +215,7 @@ async function deletarImagem() {
     let id = document.getElementById('id').value
     if (id != "" && id != null && id != undefined) {
         let validarId = await verificarId(id)
+        console.log(validarId)
         if (!validarId) {
             limparCaixas()
             exibirModal(3, "erro")
@@ -249,6 +250,7 @@ async function deletarImagem() {
                         if (validarId.foundInAll) {
                             localStorage.removeItem(`photo_${id}`)
                         }
+                        localStorage.setItem(`del_photo_${id}`, JSON.stringify(parseInt(id)))
                         limparCaixas()
                         exibirModal(3, 'sucesso')
 
@@ -256,6 +258,10 @@ async function deletarImagem() {
                         console.error(error)
                     }
                 }
+            } else {
+                limparCaixas()
+                exibirModal(3, "erro")
+                return
             }
         }
     }
