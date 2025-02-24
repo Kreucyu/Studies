@@ -1,7 +1,7 @@
 let medidorAlbumId = localStorage.getItem('medidorAlbumId') ? parseInt(localStorage.getItem('medidorAlbumId')) : 1
 
 function calcularAlbumId(medidorAlbumId) {
-    if (medidorAlbumId == 5) {
+    if (medidorAlbumId == 3) {
         return true
     }
     return false
@@ -258,76 +258,46 @@ async function funcoes(result) {
 
 async function consultarImagem() {
     let id = document.getElementById('id').value
-    let validarId = await verificarId(id)
     let albumId = document.getElementById('albumId').value
-    let validarAlbumId = await verificarAlbumId(albumId)
-    console.log(validarAlbumId)
-    console.log(validarId)
 
-    if (id == "" && albumId == "") {
-        exibirModal(3, "erro")
-        return
+    if (id == "" && albumId != "") {
+        try {
+            let validarAlbumId = await verificarAlbumId(albumId)
+            const response = await fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`)
+            console.log(response)
+            if (!response.ok) throw new Error('Erro na API')
+            const data = await response.json()
+            console.log(data)
+        } catch (error) {
+            console.error(error)
+        }
+
     }
-    
-    // if (!validarId) {
-    //     limparCaixas()
-    //     exibirModal(3, "erro")
-    //     return
-    // } else {
 
-    // if(albumId = '' && id != '') {
-    //     console.log('if')
-    //     try {
-    //         const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`)
-    //         console.log(response)
+    else if (id != "" && albumId == "") {
+        try {
+            let validarId = await verificarId(id)
+            const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`)
+            console.log(response)
+            if (!response.ok) throw new Error('Erro na API')
+            const data = await response.json()
+            console.log(data)
+        } catch (error) {
+            console.error(error)
+        }
 
-    //         if (!response.ok) {
-    //             throw new Error('Erro na API')
-    //         }
-    //         const data = await response.json()
-    //         console.log(data)
-
-    //     } catch (error) {
-    //         console.error(error)
-    //     }
-
-    // } else if(albumId != '' && id == '') {
-    //     console.log('else if')
-    //     try {
-    //         const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${albumId}`)
-    //         console.log(response)
-
-    //         if (!response.ok) {
-    //             throw new Error('Erro na API')
-    //         }
-    //         const data = await response.json()
-    //         console.log(data)
-
-    //     } catch (error) {
-    //         console.error(error)
-    //     }
-
-    // } else {
-    //     console.log('else')
-    //     try {
-    //         const response = await fetch(`https://jsonplaceholder.typicode.com/photos/`)
-    //         console.log(response)
-
-    //         if (!response.ok) {
-    //             throw new Error('Erro na API')
-    //         }
-    //         const data = await response.json()
-    //         console.log(data)
-
-    //     } catch (error) {
-    //         console.error(error)
-    //     }
-
-    // }
+    } else {
+        try {
+            const response = await fetch(`https://jsonplaceholder.typicode.com/photos/`)
+            console.log(response)
+            if (!response.ok) throw new Error('Erro na API')
+            const data = await response.json()
+            console.log(data)
+        } catch (error) {
+            console.error(error)
+        }
+    }
     limparCaixas()
-
-    // }
-
 }
 
 async function deletarImagem() {
@@ -351,8 +321,8 @@ async function deletarImagem() {
                     }, "1000");
                     medidorAlbumId--
                     localStorage.setItem('medidorAlbumId', medidorAlbumId)
-                    if (medidorAlbumId == 0) {
-                        medidorAlbumId = 1
+                    if (medidorAlbumId < 0) {
+                        medidorAlbumId = 0
                         localStorage.setItem('medidorAlbumId', medidorAlbumId)
                     }
                 }
@@ -399,8 +369,8 @@ async function verificarId(id) {
     async function apiVerify(id) {
         try {
             const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`)
-            if (!response.ok) return false 
-            const data = await responde.json()
+            if (!response.ok) return false
+            const data = await response.json()
             return data && Object.keys(data).length > 0 ? true : false
         } catch {
             console.error(error)
@@ -428,14 +398,15 @@ async function verificarAlbumId(albumId) {
             if (key.startsWith('photo_') || key.startsWith('altL_photo_')) {
                 let valor = localStorage.getItem(key)
 
+                if (!valor) {
+                    continue
+                }
                 try {
                     let dados = JSON.parse(valor)
-
-                    if (dados && dados.albumId !== undefined) {
-                        return true
-                    }
+                    return dados && dados.albumId && String(dados.albumId) === String(albumId) ? true : false
                 } catch (error) {
                     console.error(error)
+                    continue
                 }
             }
         }
@@ -443,10 +414,10 @@ async function verificarAlbumId(albumId) {
     }
     async function apiVerify(albumId) {
         try {
-            const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${albumId}`)
-            if (!response.ok) return false 
-            const data = await responde.json()
-            return data && Object.keys(data).length > 0 ? true : false
+            const response = await fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`)
+            if (!response.ok) return false
+            const data = await response.json()
+            return Array.isArray(data) && data.length > 0 ? true : false
         } catch {
             console.error(error)
             return false
