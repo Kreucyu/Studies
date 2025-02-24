@@ -1,7 +1,7 @@
-let medidorAlbumId = 1
+let medidorAlbumId = localStorage.getItem('medidorAlbumId') ? parseInt(localStorage.getItem('medidorAlbumId')) : 1
 
 function calcularAlbumId(medidorAlbumId) {
-    if (medidorAlbumId == 5) {
+    if (medidorAlbumId == 3) {
         return true
     }
     return false
@@ -34,7 +34,7 @@ async function getIdDisponivel() {
     }
 }
 
-async function getalbumId() {
+async function getAlbumId() {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/photos')
         const photos = await response.json()
@@ -54,13 +54,13 @@ async function getalbumId() {
         let calcular = calcularAlbumId(medidorAlbumId)
         if(calcular) {
             medidorAlbumId = 1
+            localStorage.setItem('medidorAlbumId', medidorAlbumId)
         }
         if(medidorAlbumId == 1) {
             proximoAlbumId = Math.max(apiAlbumID, localAlbumId) + 1
         } else {
             proximoAlbumId = Math.max(apiAlbumID, localAlbumId)
         }
-        medidorAlbumId++
         localStorage.setItem(`albumId`, proximoAlbumId)
         console.log("proximo album id " + proximoAlbumId)
         console.log(`saida ` + medidorAlbumId)
@@ -138,7 +138,7 @@ function limitar(value, confirm) {
                 funcoes(2)
                 break;
             case 3:
-                getalbumId()
+                getAlbumId()
                 break;
             case 4:
                 deletarImagem()
@@ -152,7 +152,7 @@ async function funcoes(result) {
     let title = document.getElementById('title').value
     let url = document.getElementById('url').value
     let thumbUrl = document.getElementById('thumbUrl').value
-    let albumId = await getalbumId()
+    let albumId = await getAlbumId()
 
     result == 1 ? await adicionarImagem() : await alterarImagem()
 
@@ -183,7 +183,8 @@ async function funcoes(result) {
 
                 localStorage.setItem(`photo_${photo.id}`, JSON.stringify(photo))
                 localStorage.setItem('id', id)
-
+                medidorAlbumId++
+                localStorage.setItem('medidorAlbumId', medidorAlbumId)
                 exibirModal(1, "sucesso")
                 limparCaixas()
             } else {
@@ -276,8 +277,10 @@ async function deletarImagem() {
                         exibirModal(3, 'sucesso')
                     }, "1000");
                      medidorAlbumId--
+                     localStorage.setItem('medidorAlbumId', medidorAlbumId)
                      if(medidorAlbumId == 0) {
                      medidorAlbumId = 1
+                     localStorage.setItem('medidorAlbumId', medidorAlbumId)
                     }
                 }
             } if (validarId.foundInAll || validarId.apiOnly) {
@@ -320,8 +323,9 @@ async function deletarImagem() {
 
 async function verificarId(id) {
     function localVerify(id) {
-        const usuario = localStorage.getItem(`photo_${id}`)
-        return usuario ? true : false
+        const photo = localStorage.getItem(`photo_${id}`)
+        const altPhoto = localStorage.getItem(`alt_photo_${id}`)
+        return photo || altPhoto ? true : false
     }
     async function apiVerify(id) {
         try {
