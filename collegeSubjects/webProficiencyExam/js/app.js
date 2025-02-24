@@ -259,19 +259,29 @@ async function funcoes(result) {
     }
 }
 
+let paginaAtual = 1
+const itensPorPagina = 15
+let albumIdAtual = null
+
 async function consultarImagem() {
     let id = document.getElementById('id').value
     let albumId = document.getElementById('albumId').value
+    albumIdAtual = albumId
+    const inicio = (paginaAtual - 1) * itensPorPagina
+    const fim = inicio + itensPorPagina
 
     if (id == "" && albumId != "") {
+        albumIdAtual = albumId
         try {
-            let validarAlbumId = await verificarAlbumId(albumId)
+            let validarAlbumId = await verificarAlbumId(albumIdAtual)
             const response = await fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`)
             console.log(response)
             if (!response.ok) throw new Error('Erro na API')
             const data = await response.json()
-            console.log(data)
-            exibirTabela(data)
+            const filtro = data.filter(i => i.albumId == albumId)
+            const imagensPaginadas = filtro.slice(inicio, fim)
+            exibirTabela(imagensPaginadas)
+            paginacao(filtro.length)
         } catch (error) {
             console.error(error)
         }
@@ -297,13 +307,45 @@ async function consultarImagem() {
             console.log(response)
             if (!response.ok) throw new Error('Erro na API')
             const data = await response.json()
-            console.log(data)
-            exibirTabela(data)
+            const imagensPaginadas = data.slice(inicio, fim)
+            exibirTabela(imagensPaginadas)
+            paginacao(data.length)
         } catch (error) {
             console.error(error)
         }
     }
     limparCaixas()
+}
+
+function paginacao(paginas) {
+    const totalPaginas = Math.ceil(paginas / itensPorPagina)
+    let paginasDiv = document.getElementById(`paginas`)
+    paginasDiv.innerHTML = ``
+
+    if (paginaAtual > 1) {
+        let botaoVoltar = document.createElement(`button`)
+        botaoVoltar.textContent = "Anterior"
+        botaoVoltar.onclick = () => {
+            paginaAtual--
+            consultarImagem()
+        }
+        paginasDiv.appendChild(botaoVoltar)
+    }
+
+    let pAtual = document.createElement('span')
+    pAtual.textContent = `Página ${paginaAtual} de ${totalPaginas}`
+    paginasDiv.appendChild(pAtual)
+
+    if (paginaAtual < totalPaginas) {
+        let botaoAvancar = document.createElement(`button`)
+        botaoAvancar.textContent = "Próximo"
+        botaoAvancar.onclick = () => {
+            paginaAtual++
+            consultarImagem()
+        }
+        paginasDiv.appendChild(botaoAvancar)
+    }
+
 }
 
 function exibirTabela(data) {
