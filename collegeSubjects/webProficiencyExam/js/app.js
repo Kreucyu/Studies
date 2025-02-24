@@ -33,7 +33,11 @@ async function getIdDisponivel() {
         return 1
     }
 }
-
+/* Arrumar metodo getAlbumId na medida em que for decrementado ele ter registrado quantas imagens tem por album! 
+verificar quando foi apagado uma imagem antes da ultima para saber tambem qual o valor
+melhor forma de fazer isso seria salvar quando bater 50 imagens, por mais que seja deletado o 
+valor se torna inalteravel, indicando que o album foi preenchido, mas se nao for = a 50 entao podera ser alterado
+o valor dependendo da situacao. */
 async function getAlbumId() {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/photos')
@@ -122,11 +126,10 @@ function limitar(value, confirm) {
     let idAlbumAcesso = document.getElementById('albumId')
     let thumbAcesso = document.getElementById('thumbUrl')
     let idAcesso = document.getElementById('id')
-
-    if (value == 'Adicionar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = true, urlAcesso.disabled = false, titleAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 1 }
-    if (value == 'Alterar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = false, urlAcesso.disabled = false, titleAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 2 }
-    if (value == 'Consultar imagem') { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = false, funcao = 3 }
-    if (value == 'Deletar imagem') { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = true, funcao = 4 }
+    if (value == 'Adicionar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = true, urlAcesso.disabled = false, titleAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 1, limparCaixas() }
+    if (value == 'Alterar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = false, urlAcesso.disabled = false, titleAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 2, limparCaixas() }
+    if (value == 'Consultar imagem') { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = false, funcao = 3, limparCaixas() }
+    if (value == 'Deletar imagem') { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = true, funcao = 4, limparCaixas() }
     if (value == 'O que deseja fazer?') { thumbAcesso.disabled = true, idAcesso.disabled = true, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = true }
 
     if (confirm) {
@@ -268,6 +271,7 @@ async function consultarImagem() {
             if (!response.ok) throw new Error('Erro na API')
             const data = await response.json()
             console.log(data)
+            exibirTabela(data)
         } catch (error) {
             console.error(error)
         }
@@ -282,6 +286,7 @@ async function consultarImagem() {
             if (!response.ok) throw new Error('Erro na API')
             const data = await response.json()
             console.log(data)
+            exibirTabela([data])
         } catch (error) {
             console.error(error)
         }
@@ -293,11 +298,30 @@ async function consultarImagem() {
             if (!response.ok) throw new Error('Erro na API')
             const data = await response.json()
             console.log(data)
+            exibirTabela(data)
         } catch (error) {
             console.error(error)
         }
     }
     limparCaixas()
+}
+
+function exibirTabela(data) {
+    if(!Array.isArray(data)) {
+        console.error("os dados recebidos não estão em um array")
+        return
+    }
+    let imagensLista = document.getElementById('imagensLista')
+    imagensLista.innerHTML = ''
+
+    data.forEach(i => {
+        let inserirLinha = imagensLista.insertRow()
+        inserirLinha.insertCell(0).innerHTML = i.id
+        inserirLinha.insertCell(1).innerHTML = i.title
+        inserirLinha.insertCell(2).innerHTML = i.url
+        inserirLinha.insertCell(3).innerHTML = i.thumbnailUrl
+        inserirLinha.insertCell(4).innerHTML = i.albumId
+    })
 }
 
 async function deletarImagem() {
@@ -319,8 +343,11 @@ async function deletarImagem() {
                     setTimeout(() => {
                         exibirModal(3, 'sucesso')
                     }, "1000");
-                    medidorAlbumId--
-                    localStorage.setItem('medidorAlbumId', medidorAlbumId)
+                    let idDisp = await getIdDisponivel()
+                    if(id == idDisp) {
+                        medidorAlbumId--
+                        localStorage.setItem('medidorAlbumId', medidorAlbumId)
+                    }
                     if (medidorAlbumId < 0) {
                         medidorAlbumId = 0
                         localStorage.setItem('medidorAlbumId', medidorAlbumId)
@@ -456,6 +483,7 @@ function limparCaixas() {
     document.getElementById('url').value = ''
     document.getElementById('thumbUrl').value = ''
     document.getElementById('id').value = ''
+    document.getElementById('albumId').value = ''
 }
 
 function exibirModal(valor, tipo) {
