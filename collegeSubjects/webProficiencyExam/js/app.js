@@ -324,7 +324,8 @@ function paginacao(paginas) {
 
     if (paginaAtual > 1) {
         let botaoVoltar = document.createElement(`button`)
-        botaoVoltar.textContent = "Anterior"
+        botaoVoltar.innerHTML = '<i class="fa-solid fa-angle-left"></i>'
+        botaoVoltar.className = "arrows"
         botaoVoltar.onclick = () => {
             paginaAtual--
             consultarImagem()
@@ -338,7 +339,8 @@ function paginacao(paginas) {
 
     if (paginaAtual < totalPaginas) {
         let botaoAvancar = document.createElement(`button`)
-        botaoAvancar.textContent = "Próximo"
+        botaoAvancar.innerHTML = '<i class="fa-solid fa-angle-right"></i>'
+        botaoAvancar.className = "arrows"
         botaoAvancar.onclick = () => {
             paginaAtual++
             consultarImagem()

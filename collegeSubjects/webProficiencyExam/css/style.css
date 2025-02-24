@@ -77,6 +77,18 @@ input {
     width: 100%;
 }
 
+.arrows {
+    border: none;
+    color: black;
+    background-color: white;
+}
+
+.arrows:hover {
+    border: none;
+    color: black;
+    background-color: white;
+}
+
 @media (max-width: 550px) {
     .table {
         font-size: 14px
@@ -85,6 +97,10 @@ input {
     .table th,
     .table td {
         padding: 5px;
+    }
+
+    .text-pg {
+        font-size: 14px
     }
 }
 
