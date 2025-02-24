@@ -52,11 +52,11 @@ async function getAlbumId() {
         }
         const localAlbumId = localPhotos.length ? Math.max(...localPhotos.map(photo => photo.albumId)) : 0
         let calcular = calcularAlbumId(medidorAlbumId)
-        if(calcular) {
+        if (calcular) {
             medidorAlbumId = 1
             localStorage.setItem('medidorAlbumId', medidorAlbumId)
         }
-        if(medidorAlbumId == 1) {
+        if (medidorAlbumId == 1) {
             proximoAlbumId = Math.max(apiAlbumID, localAlbumId) + 1
         } else {
             proximoAlbumId = Math.max(apiAlbumID, localAlbumId)
@@ -138,7 +138,7 @@ function limitar(value, confirm) {
                 funcoes(2)
                 break;
             case 3:
-                getAlbumId()
+                consultarImagem()
                 break;
             case 4:
                 deletarImagem()
@@ -175,10 +175,7 @@ async function funcoes(result) {
                         thumbnailUrl: thumbUrl
                     })
                 })
-                if (!response.ok) {
-                    throw new Error('Erro na API')
-                }
-
+                if (!response.ok) throw new Error('Erro na API')
                 const photos = await response.json();
 
                 localStorage.setItem(`photo_${photo.id}`, JSON.stringify(photo))
@@ -241,9 +238,7 @@ async function funcoes(result) {
                         })
                         console.log(response)
 
-                        if (!response.ok) {
-                            throw new Error('Erro na API')
-                        }
+                        if (!response.ok) throw new Error('Erro na API')
                         const atualizacao = await response.json();
                         localStorage.setItem(`alt_photo_${id}`, JSON.stringify(atualizarDados))
                         limparCaixas()
@@ -261,8 +256,77 @@ async function funcoes(result) {
     }
 }
 
-async function consultarImagem(params) {
+async function consultarImagem() {
+    let id = document.getElementById('id').value
+    let validarId = await verificarId(id)
+    let albumId = document.getElementById('albumId').value
+    let validarAlbumId = await verificarAlbumId(albumId)
+    console.log(validarAlbumId)
+    console.log(validarId)
 
+    if (id == "" && albumId == "") {
+        exibirModal(3, "erro")
+        return
+    }
+    
+    // if (!validarId) {
+    //     limparCaixas()
+    //     exibirModal(3, "erro")
+    //     return
+    // } else {
+
+    // if(albumId = '' && id != '') {
+    //     console.log('if')
+    //     try {
+    //         const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`)
+    //         console.log(response)
+
+    //         if (!response.ok) {
+    //             throw new Error('Erro na API')
+    //         }
+    //         const data = await response.json()
+    //         console.log(data)
+
+    //     } catch (error) {
+    //         console.error(error)
+    //     }
+
+    // } else if(albumId != '' && id == '') {
+    //     console.log('else if')
+    //     try {
+    //         const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${albumId}`)
+    //         console.log(response)
+
+    //         if (!response.ok) {
+    //             throw new Error('Erro na API')
+    //         }
+    //         const data = await response.json()
+    //         console.log(data)
+
+    //     } catch (error) {
+    //         console.error(error)
+    //     }
+
+    // } else {
+    //     console.log('else')
+    //     try {
+    //         const response = await fetch(`https://jsonplaceholder.typicode.com/photos/`)
+    //         console.log(response)
+
+    //         if (!response.ok) {
+    //             throw new Error('Erro na API')
+    //         }
+    //         const data = await response.json()
+    //         console.log(data)
+
+    //     } catch (error) {
+    //         console.error(error)
+    //     }
+
+    // }
+    limparCaixas()
+
+    // }
 
 }
 
@@ -285,11 +349,11 @@ async function deletarImagem() {
                     setTimeout(() => {
                         exibirModal(3, 'sucesso')
                     }, "1000");
-                     medidorAlbumId--
-                     localStorage.setItem('medidorAlbumId', medidorAlbumId)
-                     if(medidorAlbumId == 0) {
-                     medidorAlbumId = 1
-                     localStorage.setItem('medidorAlbumId', medidorAlbumId)
+                    medidorAlbumId--
+                    localStorage.setItem('medidorAlbumId', medidorAlbumId)
+                    if (medidorAlbumId == 0) {
+                        medidorAlbumId = 1
+                        localStorage.setItem('medidorAlbumId', medidorAlbumId)
                     }
                 }
             } if (validarId.foundInAll || validarId.apiOnly) {
@@ -305,12 +369,8 @@ async function deletarImagem() {
                         })
                         console.log(response)
 
-                        if (!response.ok) {
-                            throw new Error('Erro na API')
-                        }
-                        if (validarId.foundInAll) {
-                            localStorage.removeItem(`photo_${id}`)
-                        }
+                        if (!response.ok) throw new Error('Erro na API')
+                        if (validarId.foundInAll) localStorage.removeItem(`photo_${id}`)
                         localStorage.setItem(`del_photo_${id}`, JSON.stringify(parseInt(id)))
                         limparCaixas()
                         exibirModal(3, 'sucesso')
@@ -339,11 +399,9 @@ async function verificarId(id) {
     async function apiVerify(id) {
         try {
             const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`)
-            if (response.status === 404) {
-                return false
-            } else {
-                return true;
-            }
+            if (!response.ok) return false 
+            const data = await responde.json()
+            return data && Object.keys(data).length > 0 ? true : false
         } catch {
             console.error(error)
             return false
@@ -359,6 +417,50 @@ async function verificarId(id) {
         foundInAll: localConfirm && apiConfirm,
     }
 
+    return resposta
+}
+
+async function verificarAlbumId(albumId) {
+    function localVerify(albumId) {
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i)
+
+            if (key.startsWith('photo_') || key.startsWith('altL_photo_')) {
+                let valor = localStorage.getItem(key)
+
+                try {
+                    let dados = JSON.parse(valor)
+
+                    if (dados && dados.albumId !== undefined) {
+                        return true
+                    }
+                } catch (error) {
+                    console.error(error)
+                }
+            }
+        }
+        return false
+    }
+    async function apiVerify(albumId) {
+        try {
+            const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${albumId}`)
+            if (!response.ok) return false 
+            const data = await responde.json()
+            return data && Object.keys(data).length > 0 ? true : false
+        } catch {
+            console.error(error)
+            return false
+        }
+    }
+
+    const localConfirm = localVerify(albumId)
+    const apiConfirm = await apiVerify(albumId)
+
+    const resposta = {
+        localOnly: localConfirm && !apiConfirm,
+        apiOnly: !localConfirm && apiConfirm,
+        foundInAll: localConfirm && apiConfirm,
+    }
     return resposta
 }
 
