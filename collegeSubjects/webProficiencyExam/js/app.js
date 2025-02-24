@@ -19,7 +19,7 @@ async function getIdDisponivel() {
         for (let i = 0; i < localStorage.length; i++) {
             let chave = localStorage.key(i)
 
-            if (chave.startsWith('photo_') && !chave.startsWith('del_photo')) {
+            if (chave.startsWith('photo_') || chave.startsWith('altL_photo_') && !chave.startsWith('del_photo')) {
                 let photo = JSON.parse(localStorage.getItem(chave))
                 localPhotos.push(photo)
             }
@@ -45,7 +45,7 @@ async function getAlbumId() {
         for (let i = 0; i < localStorage.length; i++) {
             let chave = localStorage.key(i)
 
-            if (chave.startsWith('photo_') && !chave.startsWith('del_photo')) {
+            if (chave.startsWith('photo_') || chave.startsWith('altL_photo_') && !chave.startsWith('del_photo')) {
                 let photo = JSON.parse(localStorage.getItem(chave))
                 localPhotos.push(photo)
             }
@@ -213,12 +213,21 @@ async function funcoes(result) {
                 if (url) atualizarDados.url = url
                 if (thumbUrl) atualizarDados.thumbnailUrl = thumbUrl
 
-                if (validarId.localOnly || validarId.foundInAll) {
-                    const valorAtual = JSON.parse(localStorage.getItem(`photo_${id}`))
+                if (validarId.localOnly) {
+                    const valorAtual = JSON.parse(localStorage.getItem(`photo_${id}`)) || JSON.parse(localStorage.getItem(`altL_photo_${id}`))
                     if (title && title !== valorAtual.title) valorAtual.title = title
                     if (url && url !== valorAtual.url) valorAtual.url = url
                     if (thumbUrl && thumbUrl !== valorAtual.thumbUrl) valorAtual.thumbUrl = thumbUrl
-                    localStorage.setItem(`photo_${id}`, JSON.stringify(valorAtual))
+                    localStorage.removeItem(`photo_${id}`) || localStorage.removeItem(`altL_photo_${id}`)
+                    localStorage.setItem(`altL_photo_${id}`, JSON.stringify(valorAtual))
+                    limparCaixas()
+                    exibirModal(2, "sucesso")
+                } else if (validarId.foundInAll) {
+                    const valorAtual = JSON.parse(localStorage.getItem(`alt_photo_${id}`))
+                    if (title && title !== valorAtual.title) valorAtual.title = title
+                    if (url && url !== valorAtual.url) valorAtual.url = url
+                    if (thumbUrl && thumbUrl !== valorAtual.thumbUrl) valorAtual.thumbUrl = thumbUrl
+                    localStorage.setItem(`alt_photo_${id}`, JSON.stringify(valorAtual))
                     limparCaixas()
                     exibirModal(2, "sucesso")
                 } else if (validarId.apiOnly) {
@@ -236,7 +245,7 @@ async function funcoes(result) {
                             throw new Error('Erro na API')
                         }
                         const atualizacao = await response.json();
-                        localStorage.setItem(`photo_${id}`, JSON.stringify(atualizarDados))
+                        localStorage.setItem(`alt_photo_${id}`, JSON.stringify(atualizarDados))
                         limparCaixas()
                         exibirModal(2, "sucesso")
                     } catch (error) {
@@ -271,7 +280,7 @@ async function deletarImagem() {
                 exibirModal(1, 'delete')
                 const confirmacao = await confirmarDelete()
                 if (confirmacao) {
-                    localStorage.removeItem(`photo_${id}`)
+                    localStorage.removeItem(`photo_${id}`) || localStorage.removeItem(`altL_photo_${id}`)
                     limparCaixas()
                     setTimeout(() => {
                         exibirModal(3, 'sucesso')
