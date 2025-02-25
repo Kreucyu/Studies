@@ -214,12 +214,19 @@ async function funcoes(result) {
                 if (thumbUrl) atualizarDados.thumbnailUrl = thumbUrl
 
                 if (validarId.localOnly) {
-                    const valorAtual = JSON.parse(localStorage.getItem(`photo_${id}`)) || JSON.parse(localStorage.getItem(`altL_photo_${id}`))
+                    const photoKey = `photo_${id}`
+                    const altLKey = `altL_photo_${id}`
+                    const valorAtual = (localStorage.getItem(photoKey)) ? JSON.parse(localStorage.getItem(`photo_${id}`)) : 
+                    (localStorage.getItem(altLKey)) ? JSON.parse(localStorage.getItem(`altL_photo_${id}`)) : null
+                    if(!valorAtual) {
+                        console.error(`valor nao encontrado!`)
+                        return
+                    }
                     if (title && title !== valorAtual.title) valorAtual.title = title
                     if (url && url !== valorAtual.url) valorAtual.url = url
                     if (thumbUrl && thumbUrl !== valorAtual.thumbUrl) valorAtual.thumbUrl = thumbUrl
-                    localStorage.removeItem(`photo_${id}`) || localStorage.removeItem(`altL_photo_${id}`)
-                    localStorage.setItem(`altL_photo_${id}`, JSON.stringify(valorAtual))
+                    localStorage.removeItem(photoKey)
+                    localStorage.setItem(altLKey, JSON.stringify(valorAtual))
                     limparCaixas()
                     exibirModal(2, "sucesso")
                 } else if (validarId.foundInAll) {
@@ -382,7 +389,10 @@ async function deletarImagem() {
                 exibirModal(1, 'delete')
                 const confirmacao = await confirmarDelete()
                 if (confirmacao) {
-                    localStorage.removeItem(`photo_${id}`) || localStorage.removeItem(`altL_photo_${id}`)
+                    const photoKey = `photo_${id}`
+                    const altLKey = `altL_photo_${id}`
+                    localStorage.removeItem(photoKey)
+                    localStorage.removeItem(altLKey)
                     limparCaixas()
                     setTimeout(() => {
                         exibirModal(3, 'sucesso')
@@ -435,7 +445,8 @@ async function verificarId(id) {
     function localVerify(id) {
         const photo = localStorage.getItem(`photo_${id}`)
         const altPhoto = localStorage.getItem(`alt_photo_${id}`)
-        return photo || altPhoto ? true : false
+        const altLPhoto = localStorage.getItem(`altL_photo_${id}`)
+        return photo || altPhoto || altLPhoto ? true : false
     }
     async function apiVerify(id) {
         try {
