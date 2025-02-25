@@ -98,12 +98,12 @@ function confirmarDelete(value) {
 }
 
 class Photo {
-    constructor(id, albumId, title, url, thumbUrl) {
+    constructor(id, albumId, title, url, thumbnailUrl) {
         this.id = id
         this.albumId = albumId
         this.title = title
         this.url = url
-        this.thumbUrl = thumbUrl
+        this.thumbnailUrl = thumbnailUrl
     }
 
     validarDados() {
@@ -124,7 +124,7 @@ function limitar(value, confirm) {
     let titleAcesso = document.getElementById('title')
     let urlAcesso = document.getElementById('url')
     let idAlbumAcesso = document.getElementById('albumId')
-    let thumbAcesso = document.getElementById('thumbUrl')
+    let thumbAcesso = document.getElementById('thumbnailUrl')
     let idAcesso = document.getElementById('id')
     if (value == 'Adicionar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = true, urlAcesso.disabled = false, titleAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 1, limparCaixas() }
     if (value == 'Alterar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = false, urlAcesso.disabled = false, titleAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 2, limparCaixas() }
@@ -156,14 +156,14 @@ function limitar(value, confirm) {
 async function funcoes(result) {
     let title = document.getElementById('title').value
     let url = document.getElementById('url').value
-    let thumbUrl = document.getElementById('thumbUrl').value
+    let thumbnailUrl = document.getElementById('thumbnailUrl').value
     let albumId = await getAlbumId()
 
     result == 1 ? await adicionarImagem() : await alterarImagem()
 
     async function adicionarImagem() {
         let id = await getIdDisponivel()
-        let photo = new Photo(id, albumId, title, url, thumbUrl)
+        let photo = new Photo(id, albumId, title, url, thumbnailUrl)
         console.log(photo)
         try {
             if (photo.validarDados()) {
@@ -177,7 +177,7 @@ async function funcoes(result) {
                         id: id,
                         title: title,
                         url: url,
-                        thumbnailUrl: thumbUrl
+                        thumbnailUrl: thumbnailUrl
                     })
                 })
                 if (!response.ok) throw new Error('Erro na API')
@@ -213,7 +213,7 @@ async function funcoes(result) {
                 if (id) atualizarDados.id = parseInt(id)
                 if (title) atualizarDados.title = title
                 if (url) atualizarDados.url = url
-                if (thumbUrl) atualizarDados.thumbnailUrl = thumbUrl
+                if (thumbnailUrl) atualizarDados.thumbnailUrl = thumbnailUrl
 
                 if (validarId.localOnly) {
                     const photoKey = `photo_${id}`
@@ -226,18 +226,18 @@ async function funcoes(result) {
                     }
                     if (title && title !== valorAtual.title) valorAtual.title = title
                     if (url && url !== valorAtual.url) valorAtual.url = url
-                    if (thumbUrl && thumbUrl !== valorAtual.thumbUrl) valorAtual.thumbUrl = thumbUrl
+                    if (thumbnailUrl && thumbnailUrl !== valorAtual.thumbnailUrl) valorAtual.thumbnailUrl = thumbnailUrl
                     localStorage.removeItem(photoKey)
                     localStorage.setItem(altLKey, JSON.stringify(valorAtual))
                     limparCaixas()
                     exibirModal(2, "sucesso")
                 } else if (validarId.foundInAll) {
                     const delKey = `del_photo_${id}`
-                    if(localStorage.getItem(delKey)) return exibirModal(3, `erro`)
+                    if (localStorage.getItem(delKey)) return exibirModal(3, `erro`)
                     const valorAtual = JSON.parse(localStorage.getItem(`alt_photo_${id}`))
                     if (title && title !== valorAtual.title) valorAtual.title = title
                     if (url && url !== valorAtual.url) valorAtual.url = url
-                    if (thumbUrl && thumbUrl !== valorAtual.thumbUrl) valorAtual.thumbUrl = thumbUrl
+                    if (thumbnailUrl && thumbnailUrl !== valorAtual.thumbnailUrl) valorAtual.thumbnailUrl = thumbnailUrl
                     localStorage.setItem(`alt_photo_${id}`, JSON.stringify(valorAtual))
                     limparCaixas()
                     exibirModal(2, "sucesso")
@@ -283,12 +283,29 @@ async function consultarImagem() {
         try {
             let validarId = await verificarId(id)
             if (!validarId) return exibirModal(4, "erro")
+            let exibicao = null
+            let alterador = `alt_photo_${id}`
+            let localAdc = `photo_${id}`
+            let localAdcAlt = `altL_photo_${id}`
             const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`)
             console.log(response)
-            if (!response.ok) throw new Error('Erro na API')
-            const data = await response.json()
-            console.log(data)
-            exibirTabela([data])
+            if (response.ok) exibicao = await response.json()
+            if (!exibicao) {
+                if (localStorage.getItem(localAdc)) exibicao = JSON.parse(localStorage.getItem(localAdc))
+                else if (localStorage.getItem(localAdcAlt)) exibicao = JSON.parse(localStorage.getItem(localAdcAlt))
+                else return exibirModal(4, "erro")
+            }
+            
+            
+            if (localStorage.getItem(alterador) && exibicao.length > 0) {
+                exibicao = { ...exibicao, ...JSON.parse(localStorage.getItem(alterador)) }
+            }
+            let deletado = `del_photo_${exibicao.id}`
+            if (localStorage.getItem(deletado)) {
+                exibicao = null
+            }
+            if (exibicao) exibirTabela([exibicao])
+            else exibirTabela([])
         } catch (error) {
             console.error(error)
 
@@ -318,7 +335,19 @@ async function consultarImagem() {
             console.log(response)
             if (!response.ok) throw new Error('Erro na API')
             const data = await response.json()
-            const imagensPaginadas = data.slice(inicio, fim)
+            let exibicao = []
+            exibicao = [...data]
+            let localAdc = Object.keys(localStorage).filter(key => key.startsWith('photo_')).map(key => JSON.parse(localStorage.getItem(key)))
+            localAdc.push(...Object.keys(localStorage).filter(key => key.startsWith('altL_photo_')).map(key => JSON.parse(localStorage.getItem(key))))
+            exibicao = [...data, ...localAdc]
+            exibicao = exibicao.map(imagem => {
+                let alterador = `alt_photo_${imagem.id}`
+                if (localStorage.getItem(alterador)) return { ...imagem, ...JSON.parse(localStorage.getItem(alterador)) }
+                return imagem
+            })
+            let exclusoes = Object.keys(localStorage).filter(key => key.startsWith('del_photo_')).map(key => key.replace('del_photo_', ''))
+            exibicao = exibicao.filter(imagem => !exclusoes.includes(String(imagem.id)))
+            const imagensPaginadas = exibicao.slice(inicio, fim)
             exibirTabela(imagensPaginadas)
             paginacao(data.length)
         } catch (error) {
@@ -540,7 +569,7 @@ function consultarConf(escolha) {
 function limparCaixas() {
     document.getElementById('title').value = ''
     document.getElementById('url').value = ''
-    document.getElementById('thumbUrl').value = ''
+    document.getElementById('thumbnailUrl').value = ''
     document.getElementById('id').value = ''
     document.getElementById('albumId').value = ''
 }
