@@ -126,11 +126,12 @@ function limitar(value, confirm) {
     let idAlbumAcesso = document.getElementById('albumId')
     let thumbAcesso = document.getElementById('thumbnailUrl')
     let idAcesso = document.getElementById('id')
-    if (value == 'Adicionar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = true, urlAcesso.disabled = false, titleAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 1, limparCaixas() }
-    if (value == 'Alterar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = false, urlAcesso.disabled = false, titleAcesso.disabled = false, idAlbumAcesso.disabled = true, funcao = 2, limparCaixas() }
-    if (value == 'Consultar imagem') { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = false, funcao = 3, limparCaixas() }
-    if (value == 'Deletar imagem') { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = true, funcao = 4, limparCaixas() }
-    if (value == 'O que deseja fazer?') { thumbAcesso.disabled = true, idAcesso.disabled = true, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = true }
+    let list = document.getElementById('imageList')
+    if (value == 'Adicionar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = true, urlAcesso.disabled = false, titleAcesso.disabled = false, idAlbumAcesso.disabled = true, list.style.display = "none", funcao = 1, limparCaixas() }
+    if (value == 'Alterar imagem') { thumbAcesso.disabled = false, idAcesso.disabled = false, urlAcesso.disabled = false, titleAcesso.disabled = false, idAlbumAcesso.disabled = true, list.style.display = "none", funcao = 2, limparCaixas() }
+    if (value == 'Consultar imagem') { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = false, list.style.display = "block", funcao = 3, consultarImagem(), limparCaixas() }
+    if (value == 'Deletar imagem') { thumbAcesso.disabled = true, idAcesso.disabled = false, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = true, list.style.display = "none", funcao = 4, limparCaixas() }
+    if (value == 'O que deseja fazer?') { thumbAcesso.disabled = true, idAcesso.disabled = true, urlAcesso.disabled = true, titleAcesso.disabled = true, idAlbumAcesso.disabled = true, list.style.display = "none" }
 
     if (confirm) {
         switch (funcao) {
@@ -141,6 +142,7 @@ function limitar(value, confirm) {
                 funcoes(2)
                 break;
             case 3:
+                list.style.display = "block"
                 let paginas = document.getElementById('paginas')
                 paginas.innerHTML = ''
                 consultarImagem()
@@ -335,6 +337,7 @@ async function consultarImagem() {
             let exclusoes = Object.keys(localStorage).filter(key => key.startsWith('del_photo_')).map(key => key.replace('del_photo_', ''))
             exibicao = exibicao.filter(imagem => !exclusoes.includes(String(imagem.id)))
             const imagensPaginadas = exibicao.slice(inicio, fim)
+            if(exibicao.length === 0) return exibirModal(4, "erro")
             exibirTabela(imagensPaginadas)
         } catch (error) {
             console.error(error)
@@ -422,9 +425,7 @@ async function consultarImagem() {
             cell1.style.paddingRight = "60px"
             cell1.style.paddingLeft = "60px"
             cell2.innerHTML = `<a href="${i.url}">${i.url}</a>`
-            
             cell3.innerHTML = `<a href="${i.thumbnailUrl}">${i.thumbnailUrl}</a>`
-            
             cell4.innerHTML = i.albumId
             cell4.style.fontWeight = "bolder"
         })
@@ -603,7 +604,7 @@ function exibirModal(valor, tipo) {
     document.getElementById('botao-delete').style.display = "none"
     if (tipo == 'erro') {
         document.getElementById('title-modal').innerHTML = 'Erro!'
-        document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Preencha todos os campos!' : valor == 2 ? 'Insira um ID para alterar' : valor == 3 ? 'ID não encontrado' : 'Não foi possível realizar a busca!'
+        document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Preencha todos os campos!' : valor == 2 ? 'Insira um ID para alterar' : valor == 3 ? 'ID não encontrado' : 'Não foi encontrado nenhum dado!'
         return $('#exibirModal').modal('show')
     } if (tipo == 'delete') {
         document.getElementById('title-modal').innerHTML = 'Deletar'
