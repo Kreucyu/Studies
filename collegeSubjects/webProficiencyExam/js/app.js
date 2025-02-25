@@ -1,12 +1,3 @@
-let medidorAlbumId = localStorage.getItem('medidorAlbumId') ? parseInt(localStorage.getItem('medidorAlbumId')) : 1
-
-function calcularAlbumId(medidorAlbumId) {
-    if (medidorAlbumId == 3) {
-        return true
-    }
-    return false
-}
-
 async function getIdDisponivel() {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/photos')
@@ -52,17 +43,16 @@ async function getAlbumId() {
         }
         const localAlbumId = localPhotos.length ? Math.max(...localPhotos.map(photo => photo.albumId)) : 0
         let ultimoAlbumId = Math.max(apiAlbumID, localAlbumId)
+        if(ultimoAlbumId === 100) ultimoAlbumId = 101
         let quantidadeAlbumId = localPhotos.filter(photo => photo.albumId === ultimoAlbumId)
+        console.log(ultimoAlbumId)
         if(quantidadeAlbumId.length > 0) {
             let ordenar = quantidadeAlbumId.map(photo => photo.id).sort((a, b) => a - b)
             let primeiroValor = ordenar[0]
             let ultimoValor = ordenar[ordenar.length - 1]
             let total = ordenar.length
             let ocupados = ultimoValor - primeiroValor
-
-            if(ocupados === 49 || total === 50) {
-                ultimoAlbumId++
-            }
+            if(ocupados === 49 || total === 50) ultimoAlbumId++
         }
 
         localStorage.setItem(`albumId`, ultimoAlbumId)
@@ -186,8 +176,6 @@ async function funcoes(result) {
 
                 localStorage.setItem(`photo_${photo.id}`, JSON.stringify(photo))
                 localStorage.setItem('id', id)
-                medidorAlbumId++
-                localStorage.setItem('medidorAlbumId', medidorAlbumId)
                 exibirModal(1, "sucesso")
                 limparCaixas()
             } else {
@@ -453,15 +441,6 @@ async function deletarImagem() {
                     setTimeout(() => {
                         exibirModal(3, 'sucesso')
                     }, "1000");
-                    let idDisp = await getIdDisponivel()
-                    if (id == idDisp) {
-                        medidorAlbumId--
-                        localStorage.setItem('medidorAlbumId', medidorAlbumId)
-                    }
-                    if (medidorAlbumId < 0) {
-                        medidorAlbumId = 0
-                        localStorage.setItem('medidorAlbumId', medidorAlbumId)
-                    }
                 }
             } if (validarId.foundInAll || validarId.apiOnly) {
                 exibirModal(1, 'delete')
