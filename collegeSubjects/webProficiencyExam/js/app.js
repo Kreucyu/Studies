@@ -295,8 +295,8 @@ async function consultarImagem() {
                 else if (localStorage.getItem(localAdcAlt)) exibicao = JSON.parse(localStorage.getItem(localAdcAlt))
                 else return exibirModal(4, "erro")
             }
-            
-            
+
+
             if (localStorage.getItem(alterador)) {
                 exibicao = { ...exibicao, ...JSON.parse(localStorage.getItem(alterador)) }
             }
@@ -327,7 +327,7 @@ async function consultarImagem() {
             localAdc.push(...Object.keys(localStorage).filter(key => key.startsWith('altL_photo_')).map(key => JSON.parse(localStorage.getItem(key))).filter(imagem => imagem.albumId === Number(albumId)))
             exibicao = [...data, ...localAdc]
             exibicao = exibicao.map(imagem => {
-                if(!imagem || !imagem.id) return imagem
+                if (!imagem || !imagem.id) return imagem
                 let alterador = `alt_photo_${imagem.id}`
                 if (localStorage.getItem(alterador)) return { ...imagem, ...JSON.parse(localStorage.getItem(alterador)) }
                 return imagem
@@ -411,11 +411,22 @@ async function consultarImagem() {
 
         data.forEach(i => {
             let inserirLinha = imagensLista.insertRow()
-            inserirLinha.insertCell(0).innerHTML = i.id
-            inserirLinha.insertCell(1).innerHTML = i.title
-            inserirLinha.insertCell(2).innerHTML = i.url
-            inserirLinha.insertCell(3).innerHTML = i.thumbnailUrl
-            inserirLinha.insertCell(4).innerHTML = i.albumId
+            let cell0 = inserirLinha.insertCell(0)
+            let cell1 = inserirLinha.insertCell(1)
+            let cell2 = inserirLinha.insertCell(2)
+            let cell3 = inserirLinha.insertCell(3)
+            let cell4 = inserirLinha.insertCell(4)
+            cell0.innerHTML = i.id
+            cell0.style.fontWeight = "bolder"
+            cell1.innerHTML = i.title
+            cell1.style.paddingRight = "60px"
+            cell1.style.paddingLeft = "60px"
+            cell2.innerHTML = `<a href="${i.url}">${i.url}</a>`
+            
+            cell3.innerHTML = `<a href="${i.thumbnailUrl}">${i.thumbnailUrl}</a>`
+            
+            cell4.innerHTML = i.albumId
+            cell4.style.fontWeight = "bolder"
         })
     }
 }
