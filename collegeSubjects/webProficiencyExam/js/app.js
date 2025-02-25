@@ -297,7 +297,7 @@ async function consultarImagem() {
             }
             
             
-            if (localStorage.getItem(alterador) && exibicao.length > 0) {
+            if (localStorage.getItem(alterador)) {
                 exibicao = { ...exibicao, ...JSON.parse(localStorage.getItem(alterador)) }
             }
             let deletado = `del_photo_${exibicao.id}`
