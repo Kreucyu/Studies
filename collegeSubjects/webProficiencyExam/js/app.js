@@ -232,6 +232,8 @@ async function funcoes(result) {
                     limparCaixas()
                     exibirModal(2, "sucesso")
                 } else if (validarId.foundInAll) {
+                    const delKey = `del_photo_${id}`
+                    if(localStorage.getItem(delKey)) return exibirModal(3, `erro`)
                     const valorAtual = JSON.parse(localStorage.getItem(`alt_photo_${id}`))
                     if (title && title !== valorAtual.title) valorAtual.title = title
                     if (url && url !== valorAtual.url) valorAtual.url = url
@@ -423,6 +425,7 @@ async function deletarImagem() {
                         console.log(response)
 
                         if (!response.ok) throw new Error('Erro na API')
+                        if (validarId.foundInAll) localStorage.removeItem(`alt_photo_${id}`)
                         if (validarId.foundInAll) localStorage.removeItem(`photo_${id}`)
                         localStorage.setItem(`del_photo_${id}`, JSON.stringify(parseInt(id)))
                         limparCaixas()
@@ -441,14 +444,13 @@ async function deletarImagem() {
     }
 }
 
-
-
 async function verificarId(id) {
     function localVerify(id) {
         const photo = localStorage.getItem(`photo_${id}`)
         const altPhoto = localStorage.getItem(`alt_photo_${id}`)
         const altLPhoto = localStorage.getItem(`altL_photo_${id}`)
-        return photo || altPhoto || altLPhoto ? true : false
+        const delPhoto = localStorage.getItem(`del_photo_${id}`)
+        return photo || altPhoto || altLPhoto || delPhoto ? true : false
     }
     async function apiVerify(id) {
         try {
