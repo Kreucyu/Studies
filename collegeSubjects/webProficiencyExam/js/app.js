@@ -141,6 +141,8 @@ function limitar(value, confirm) {
                 funcoes(2)
                 break;
             case 3:
+                let paginas = document.getElementById('paginas')
+                paginas.innerHTML = ''
                 consultarImagem()
                 break;
             case 4:
@@ -216,9 +218,9 @@ async function funcoes(result) {
                 if (validarId.localOnly) {
                     const photoKey = `photo_${id}`
                     const altLKey = `altL_photo_${id}`
-                    const valorAtual = (localStorage.getItem(photoKey)) ? JSON.parse(localStorage.getItem(`photo_${id}`)) : 
-                    (localStorage.getItem(altLKey)) ? JSON.parse(localStorage.getItem(`altL_photo_${id}`)) : null
-                    if(!valorAtual) {
+                    const valorAtual = (localStorage.getItem(photoKey)) ? JSON.parse(localStorage.getItem(`photo_${id}`)) :
+                        (localStorage.getItem(altLKey)) ? JSON.parse(localStorage.getItem(`altL_photo_${id}`)) : null
+                    if (!valorAtual) {
                         console.error(`valor nao encontrado!`)
                         return
                     }
@@ -267,37 +269,18 @@ async function funcoes(result) {
 }
 
 let paginaAtual = 1
-const itensPorPagina = 15
-let albumIdAtual = null
+const itensPorPagina = 50
 
 async function consultarImagem() {
     let id = document.getElementById('id').value
     let albumId = document.getElementById('albumId').value
-    albumIdAtual = albumId
     const inicio = (paginaAtual - 1) * itensPorPagina
     const fim = inicio + itensPorPagina
 
-    if (id == "" && albumId != "") {
-        albumIdAtual = albumId
-        try {
-            let validarAlbumId = await verificarAlbumId(albumIdAtual)
-            const response = await fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`)
-            console.log(response)
-            if (!response.ok) throw new Error('Erro na API')
-            const data = await response.json()
-            const filtro = data.filter(i => i.albumId == albumId)
-            const imagensPaginadas = filtro.slice(inicio, fim)
-            exibirTabela(imagensPaginadas)
-            paginacao(filtro.length)
-        } catch (error) {
-            console.error(error)
-        }
-
-    }
-
-    else if (id != "" && albumId == "") {
+    if (id !== "" && albumId === "") {
         try {
             let validarId = await verificarId(id)
+            if (!validarId) return exibirModal(4, "erro")
             const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`)
             console.log(response)
             if (!response.ok) throw new Error('Erro na API')
@@ -306,9 +289,28 @@ async function consultarImagem() {
             exibirTabela([data])
         } catch (error) {
             console.error(error)
+
         }
 
-    } else {
+    }
+
+    else if (id === "" && albumId !== "") {
+        try {
+            let validarAlbumId = await verificarAlbumId(albumId)
+            if (!validarAlbumId) return exibirModal(4, "erro")
+            const response = await fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`)
+            console.log(response)
+            if (!response.ok) throw new Error('Erro na API')
+            const data = await response.json()
+            let filtro = data.filter(i => i.albumId == albumId)
+            exibirTabela(filtro)
+        } catch (error) {
+            console.error(error)
+        }
+
+    }
+
+    else {
         try {
             const response = await fetch(`https://jsonplaceholder.typicode.com/photos/`)
             console.log(response)
@@ -322,57 +324,57 @@ async function consultarImagem() {
         }
     }
     limparCaixas()
-}
 
-function paginacao(paginas) {
-    const totalPaginas = Math.ceil(paginas / itensPorPagina)
-    let paginasDiv = document.getElementById(`paginas`)
-    paginasDiv.innerHTML = ``
+    function paginacao(paginas) {
+        const totalPaginas = Math.ceil(paginas / itensPorPagina)
+        let paginasDiv = document.getElementById(`paginas`)
+        paginasDiv.innerHTML = ``
 
-    if (paginaAtual > 1) {
-        let botaoVoltar = document.createElement(`button`)
-        botaoVoltar.innerHTML = '<i class="fa-solid fa-angle-left"></i>'
-        botaoVoltar.className = "arrows"
-        botaoVoltar.onclick = () => {
-            paginaAtual--
-            consultarImagem()
+        if (paginaAtual > 1) {
+            let botaoVoltar = document.createElement(`button`)
+            botaoVoltar.innerHTML = '<i class="fa-solid fa-angle-left"></i>'
+            botaoVoltar.className = "arrows"
+            botaoVoltar.onclick = () => {
+                paginaAtual--
+                consultarImagem()
+            }
+            paginasDiv.appendChild(botaoVoltar)
         }
-        paginasDiv.appendChild(botaoVoltar)
-    }
 
-    let pAtual = document.createElement('span')
-    pAtual.textContent = `Página ${paginaAtual} de ${totalPaginas}`
-    paginasDiv.appendChild(pAtual)
+        let pAtual = document.createElement('span')
+        pAtual.textContent = `Página ${paginaAtual} de ${totalPaginas}`
+        paginasDiv.appendChild(pAtual)
 
-    if (paginaAtual < totalPaginas) {
-        let botaoAvancar = document.createElement(`button`)
-        botaoAvancar.innerHTML = '<i class="fa-solid fa-angle-right"></i>'
-        botaoAvancar.className = "arrows"
-        botaoAvancar.onclick = () => {
-            paginaAtual++
-            consultarImagem()
+        if (paginaAtual < totalPaginas) {
+            let botaoAvancar = document.createElement(`button`)
+            botaoAvancar.innerHTML = '<i class="fa-solid fa-angle-right"></i>'
+            botaoAvancar.className = "arrows"
+            botaoAvancar.onclick = () => {
+                paginaAtual++
+                consultarImagem()
+            }
+            paginasDiv.appendChild(botaoAvancar)
         }
-        paginasDiv.appendChild(botaoAvancar)
+
     }
 
-}
+    function exibirTabela(data) {
+        if (!Array.isArray(data)) {
+            console.error("os dados recebidos não estão em um array")
+            return
+        }
+        let imagensLista = document.getElementById('imagensLista')
+        imagensLista.innerHTML = ''
 
-function exibirTabela(data) {
-    if(!Array.isArray(data)) {
-        console.error("os dados recebidos não estão em um array")
-        return
+        data.forEach(i => {
+            let inserirLinha = imagensLista.insertRow()
+            inserirLinha.insertCell(0).innerHTML = i.id
+            inserirLinha.insertCell(1).innerHTML = i.title
+            inserirLinha.insertCell(2).innerHTML = i.url
+            inserirLinha.insertCell(3).innerHTML = i.thumbnailUrl
+            inserirLinha.insertCell(4).innerHTML = i.albumId
+        })
     }
-    let imagensLista = document.getElementById('imagensLista')
-    imagensLista.innerHTML = ''
-
-    data.forEach(i => {
-        let inserirLinha = imagensLista.insertRow()
-        inserirLinha.insertCell(0).innerHTML = i.id
-        inserirLinha.insertCell(1).innerHTML = i.title
-        inserirLinha.insertCell(2).innerHTML = i.url
-        inserirLinha.insertCell(3).innerHTML = i.thumbnailUrl
-        inserirLinha.insertCell(4).innerHTML = i.albumId
-    })
 }
 
 async function deletarImagem() {
@@ -398,7 +400,7 @@ async function deletarImagem() {
                         exibirModal(3, 'sucesso')
                     }, "1000");
                     let idDisp = await getIdDisponivel()
-                    if(id == idDisp) {
+                    if (id == idDisp) {
                         medidorAlbumId--
                         localStorage.setItem('medidorAlbumId', medidorAlbumId)
                     }
@@ -547,7 +549,7 @@ function exibirModal(valor, tipo) {
     document.getElementById('botao-delete').style.display = "none"
     if (tipo == 'erro') {
         document.getElementById('title-modal').innerHTML = 'Erro!'
-        document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Preencha todos os campos!' : valor == 2 ? 'Insira um ID para alterar' : 'ID não encontrado'
+        document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Preencha todos os campos!' : valor == 2 ? 'Insira um ID para alterar' : valor == 3 ? 'ID não encontrado' : 'Não foi possível realizar a busca!'
         return $('#exibirModal').modal('show')
     } if (tipo == 'delete') {
         document.getElementById('title-modal').innerHTML = 'Deletar'
