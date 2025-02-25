@@ -318,15 +318,27 @@ async function consultarImagem() {
             let validarAlbumId = await verificarAlbumId(albumId)
             if (!validarAlbumId) return exibirModal(4, "erro")
             const response = await fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`)
-            console.log(response)
             if (!response.ok) throw new Error('Erro na API')
+            console.log(response)
             const data = await response.json()
-            let filtro = data.filter(i => i.albumId == albumId)
-            exibirTabela(filtro)
+            let exibicao = []
+            exibicao = [...data]
+            let localAdc = Object.keys(localStorage).filter(key => key.startsWith('photo_')).map(key => JSON.parse(localStorage.getItem(key))).filter(imagem => imagem.albumId === Number(albumId))
+            localAdc.push(...Object.keys(localStorage).filter(key => key.startsWith('altL_photo_')).map(key => JSON.parse(localStorage.getItem(key))).filter(imagem => imagem.albumId === Number(albumId)))
+            exibicao = [...data, ...localAdc]
+            exibicao = exibicao.map(imagem => {
+                if(!imagem || !imagem.id) return imagem
+                let alterador = `alt_photo_${imagem.id}`
+                if (localStorage.getItem(alterador)) return { ...imagem, ...JSON.parse(localStorage.getItem(alterador)) }
+                return imagem
+            })
+            let exclusoes = Object.keys(localStorage).filter(key => key.startsWith('del_photo_')).map(key => key.replace('del_photo_', ''))
+            exibicao = exibicao.filter(imagem => !exclusoes.includes(String(imagem.id)))
+            const imagensPaginadas = exibicao.slice(inicio, fim)
+            exibirTabela(imagensPaginadas)
         } catch (error) {
             console.error(error)
         }
-
     }
 
     else {
@@ -349,7 +361,7 @@ async function consultarImagem() {
             exibicao = exibicao.filter(imagem => !exclusoes.includes(String(imagem.id)))
             const imagensPaginadas = exibicao.slice(inicio, fim)
             exibirTabela(imagensPaginadas)
-            paginacao(data.length)
+            paginacao(exibicao.length)
         } catch (error) {
             console.error(error)
         }
