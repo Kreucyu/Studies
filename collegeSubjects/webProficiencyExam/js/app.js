@@ -33,11 +33,7 @@ async function getIdDisponivel() {
         return 1
     }
 }
-/* Arrumar metodo getAlbumId na medida em que for decrementado ele ter registrado quantas imagens tem por album! 
-verificar quando foi apagado uma imagem antes da ultima para saber tambem qual o valor
-melhor forma de fazer isso seria salvar quando bater 50 imagens, por mais que seja deletado o 
-valor se torna inalteravel, indicando que o album foi preenchido, mas se nao for = a 50 entao podera ser alterado
-o valor dependendo da situacao. */
+
 async function getAlbumId() {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/photos')
@@ -55,20 +51,23 @@ async function getAlbumId() {
             }
         }
         const localAlbumId = localPhotos.length ? Math.max(...localPhotos.map(photo => photo.albumId)) : 0
-        let calcular = calcularAlbumId(medidorAlbumId)
-        if (calcular) {
-            medidorAlbumId = 1
-            localStorage.setItem('medidorAlbumId', medidorAlbumId)
+        let ultimoAlbumId = Math.max(apiAlbumID, localAlbumId)
+        let quantidadeAlbumId = localPhotos.filter(photo => photo.albumId === ultimoAlbumId)
+        if(quantidadeAlbumId.length > 0) {
+            let ordenar = quantidadeAlbumId.map(photo => photo.id).sort((a, b) => a - b)
+            let primeiroValor = ordenar[0]
+            let ultimoValor = ordenar[ordenar.length - 1]
+            let total = ordenar.length
+            let ocupados = ultimoValor - primeiroValor
+
+            if(ocupados === 49 || total === 50) {
+                ultimoAlbumId++
+            }
         }
-        if (medidorAlbumId == 1) {
-            proximoAlbumId = Math.max(apiAlbumID, localAlbumId) + 1
-        } else {
-            proximoAlbumId = Math.max(apiAlbumID, localAlbumId)
-        }
-        localStorage.setItem(`albumId`, proximoAlbumId)
-        console.log("proximo album id " + proximoAlbumId)
-        console.log(`saida ` + medidorAlbumId)
-        return proximoAlbumId
+
+        localStorage.setItem(`albumId`, ultimoAlbumId)
+        console.log("proximo album id " + ultimoAlbumId)
+        return ultimoAlbumId
     } catch {
         exibirModal(3, 'erro')
         return 1
