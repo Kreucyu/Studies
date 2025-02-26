@@ -10,6 +10,8 @@ nesse método, é recebido todas as fotos da api e são filtradas por id
 a quantidade das fotos são armazenadas em uma variável e em seguida, feito 
 a verificação dos ids dentro do localStorage e depois, é feita a junção das duas
 somas para assim somar +1 e retornar o próximo id */
+
+//glitch
 async function getIdDisponivel() {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/photos')
