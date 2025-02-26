@@ -5,13 +5,12 @@ e seja interativo, utilizando a manipulação do DOM na captura dos dados, faz
 da API utilizando Fetch e seus metodos HTTP e demais funções do JavaScript para a manipulação
 de caminhos do código para receber o resultado esperado*/
 
-/* função que serve para descobrir qual o próximo id disponível 
-nesse método, é recebido todas as fotos da api e são filtradas por id
+/* getIdDisponivel() - função que serve para calcular qual o próximo id disponível,
+é recebido todas as fotos da api e são filtradas por id
 a quantidade das fotos são armazenadas em uma variável e em seguida, feito 
 a verificação dos ids dentro do localStorage e depois, é feita a junção das duas
 somas para assim somar +1 e retornar o próximo id */
 
-//glitch
 async function getIdDisponivel() {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/photos')
@@ -38,6 +37,14 @@ async function getIdDisponivel() {
         return 1
     }
 }
+
+/* getAlbumId() - função que serve para calcular qual o próximo albumId disponível,
+é recebido todos os albuns da api e são filtradas por albumId
+a quantidade dos albuns são armazenados em uma variável e em seguida, feito 
+a verificação dos ids dentro do localStorage e, é feita a soma do primeiro valor inserido
+no album e do ultimo, para verificar se o resultado sera 49, se for 49, podera seguir para o proximo
+albumid, se for removido ira cair de album id e se for a primeira adição, irá iniciar no album 101, para
+dar continuidade aos dados da api */
 
 async function getAlbumId() {
     try {
@@ -78,6 +85,10 @@ async function getAlbumId() {
     }
 }
 
+/* confirmarDelete(value) - função que serve para manipular os eventos do clique
+do modal, exclusivo para exclusão, após a confirmação da ação de delete os eventos
+são removidos para evitar bugs */
+
 function confirmarDelete(value) {
     return new Promise((resolve, reject) => {
         const confirmacao = document.getElementById('botao-delete')
@@ -100,6 +111,10 @@ function confirmarDelete(value) {
     })
 }
 
+/* Objeto photo, utilizado para a adição de imagens, sendo instanciado um objeto para
+que seja possível fazer a adição de imagens de forma mais simples, com um método que verifica
+se os valores não são vazios. */
+
 class Photo {
     constructor(id, albumId, title, url, thumbnailUrl) {
         this.id = id
@@ -120,7 +135,13 @@ class Photo {
     }
 }
 
-let funcao = 0
+let funcao = 0 //variável de definição de método
+
+/*limitar(value, confirm) - função que utiliza o DOM para fazer a manipulação dos dados
+e dos formulários da página index.html, é passado para um método um valor e uma confirmação,
+o valor ira definir quais caixas serão habilitadas para preenchimento e qual função será executada
+o confirm irá retornar true somente quando for solicitado a confirmação da função, e assim ira adaptadar
+e limpar a exibição como necessário  */
 
 function limitar(value, confirm) {
     document.getElementById('drop').innerHTML = value
@@ -158,6 +179,10 @@ function limitar(value, confirm) {
     }
 }
 
+/*funcoes(result) - função responsável por fazer a coleta dos dados para a futura chamada
+da alteração ou adição de imagens, com base no comparador tenário que verifica qual valor
+enviado pelo metodo limitar()  */
+
 async function funcoes(result) {
     let title = document.getElementById('title').value
     let url = document.getElementById('url').value
@@ -165,6 +190,10 @@ async function funcoes(result) {
     let albumId = await getAlbumId()
 
     result == 1 ? await adicionarImagem() : await alterarImagem()
+
+    /*adicionarImagem() - função responsável pela adição de imagens no localStorage e solcitação "fake"
+    para a api pelo meio do método POST, passando para ele os dados recebidos pelo DOM e passando ao 
+    localStorage os dados armazenados no objeto photo */
 
     async function adicionarImagem() {
         let id = await getIdDisponivel()
@@ -201,6 +230,13 @@ async function funcoes(result) {
         }
 
     }
+
+    /*alterarImagem() - função responsável pela alteração dos dados de uma imagem, podendo ela estar
+    na api, no local ou em ambos, garantindo que seja modificado APENAS os dados passados e não todos
+    os dados já registrados anteriormente, começamos com uma validação de id, para saber se esse id
+    informado existe, em seguida é verificado em qual meio o id existe, e se o valor informado para
+    atualização for diferente de nulo, ele será adicionado, caso contrário será mantido o valor anterior,
+    utilizei o método PATCH para fazer apenas as alteraçãoes necessárias */
 
     async function alterarImagem() {
         let id = document.getElementById('id').value
@@ -272,6 +308,14 @@ async function funcoes(result) {
         }
     }
 }
+
+/* consultarImagem() - função responsável pela exibição das imagens na api e no localStorage,
+sua busca aceitando campos de albumId e Id, permitindo com que sejam visualizados tambem todos os
+dados ou os dados filtrados, se baseia na variaavel paginaAtual e itensPorPagina para fazer a 
+paginação adequada dos itens, o método verifica os itens da API, determinados por id, album, ou todos,
+em seguida puxa os dados do localStorage, incluindo adições, alterações e deleções, e faz as devidas
+mudanças no que deve ou não ser exibido e incrementa as novas imagens junto com as anteriores da API,
+método utilizado foi o GET. */
 
 let paginaAtual = 1
 const itensPorPagina = 50
@@ -374,6 +418,10 @@ async function consultarImagem() {
     }
     limparCaixas()
 
+    /* paginacao(paginas) - função que recebe a quantidade de páginas e faz a divisão entre a quantidade e os
+    itens por cada pagina, fazendo assim com que a exibição aconteça de maneira correta e com a devida quantidade 
+    de páginas */
+
     function paginacao(paginas) {
         const totalPaginas = Math.ceil(paginas / itensPorPagina)
         let paginasDiv = document.getElementById(`paginas`)
@@ -407,6 +455,10 @@ async function consultarImagem() {
 
     }
 
+    /* exibirTabela(data) - função que recebe os dados solicitados anteriormente com a filtragem 
+    e trata as informações para serem exibidas dentro de uma tabela selecionada pelo DOM da index.html
+    fazendo assim as determinadas alterações visuais para que possam ser exibidas na tela do usuário */
+
     function exibirTabela(data) {
         if (!Array.isArray(data)) {
             console.error("os dados recebidos não estão em um array")
@@ -434,6 +486,12 @@ async function consultarImagem() {
         })
     }
 }
+
+/* deletarImagem() - método responsável por deletar uma imagem com o determinado ID que foi
+inserido pelo usuário, caso o ID não seja válido uma mensagem de erro é exibida, foi utilizado
+o método DELETE para fazer a requisisão para a API e claro, é feita a separação de onde foi 
+encontrado o ID, para assim verificar como o método deverá prosseguir, excluindo do local, da api
+ou de ambos. */
 
 async function deletarImagem() {
     let id = document.getElementById('id').value
@@ -491,6 +549,12 @@ async function deletarImagem() {
     }
 }
 
+/* verificarId(id) - função utilizada práticamente no código inteiro, responsável por validar
+o id informado pelo usuário, faz a verificação no localStorage (localVerify(id)) e na API (apiVerify(id))
+cada método retorna sua devida resposta caso o id seja encontrado ou não, com essa resposta é realizado
+o tratamento do que será retornado, e dependendo da resposta retornada os métodos anteriores serão alterados
+por ela, utilizado método GET {id}. */
+
 async function verificarId(id) {
     function localVerify(id) {
         const photo = localStorage.getItem(`photo_${id}`)
@@ -526,6 +590,11 @@ async function verificarId(id) {
 
     return resposta
 }
+
+/* verificarAlbumId(albumId) - função com a mesma finalidade do método anterior, retornar um ID, mas desta vez sendo
+o albumId, nesse caso na verificação local o método entra diretamente nos objetos para assim receber o seu valor,
+filtrando e comparando qual almbumId for encontrado, na api a verificação é feita pelo GET acessando diretamente os albuns
+já registrados, após a chamada desses métodos é enviada a resposta para os métodos anteriores fazer as devidas manipulações. */
 
 async function verificarAlbumId(albumId) {
     function localVerify(albumId) {
@@ -572,6 +641,9 @@ async function verificarAlbumId(albumId) {
     return resposta
 }
 
+/* consultarCond(escolha) - função auxiliar, usada somente para bloquear a possibilidade de receber um albumId 
+e um Id ao mesmo tempo no método consultar, garantindo que seja possível somente o envio de 1 deles. */
+
 function consultarConf(escolha) {
     let idAlbumAcesso = document.getElementById('albumId')
     let idAcesso = document.getElementById('id')
@@ -588,6 +660,10 @@ function consultarConf(escolha) {
     }
 }
 
+/* limparCaixas() - função chamada durante o código inteiro, responsável por sempre limpar todas as caixas
+de valores do formulário após algum erro ou sucesso dos métodos, garantindo que sempre seja possível digitar
+novos dados sem a necessidade de apaga-los todas as vezes */
+
 function limparCaixas() {
     document.getElementById('title').value = ''
     document.getElementById('url').value = ''
@@ -595,6 +671,12 @@ function limparCaixas() {
     document.getElementById('id').value = ''
     document.getElementById('albumId').value = ''
 }
+
+/* exibibrModal(valor, tipo) - função chamada durante o código inteiro, responsável pela chamada do modal,
+criado na página index.html e manipulado via DOM (manipulação de texto, cores e estilos no geral) 
+para que seja feita sempre a exibição correta, podendo ser uma mensagem de erro, sucesso e confirmação, 
+o valor armazena qual a mensagem que será exibida e o tipo armazena qual é o tipo desse modal, 
+a chamada do modal e feita utilizando Jquerry */
 
 function exibirModal(valor, tipo) {
     document.getElementById('estilo-modal').classList.add('text')
@@ -615,3 +697,127 @@ function exibirModal(valor, tipo) {
     document.getElementById('conteudo-modal').innerHTML = valor == 1 ? 'Imagem adicionada com sucesso!' : valor == 2 ? 'Alteração concluída!' : 'Imagem excluída com sucesso!'
     return $('#exibirModal').modal('show')
 }
+
+
+/*
+  Projeto: Gerenciador de Imagens
+  Autor: Elcio Cleiton Wippel
+  Descrição: Documentação dos métodos responsáveis pelo funcionamento do sistema.
+  O sistema interage com a API utilizando Fetch e métodos HTTP, manipulando o DOM
+  para capturar e exibir dados dinamicamente.
+*/
+
+/* 
+  getIdDisponivel() 
+  - Retorna o próximo ID disponível para uma nova imagem. 
+  - Obtém todas as fotos da API, filtra por ID e considera os registros no localStorage.
+  - A soma das quantidades é feita para determinar o próximo ID disponível. 
+*/
+
+/* 
+  getAlbumId() 
+  - Retorna o próximo albumId disponível. 
+  - Obtém todos os álbuns da API e verifica os IDs armazenados no localStorage.
+  - Se a soma do primeiro e último ID do álbum resultar em 49, um novo albumId é gerado.
+  - Se um álbum for removido, o ID é reatribuído. A primeira adição inicia no albumId 101. 
+*/
+
+/* 
+  confirmarDelete(value) 
+  - Gerencia os eventos de clique no modal de exclusão.
+  - Após a confirmação da exclusão, remove os eventos para evitar bugs. 
+*/
+
+/* 
+  Objeto photo
+  - Representa uma imagem adicionada ao sistema.
+  - Inclui métodos para validar os valores antes da inserção.
+*/
+
+/* 
+  limitar(value, confirm) 
+  - Manipula elementos do DOM e formulários da página index.html.
+  - Define quais campos serão habilitados e qual função será executada.
+  - O parâmetro confirm retorna true quando a função exige confirmação, ajustando a exibição.
+*/
+
+/* 
+  funcoes(result) 
+  - Coleta dados para futuras operações de adição ou alteração de imagens.
+  - Usa um operador ternário para determinar qual ação executar com base no método limitar().
+*/
+
+/* 
+  adicionarImagem() 
+  - Adiciona uma nova imagem ao localStorage e faz uma solicitação POST "fake" à API.
+  - Os dados são capturados do DOM e armazenados no objeto photo.
+*/
+
+/* 
+  alterarImagem() 
+  - Modifica os dados de uma imagem na API, localStorage ou ambos.
+  - Apenas os campos alterados são modificados, preservando os dados originais.
+  - Valida se o ID existe antes de atualizar. Utiliza o método PATCH.
+*/
+
+/* 
+  consultarImagem() 
+  - Exibe imagens da API e do localStorage.
+  - Aceita buscas por albumId ou Id, ou retorna todos os registros.
+  - Implementa paginação com base na variável paginaAtual e itensPorPagina.
+  - Faz merge entre os dados da API e localStorage, considerando adições, alterações e deleções.
+  - Utiliza o método GET.
+*/
+
+/* 
+  paginacao(paginas) 
+  - Divide os registros conforme a quantidade de itens por página.
+  - Controla a exibição correta das imagens e mantém a estrutura de navegação. 
+*/
+
+/* 
+  exibirTabela(data) 
+  - Recebe os dados filtrados e os exibe em uma tabela no DOM.
+  - Atualiza os elementos visuais para apresentação ao usuário.
+*/
+
+/* 
+  deletarImagem() 
+  - Remove uma imagem pelo ID informado.
+  - Se o ID for inválido, exibe uma mensagem de erro.
+  - Utiliza o método DELETE para remover da API e/ou localStorage.
+*/
+
+/* 
+  verificarId(id) 
+  - Valida se um ID informado pelo usuário existe na API ou no localStorage.
+  - Utiliza localVerify(id) e apiVerify(id) para determinar a resposta correta.
+  - O resultado influencia as operações subsequentes.
+  - Utiliza o método GET {id}.
+*/
+
+/* 
+  verificarAlbumId(albumId) 
+  - Similar a verificarId(), mas verifica a existência de um albumId.
+  - Filtra os objetos localmente e consulta a API para buscar registros.
+  - O resultado é usado para ajustar as funções que manipulam álbuns. 
+*/
+
+/* 
+  consultarCond(escolha) 
+  - Função auxiliar que impede o envio simultâneo de um albumId e um Id em consultas.
+  - Garante que apenas um parâmetro seja utilizado por vez. 
+*/
+
+/* 
+  limparCaixas() 
+  - Reseta os campos do formulário após a execução de uma função.
+  - Evita que o usuário tenha que apagar os dados manualmente a cada operação. 
+*/
+
+/* 
+  exibirModal(valor, tipo) 
+  - Exibe mensagens modais para erro, sucesso ou confirmação.
+  - Manipula a interface via DOM para alterar texto, cores e estilos.
+  - Implementado com jQuery.
+*/
