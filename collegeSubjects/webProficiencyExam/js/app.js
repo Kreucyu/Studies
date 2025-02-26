@@ -569,6 +569,8 @@ async function deletarImagem() {
                 return
             }
         }
+    } else {
+        return exibirModal(2, "erro")
     }
 }
 
