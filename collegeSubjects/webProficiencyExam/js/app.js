@@ -43,16 +43,16 @@ async function getAlbumId() {
         }
         const localAlbumId = localPhotos.length ? Math.max(...localPhotos.map(photo => photo.albumId)) : 0
         let ultimoAlbumId = Math.max(apiAlbumID, localAlbumId)
-        if(ultimoAlbumId === 100) ultimoAlbumId = 101
+        if (ultimoAlbumId === 100) ultimoAlbumId = 101
         let quantidadeAlbumId = localPhotos.filter(photo => photo.albumId === ultimoAlbumId)
         console.log(ultimoAlbumId)
-        if(quantidadeAlbumId.length > 0) {
+        if (quantidadeAlbumId.length > 0) {
             let ordenar = quantidadeAlbumId.map(photo => photo.id).sort((a, b) => a - b)
             let primeiroValor = ordenar[0]
             let ultimoValor = ordenar[ordenar.length - 1]
             let total = ordenar.length
             let ocupados = ultimoValor - primeiroValor
-            if(ocupados === 49 || total === 50) ultimoAlbumId++
+            if (ocupados === 49 || total === 50) ultimoAlbumId++
         }
 
         localStorage.setItem(`albumId`, ultimoAlbumId)
@@ -192,12 +192,12 @@ async function funcoes(result) {
         let id = document.getElementById('id').value
         if (id != "" && id != null && id != undefined) {
             let validarId = await verificarId(id)
-            if (!validarId) {
+            if (!validarId || Object.keys(validarId).length === 0) {
                 limparCaixas()
                 exibirModal(3, "erro")
                 return
             } else {
-
+                console.log(`idv  dentro ` + validarId)
                 let atualizarDados = {}
                 if (id) atualizarDados.id = parseInt(id)
                 if (title) atualizarDados.title = title
@@ -271,7 +271,7 @@ async function consultarImagem() {
     if (id !== "" && albumId === "") {
         try {
             let validarId = await verificarId(id)
-            if (!validarId) return exibirModal(4, "erro")
+            if (!validarId) return exibirModal(4, "erro") && limparCaixas()
             let exibicao = null
             let alterador = `alt_photo_${id}`
             let localAdc = `photo_${id}`
@@ -282,7 +282,7 @@ async function consultarImagem() {
             if (!exibicao || Object.keys(exibicao).length === 0) {
                 if (localStorage.getItem(localAdc)) exibicao = JSON.parse(localStorage.getItem(localAdc))
                 else if (localStorage.getItem(localAdcAlt)) exibicao = JSON.parse(localStorage.getItem(localAdcAlt))
-                else return exibirModal(4, "erro")
+                else return exibirModal(4, "erro") && limparCaixas()
             }
 
 
@@ -291,7 +291,7 @@ async function consultarImagem() {
             }
             let deletado = `del_photo_${exibicao.id}`
             if (localStorage.getItem(deletado)) {
-                exibicao = null
+                return exibirModal(4, "erro") && limparCaixas()
             }
             if (exibicao) exibirTabela([exibicao])
             else exibirTabela([])
@@ -305,7 +305,7 @@ async function consultarImagem() {
     else if (id === "" && albumId !== "") {
         try {
             let validarAlbumId = await verificarAlbumId(albumId)
-            if (!validarAlbumId) return exibirModal(4, "erro")
+            if (!validarAlbumId) return exibirModal(4, "erro") && limparCaixas()
             const response = await fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`)
             if (!response.ok) throw new Error('Erro na API')
             console.log(response)
@@ -314,7 +314,7 @@ async function consultarImagem() {
             exibicao = [...data]
             let localAdc = Object.keys(localStorage).filter(key => key.startsWith('photo_')).map(key => JSON.parse(localStorage.getItem(key))).filter(imagem => imagem.albumId === Number(albumId))
             localAdc.push(...Object.keys(localStorage).filter(key => key.startsWith('altL_photo_')).map(key => JSON.parse(localStorage.getItem(key))).filter(imagem => imagem.albumId === Number(albumId)))
-            localAdc.sort((a,b) => a.id - b.id)
+            localAdc.sort((a, b) => a.id - b.id)
             exibicao = [...data, ...localAdc]
             exibicao = exibicao.map(imagem => {
                 if (!imagem || !imagem.id) return imagem
@@ -325,7 +325,7 @@ async function consultarImagem() {
             let exclusoes = Object.keys(localStorage).filter(key => key.startsWith('del_photo_')).map(key => key.replace('del_photo_', ''))
             exibicao = exibicao.filter(imagem => !exclusoes.includes(String(imagem.id)))
             const imagensPaginadas = exibicao.slice(inicio, fim)
-            if(exibicao.length === 0) return exibirModal(4, "erro")
+            if (exibicao.length === 0) return exibirModal(4, "erro") && limparCaixas()
             exibirTabela(imagensPaginadas)
         } catch (error) {
             console.error(error)
@@ -342,7 +342,7 @@ async function consultarImagem() {
             exibicao = [...data]
             let localAdc = Object.keys(localStorage).filter(key => key.startsWith('photo_')).map(key => JSON.parse(localStorage.getItem(key)))
             localAdc.push(...Object.keys(localStorage).filter(key => key.startsWith('altL_photo_')).map(key => JSON.parse(localStorage.getItem(key))))
-            localAdc.sort((a,b) => a.id - b.id)
+            localAdc.sort((a, b) => a.id - b.id)
             exibicao = [...data, ...localAdc]
             exibicao = exibicao.map(imagem => {
                 let alterador = `alt_photo_${imagem.id}`
@@ -499,6 +499,10 @@ async function verificarId(id) {
 
     const localConfirm = localVerify(id)
     const apiConfirm = await apiVerify(id)
+
+    if (!apiConfirm && !localConfirm) {
+        return null
+    }
 
     const resposta = {
         localOnly: localConfirm && !apiConfirm,
