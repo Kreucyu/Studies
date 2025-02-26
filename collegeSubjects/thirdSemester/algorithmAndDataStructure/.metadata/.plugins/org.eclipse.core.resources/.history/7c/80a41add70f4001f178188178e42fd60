@@ -1,0 +1,47 @@
+package challenge1;
+
+public class main {
+
+}
+
+class ListaEstatica {
+	private int[] info;
+	private int tamanho;
+
+	public ListaEstatica() {
+
+	}
+
+	private void redimensionar() {
+
+	}
+
+	private void inserir(int valor) {
+
+	}
+
+	private void exibir() {
+
+	}
+
+	private int buscar(int valor) {
+		return 2;
+	}
+
+	private void retirar(int valor) {
+
+	}
+
+	private void liberar() {
+
+	}
+
+	private int obterElemento(int posicao) {
+		return 2;
+	}
+
+	private boolean estaVazia() {
+		return true;
+	}
+
+}
