@@ -1,10 +1,19 @@
+<!--Projeto: Gerenciador de imagens
+    Aluno: Elcio Cleiton Wippel
+    Conteúdo: corpo do código Html, links de referência do Jquerry,
+    Bootstrap, FontAwesome, style.css e app.js.
+    Contém o formulário de inserção dentro dos devidos cards,
+    dropdown com o menu de seleção e formulário de exibição da
+    tabela de imagens que sera gerada a cada paginação feita e também
+    código do modal de exibição, cuja função é exibir as mensagens de
+    sucesso, erro e alerta de deletar.-->
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -23,15 +32,16 @@
     <title>Prova de Suficiência</title>
     <link rel="icon" href="images/furb.png">
 </head>
-
 <body>
     <div class="container">
+        <!-- Título -->
         <div class="row d-flex col-12">
             <span>
                 <h2 class="mt-5 mb-5"><i class="fa-solid fa-image"></i>&nbsp;&nbsp;</i>Gerenciador de imagens</h2>
             </span>
         </div>
 
+        <!-- Formulários -->
         <div class="card shadow-sm mb-3 bg-body-tertiary rounded">
             <div class="card-header">
                 <h5 class="m-0 p-0">Insira os dados da imagem</h5>
@@ -44,12 +54,14 @@
                     </span>
                     <span class="d-flex mb-2">
                         <input class="form-control" type="text" placeholder="URL" id="url" disabled="disabled">
-                        <input class="form-control idBox" type="number" placeholder="ÁlbumID" id="albumId" oninput="consultarConf(0)" onblur="consultarConf(3)" disabled="disabled">
+                        <input class="form-control idBox" type="number" placeholder="ÁlbumID" id="albumId"
+                            oninput="consultarConf(0)" onblur="consultarConf(3)" disabled="disabled">
                     </span>
                     <span class="d-flex mb-2">
                         <input class="form-control" type="text" placeholder="URL da thumbnail" id="thumbnailUrl"
                             disabled="disabled">
-                        <input class="form-control idBox" type="number" placeholder="ID" id="id" oninput="consultarConf(1)" onblur="consultarConf(3)" disabled="disabled">
+                        <input class="form-control idBox" type="number" placeholder="ID" id="id"
+                            oninput="consultarConf(1)" onblur="consultarConf(3)" disabled="disabled">
                     </span>
                     <span class="d-flex mb-2" id="nogap">
                         <div class="dropdown">
@@ -77,12 +89,11 @@
                         <button class="btn" id="confirmar"
                             onclick="limitar('O que deseja fazer?', true)">Confirmar</button>
                     </span>
-
-
                 </blockquote>
             </div>
         </div>
 
+        <!-- Tabela de imagens -->
         <div class="card shadow-sm mb-3 bg-body-tertiary rounded" style="display: none;" id="imageList">
             <div class="card-header">
                 <h5 class="m-0 p-0">Usuários</h5>
@@ -123,10 +134,12 @@
                 <div class="modal-body" id="conteudo-modal"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn" data-bs-dismiss="modal" id="botao-config"></button>
-                    <button type="button" class="btn" data-bs-dismiss="modal" id="botao-delete" style="display: none;"></button>
+                    <button type="button" class="btn" data-bs-dismiss="modal" id="botao-delete"
+                        style="display: none;"></button>
                 </div>
             </div>
         </div>
     </div>
 </body>
+
 </html>

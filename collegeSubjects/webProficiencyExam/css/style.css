@@ -1,3 +1,9 @@
+/* Projeto: Gerenciador de imagens
+Aluno: Elcio Cleiton Wippel
+Conteúdo: lista de estilos css para modificar a aparência do site,
+podendo modificar algum atributo da prórpia página ou alterar
+algum atributo do bootstrap, feito também media querries para design responsivo.*/
+
 .color {
     color: white;
     background-color: #623aae;

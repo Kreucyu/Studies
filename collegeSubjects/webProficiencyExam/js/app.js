@@ -1,3 +1,15 @@
+/* Projeto: Gerenciador de imagens
+Aluno: Elcio Cleiton Wippel
+Conteúdo: inclui todos os métodos responsáveis por fazer com que o sistema funcione
+e seja interativo, utilizando a manipulação do DOM na captura dos dados, fazendo a chamada
+da API utilizando Fetch e seus metodos HTTP e demais funções do JavaScript para a manipulação
+de caminhos do código para receber o resultado esperado*/
+
+/* função que serve para descobrir qual o próximo id disponível 
+nesse método, é recebido todas as fotos da api e são filtradas por id
+a quantidade das fotos são armazenadas em uma variável e em seguida, feito 
+a verificação dos ids dentro do localStorage e depois, é feita a junção das duas
+somas para assim somar +1 e retornar o próximo id */
 async function getIdDisponivel() {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/photos')
