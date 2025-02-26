@@ -10,7 +10,7 @@ async function getIdDisponivel() {
         for (let i = 0; i < localStorage.length; i++) {
             let chave = localStorage.key(i)
 
-            if (chave.startsWith('photo_') || chave.startsWith('altL_photo_') && !chave.startsWith('del_photo')) {
+            if ((chave.startsWith('photo_') || chave.startsWith('altL_photo_')) && !chave.startsWith('del_photo')) {
                 let photo = JSON.parse(localStorage.getItem(chave))
                 localPhotos.push(photo)
             }
@@ -36,7 +36,7 @@ async function getAlbumId() {
         for (let i = 0; i < localStorage.length; i++) {
             let chave = localStorage.key(i)
 
-            if (chave.startsWith('photo_') || chave.startsWith('altL_photo_') && !chave.startsWith('del_photo')) {
+            if ((chave.startsWith('photo_') || chave.startsWith('altL_photo_')) && !chave.startsWith('del_photo')) {
                 let photo = JSON.parse(localStorage.getItem(chave))
                 localPhotos.push(photo)
             }
@@ -279,7 +279,7 @@ async function consultarImagem() {
             const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`)
             console.log(response)
             if (response.ok) exibicao = await response.json()
-            if (!exibicao) {
+            if (!exibicao || Object.keys(exibicao).length === 0) {
                 if (localStorage.getItem(localAdc)) exibicao = JSON.parse(localStorage.getItem(localAdc))
                 else if (localStorage.getItem(localAdcAlt)) exibicao = JSON.parse(localStorage.getItem(localAdcAlt))
                 else return exibirModal(4, "erro")
@@ -314,6 +314,7 @@ async function consultarImagem() {
             exibicao = [...data]
             let localAdc = Object.keys(localStorage).filter(key => key.startsWith('photo_')).map(key => JSON.parse(localStorage.getItem(key))).filter(imagem => imagem.albumId === Number(albumId))
             localAdc.push(...Object.keys(localStorage).filter(key => key.startsWith('altL_photo_')).map(key => JSON.parse(localStorage.getItem(key))).filter(imagem => imagem.albumId === Number(albumId)))
+            localAdc.sort((a,b) => a.id - b.id)
             exibicao = [...data, ...localAdc]
             exibicao = exibicao.map(imagem => {
                 if (!imagem || !imagem.id) return imagem
@@ -341,6 +342,7 @@ async function consultarImagem() {
             exibicao = [...data]
             let localAdc = Object.keys(localStorage).filter(key => key.startsWith('photo_')).map(key => JSON.parse(localStorage.getItem(key)))
             localAdc.push(...Object.keys(localStorage).filter(key => key.startsWith('altL_photo_')).map(key => JSON.parse(localStorage.getItem(key))))
+            localAdc.sort((a,b) => a.id - b.id)
             exibicao = [...data, ...localAdc]
             exibicao = exibicao.map(imagem => {
                 let alterador = `alt_photo_${imagem.id}`
