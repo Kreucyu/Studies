@@ -1,0 +1,191 @@
+-- 1
+
+SELECT 
+    cliente.nm_cliente AS nome_cliente,
+    animal.nm_animal AS nome_animal
+FROM 
+    cliente
+JOIN 
+    animal ON cliente.cd_cliente = animal.cd_cliente;
+
+-- 2
+
+SELECT 
+    produto.nm_produto AS nome_produto,
+    produto.ds_produto AS descricao_produto,
+    categoria.ds_categoria AS categoria
+FROM 
+    produto
+JOIN 
+    categoria ON produto.cd_categoria = categoria.cd_categoria
+LIMIT 0, 1000;
+
+-- 3
+
+SELECT 
+    agendamento.nr_agendamento,
+    agendamento.dt_agendamento,
+    prestador_servico.nm_prestador AS nome_prestador
+FROM 
+    agendamento
+JOIN 
+    prestador_servico ON agendamento.cd_prestador = prestador_servico.cd_prestador;
+
+-- 4 
+
+SELECT 
+    s.ds_servico AS Descricao_Servico,
+    COUNT(*) AS Quantidade_Agendamentos
+FROM 
+    agendamento_servico as ags
+INNER JOIN servico as s ON ags.cd_servico = s.cd_servico
+GROUP BY s.ds_servico;
+
+-- 5 
+
+SELECT 
+    p.nm_prestador AS Nome_Prestador, 
+    s.ds_servico AS Descricao_Servico
+FROM
+    prestador_servico p
+INNER JOIN servico_prestador sp ON p.cd_prestador = sp.cd_prestador
+INNER JOIN servico s ON sp.cd_servico = s.cd_servico;
+
+-- 6
+
+SELECT 
+    nota_fiscal.nr_notal_fiscal,
+    nota_fiscal.dt_emissao,
+    cliente.nm_cliente AS nome_cliente
+FROM 
+    nota_fiscal
+JOIN 
+    cliente ON nota_fiscal.cd_cliente = cliente.cd_cliente;
+	
+-- 7
+
+SELECT 
+    item_nota_fiscal.nr_notal_fiscal,
+    produto.nm_produto AS nome_produto,
+    item_nota_fiscal.qt_produto AS quantidade
+FROM 
+    item_nota_fiscal
+JOIN 
+    produto ON item_nota_fiscal.cd_produto = produto.cd_produto;
+
+-- 8
+
+SELECT 
+    animal.nm_animal AS nome_animal,
+    raca.nm_raca AS raca,
+    especie.nm_especie AS especie
+FROM 
+    animal
+JOIN 
+    raca ON animal.cd_raca = raca.cd_raca
+JOIN 
+    especie ON raca.cd_especie = especie.cd_especie;
+
+-- 9
+
+SELECT 
+    agendamento.nr_agendamento,
+    cliente.nm_cliente AS nome_cliente,
+    animal.nm_animal AS nome_animal
+FROM 
+    agendamento
+JOIN 
+    cliente ON agendamento.cd_cliente = cliente.cd_cliente
+JOIN 
+    animal ON agendamento.cd_animal = animal.cd_animal;
+
+-- 10
+
+SELECT 
+    cliente.nm_cliente AS nome_cliente,
+    endereco.ds_logradouro AS logradouro,
+    municipio.nm_municipio AS municipio
+FROM 
+    cliente
+JOIN 
+    endereco ON cliente.cd_endereco = endereco.cd_endereco
+JOIN 
+    municipio ON endereco.cd_municipio = municipio.cd_municipio;
+	
+-- 11
+
+SELECT 
+    prestador_servico.nm_prestador AS nome_prestador,
+    municipio.nm_municipio AS municipio
+FROM 
+    prestador_servico
+JOIN 
+    endereco ON prestador_servico.cd_endereco = endereco.cd_endereco
+JOIN 
+    municipio ON endereco.cd_municipio = municipio.cd_municipio;
+
+-- 12
+
+SELECT 
+    nota_fiscal.nr_notal_fiscal,
+    produto.nm_produto AS nome_produto,
+    item_nota_fiscal.qt_produto AS quantidade,
+    item_nota_fiscal.vl_produto AS valor_unitario,
+    (item_nota_fiscal.qt_produto * item_nota_fiscal.vl_produto) AS valor_total
+FROM 
+    nota_fiscal
+JOIN 
+    item_nota_fiscal ON nota_fiscal.nr_notal_fiscal = item_nota_fiscal.nr_notal_fiscal
+JOIN 
+    produto ON item_nota_fiscal.cd_produto = produto.cd_produto;
+	
+-- 13
+
+SELECT 
+    agendamento.nr_agendamento,
+    servico.ds_servico AS descricao_servico,
+    agendamento_servico.vl_servico AS valor_unitario,
+    (agendamento_servico.qt_servico * agendamento_servico.vl_servico) AS valor_total_servico
+FROM 
+    agendamento
+JOIN 
+    agendamento_servico ON agendamento.nr_agendamento = agendamento_servico.nr_agendamento
+JOIN 
+    servico ON agendamento_servico.cd_servico = servico.cd_servico;
+	
+-- 14 PROBLEMA
+
+SELECT 
+    prestador_servico.nm_prestador AS nome_prestador,
+    servico.ds_servico AS descricao_servico,
+    servico.vl_servico AS valor_servico
+FROM 
+    prestador_servico
+JOIN 
+    servico_prestador ON prestador_servico.cd_prestador = servico_prestador.cd_prestador
+JOIN 
+    servico ON servico_prestador.cd_servico = servico.cd_servico
+WHERE 
+    servico.vl_servico > 100.00;
+	
+-- 15
+
+SELECT 
+    animal.nm_animal AS nome_animal,
+    raca.nm_raca AS raca,
+    especie.nm_especie AS especie
+FROM 
+    animal
+JOIN 
+    raca ON animal.cd_raca = raca.cd_raca
+JOIN 
+    especie ON raca.cd_especie = especie.cd_especie
+WHERE 
+    raca.nm_raca = 'Poodle';
+
+
+
+
+
+
+	

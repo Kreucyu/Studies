@@ -1,0 +1,35 @@
+
+SELECT * FROM produto WHERE vl_venda > 100.00;
+
+SELECT * FROM servico WHERE vl_servico < 50.00;
+
+SELECT nm_animal, ds_animal, dt_nascimento, tp_porte
+FROM animal
+ORDER BY dt_nascimento;
+
+SELECT nr_notal_fiscal, vl_total
+FROM nota_fiscal
+WHERE dt_emissao BETWEEN '2024-09-01' AND '2024-09-30';
+
+SELECT nm_cliente FROM cliente WHERE ds_email IS NULL;
+
+SELECT * FROM produto WHERE vl_venda > 9.99 AND qt_estoque >= 100;
+
+SELECT ds_servico, vl_servico FROM servico ORDER BY vl_servico DESC;
+
+SELECT * FROM prestador_servico WHERE nr_telefone LIKE '47%';
+
+SELECT nm_animal, dt_nascimento FROM animal WHERE tp_porte = 'G';
+
+SELECT * FROM cliente WHERE nm_cliente LIKE '%silva%';
+
+SELECT * FROM agendamento
+WHERE dt_agendamento BETWEEN '2024-10-01' AND '2024-10-15';
+
+SELECT * FROM cliente WHERE dt_nascimento < '1980-01-01';
+
+SELECT * FROM categoria WHERE ds_categoria LIKE '%brinquedo%';
+
+SELECT * FROM cliente WHERE ds_email LIKE '%@gmail.com%';
+
+SELECT * FROM produto WHERE qt_estoque >= 20 AND vl_venda < 100.00;
