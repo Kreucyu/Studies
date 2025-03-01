@@ -1,0 +1,13 @@
+START:
+    MOV A, 00H;      
+    MOV [0x100], A;
+    MOV [0x101], A; 
+    MOV [0x102], A; 
+    MOV [0x103], A; 
+    MOV [0x104], A; 
+    MOV [0x105], A; 
+    MOV [0x106], A; 
+    MOV [0x107], A; 
+
+END:
+    JMP END;

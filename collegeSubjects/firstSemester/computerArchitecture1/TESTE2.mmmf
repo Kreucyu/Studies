@@ -1,0 +1,12 @@
+MOV 07,#00;  
+	MOV 08,#01;  
+	MOV 03,#02;  
+	MOV 04,#03;  
+
+	MOV #00,A;
+	MOV #01,A;
+	MOV #02,A;
+	MOV #03,A;
+
+
+LOOP:  JMP LOOP;

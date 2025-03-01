@@ -1,0 +1,51 @@
+SIMULADOR
+https://1drv.ms/u/s!Ak_-1v7Ug-k2gZUT-nDl5qhXx5Yhsw?e=CvCBtB
+https://1drv.ms/u/s!Ak_-1v7Ug-k2gZUT-nDl5qhXx5Yhsw?e=CvCBtB
+https://1drv.ms/u/s!Ak_-1v7Ug-k2gZUT-nDl5qhXx5Yhsw?e=CvCBtB
+https://1drv.ms/u/s!Ak_-1v7Ug-k2gZUT-nDl5qhXx5Yhsw?e=CvCBtB
+https://1drv.ms/u/s!Ak_-1v7Ug-k2gZUT-nDl5qhXx5Yhsw?e=CvCBtB
+
+COMPILADOR
+https://1drv.ms/u/s!Ak_-1v7Ug-k2gZUV5O-DFZuuUjpEtg?e=0uhuys
+https://1drv.ms/u/s!Ak_-1v7Ug-k2gZUV5O-DFZuuUjpEtg?e=0uhuys
+https://1drv.ms/u/s!Ak_-1v7Ug-k2gZUV5O-DFZuuUjpEtg?e=0uhuys
+https://1drv.ms/u/s!Ak_-1v7Ug-k2gZUV5O-DFZuuUjpEtg?e=0uhuys
+
+PROJETO M++LITE
+https://1drv.ms/u/s!Ak_-1v7Ug-k2gZUUnSUkBXjPUi1RbQ?e=yY7bZ2
+https://1drv.ms/u/s!Ak_-1v7Ug-k2gZUUnSUkBXjPUi1RbQ?e=yY7bZ2
+https://1drv.ms/u/s!Ak_-1v7Ug-k2gZUUnSUkBXjPUi1RbQ?e=yY7bZ2
+https://1drv.ms/u/s!Ak_-1v7Ug-k2gZUUnSUkBXjPUi1RbQ?e=yY7bZ2
+
+
+		//00-0F (0..15)
+		MOV FF,#00;
+		MOV CC,#01;
+		MOV 11,#02;
+		MOV 44,#03;
+		MOV 21,#04;
+		MOV 01,#05;
+		MOV 09,#06;
+		MOV AA,#07;
+		MOV BB,#08;
+		MOV 17,#09;
+		MOV 02,#0A;
+		MOV 99,#0B;
+		MOV A1,#0C;
+		MOV A2,#0D;
+		MOV 91,#0E;
+		MOV 91,#0F;
+
+		MOV 00,E;
+
+COPIA:
+		MOV 66,A;
+		MOV A,#E;
+		MOV E,A;
+		ADD 01,E; //E=E+1
+		JMP COPIA;
+
+
+
+FIM:		JMP FIM;
+			

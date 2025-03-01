@@ -1,0 +1,4 @@
+mov - move
+push - coloca na pilha
+pop - retira da pilha
+pop deve ser o inverso de push

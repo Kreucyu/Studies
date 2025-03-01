@@ -1,0 +1,81 @@
+START:
+    MOV A, 81H;
+    CALL MANDA;
+    MOV A, C1H;
+    CALL MANDA;
+    MOV A, A1H;
+    CALL MANDA;
+    MOV A, 91H;
+    CALL MANDA;
+    MOV A, 89H;
+    CALL MANDA;
+    MOV A, 85H;
+    CALL MANDA;
+    MOV A, 83H;
+    CALL MANDA;
+    MOV A, 81H;
+    CALL MANDA;
+
+    MOV A, FFH;
+    CALL MANDA;
+    MOV A, 01H;
+    CALL MANDA;
+    MOV A, 01H;
+    CALL MANDA;
+    MOV A, FFH;
+    CALL MANDA;
+    MOV A, 01H;
+    CALL MANDA;
+    MOV A, 01H;
+    CALL MANDA;
+    MOV A, 01H;
+    CALL MANDA;
+    MOV A, FFH;
+    CALL MANDA;
+
+    MOV A, 3CH;
+    CALL MANDA;
+    MOV A, 42H;
+    CALL MANDA;
+    MOV A, 81H;
+    CALL MANDA;
+    MOV A, 81H;
+    CALL MANDA;
+    MOV A, 81H;
+    CALL MANDA;
+    MOV A, 81H;
+    CALL MANDA;
+    MOV A, 81H;
+    CALL MANDA;
+    MOV A, FFH;
+    CALL MANDA;
+
+    MOV A, 80H;
+    CALL MANDA;
+    MOV A, 80H;
+    CALL MANDA;
+    MOV A, 80H;
+    CALL MANDA;
+    MOV A, FFH;
+    CALL MANDA;
+    MOV A, FFH;
+    CALL MANDA;
+    MOV A, 80H;
+    CALL MANDA;
+    MOV A, 80H;
+    CALL MANDA;
+    MOV A, 80H;
+    CALL MANDA;
+
+FIM:
+    JMP FIM;
+
+MANDA:
+    MOV A, OUT3;
+    MOV 00H, A;
+    MOV A, OUT2;
+    MOV 01H, A;
+    MOV A, OUT2;
+    MOV 00H, A;
+    MOV A, OUT2;
+    RET;

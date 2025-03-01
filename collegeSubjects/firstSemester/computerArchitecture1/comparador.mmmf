@@ -1,0 +1,4 @@
+TESTE:
+ 	MOV IN1,A;
+	MOV A,OUT2;
+	JMP TESTE;

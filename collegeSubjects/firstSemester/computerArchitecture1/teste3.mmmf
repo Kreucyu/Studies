@@ -1,0 +1,31 @@
+MOV 01,B;
+	MOV 02,C;
+	MOV 03,D;
+	MOV 04,E;
+
+	MOV B,A;
+	MOV A,#00;
+	MOV C,A;
+	MOV A,#01;
+	MOV D,A;
+	MOV A,#02;
+	MOV E,A;
+	MOV A,#03;
+
+	MOV 99,B;
+	MOV 99,C;
+	MOV 99,D;
+	MOV 99,E;
+
+	MOV #00,A;
+	MOV A,B;
+	MOV #01,A;
+	MOV A,C;
+	MOV #02,A;
+	MOV A,D;
+	MOV #03,A;
+	MOV A,E;
+
+
+	
+FIM:	JMP FIM;

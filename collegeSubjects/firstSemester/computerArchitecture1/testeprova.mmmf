@@ -1,0 +1,293 @@
+START:
+    MOV IN3,A;
+    MOV A,B;
+    MOV 00H,A;
+    JMP COMPARAR;
+
+COMPARAR:
+    MOV IN3,A;
+    MOV A,B;
+    MOV 00H,A;
+    SUB B,A;
+    JMPZ ZERO;
+    JMPC OP;
+    MOV 03H,A;
+    MOV A,OUT2;
+    JMP COMPARAR;
+    
+OP:
+    MOV 01H,A;
+    SUB B,A;
+    JMPZ UM;
+    JMPC OPN;
+    MOV 03H,A;
+    MOV A,OUT2;
+    JMP COMPARAR;
+    
+OPN:
+    MOV 02H,A;
+    SUB B,A;
+    JMPZ DOIS;
+    JMPC TRES;
+    MOV 03H,A;
+    MOV A,OUT2;
+    JMP COMPARAR;
+
+ZERO:
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 42H,A;
+    CALL MANDA;
+    MOV 62H,A;
+    CALL MANDA;
+    MOV 52H,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 46H,A;
+    CALL MANDA;
+    MOV 42H,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 1AH,A;
+    CALL MANDA;
+    MOV 2AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 0EH,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 42H,A;
+    CALL MANDA;
+    MOV 42H,A;
+    CALL MANDA;
+    MOV 42H,A;
+    CALL MANDA;
+    MOV 42H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+    JMP ZERO;
+
+UM: 
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 40H,A;
+    CALL MANDA;
+    MOV 40H,A;
+    CALL MANDA;
+    MOV 40H,A;
+    CALL MANDA;
+    MOV 40H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+    
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 02H,A;
+    CALL MANDA;
+    MOV 04H,A;
+    CALL MANDA;
+    MOV 04H,A;
+    CALL MANDA;
+    MOV 02H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+    JMP UM;
+
+DOIS:
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 42H,A;
+    CALL MANDA;
+    MOV 42H,A;
+    CALL MANDA;
+    MOV 42H,A;
+    CALL MANDA;
+    MOV 3CH,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 42H,A;
+    CALL MANDA;
+    MOV 42H,A;
+    CALL MANDA;
+    MOV 42H,A;
+    CALL MANDA;
+    MOV 42H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 4EH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 7AH,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+    JMP DOIS;
+
+TRES:
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 02H,A;
+    CALL MANDA;
+    MOV 02H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 02H,A;
+    CALL MANDA;
+    MOV 02H,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 1AH,A;
+    CALL MANDA;
+    MOV 2AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 0EH,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 7EH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+
+    MOV 00H,A;
+    CALL MANDA;
+    MOV 4EH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 4AH,A;
+    CALL MANDA;
+    MOV 7AH,A;
+    CALL MANDA;
+    MOV 00H,A;
+    CALL MANDA;
+    JMP TRES;
+
+FIM:    
+    JMP FIM;
+
+MANDA:
+    MOV A,OUT3;
+    MOV 00H,A;
+    MOV A,OUT2;
+    MOV 01H,A;
+    MOV A,OUT2;
+    MOV 00H,A;
+    MOV A,OUT2;
+    RET;
